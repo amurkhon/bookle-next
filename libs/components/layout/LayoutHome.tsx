@@ -3,7 +3,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Head from 'next/head';
 import Top from '../Top';
 import Footer from '../Footer';
-import { Box, Button, Container, responsiveFontSizes, Stack } from '@mui/material';
+import { Button, Slide, Stack, useScrollTrigger } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { userVar } from '../../../apollo/store';
 import { useReactiveVar } from '@apollo/client';
@@ -18,6 +18,31 @@ const withLayoutMain = (Component: any) => {
 	return (props: any) => {
 		const device = useDeviceDetect();
 		const user = useReactiveVar(userVar);
+
+		interface Props {
+			/**
+			 * Injected by the documentation to work in an iframe.
+			 * You won't need it on your project.
+			 */
+			window?: () => Window;
+			children?: React.ReactElement<unknown>;
+		}
+
+		function HideOnScroll(props: Props) {
+			const { children, window } = props;
+			// Note that you normally won't need to set the window ref as useScrollTrigger
+			// will default to window.
+			// This is only being set here because the demo is in an iframe.
+			const trigger = useScrollTrigger({
+				target: window ? window() : undefined,
+			});
+
+			return (
+				<Slide appear={false} direction="down" in={!trigger}>
+					{children ?? <div />}
+				</Slide>
+			);
+		}
 
 		/** LIFECYCLES **/
 		useEffect(() => {
@@ -53,26 +78,25 @@ const withLayoutMain = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Nestar</title>
-						<meta name={'title'} content={`Nestar`} />
+						<title>Bookio</title>
+						<meta name={'title'} content={`Bookio`} />
 					</Head>
 					<Stack id="pc-wrap">
 						<Stack id={'top'}>
 							<Top />
 						</Stack>
-
 						<Stack className={'header-main'}>
+							<span className='shape1' style={{position: "absolute",zIndex:"2", top: "100px", right: "25px"}}><img src='/img/shapes/hero-shape2.svg'/></span>
+						<span className='shape2' style={{position: "absolute",zIndex:"2", bottom: "0px", left: "10px"}}><img src='/img/shapes/hero-shape3.svg'/></span>
 							<Stack className={"container"}>
 								<Stack className={"header-left"}>
 									<Typography className={'unique'} variant={'h2'}>Up To 30% Off</Typography>
 									<Typography className={'left-letter'} variant={'h1'}>Get Your New Book</Typography>
 									<Typography className={'left-letter'} variant={'h1'}>With The Best Price</Typography>
-									<Button variant={'outlined'} endIcon={<ArrowForwardIcon />}> Shop Now </Button>
+									<Button className={'header-button'} variant={'outlined'} endIcon={<ArrowForwardIcon />}> Shop Now </Button>
 								</Stack>
 								<Stack className={"header-right"}>
-									<Box>
-										<img src="/img/hero/hero-girl.png" alt="" />
-									</Box>
+									<img src="/img/hero/hero-img-1-1.png" alt="" />
 								</Stack>
 							</Stack>
 						</Stack>

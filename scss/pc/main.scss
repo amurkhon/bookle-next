@@ -43,6 +43,30 @@ body::-webkit-scrollbar {
 	display: none; /* for Chrome, Safari, and Opera */
 }
 
+@keyframes moveRight {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(7px); /* Move far right */
+  }
+  100% {
+    transform: translateX(7px); /* Return near start */
+  }
+}
+
+@keyframes shape1 {
+  0% {
+	transform: rotate(0);
+  }
+  50% {
+	transform: rotate(10deg);
+  }
+  100% {
+	transform: rotate(-10deg);
+  }
+}
+
 #pc-wrap {
 	#top {
 		.navbar {
@@ -201,18 +225,35 @@ body::-webkit-scrollbar {
 	.header-main {
 		position: relative;
 		width: 100%;
-		height: 860px;
-		background-image: url('/img/banner/cta-banner.jpg');
+		height: 900px;
+		background-image: url('/img/hero/hero-bg2.jpg');
 		background-size: cover;
+		translate: none;
+		rotate: none;
+		scale: none;
+		transform: translate(0px, 0px);
+		background-image: no-repeat;
+		background-size: cover;
+		background-position: bottom bottom;
+
+		.shape1 {
+			animation: shape1 10s ease-in infinite alternate;
+		}
+
+		.shape2 {
+			animation: shape1 10s ease-in infinite alternate;
+		}
 		.container {
+			height: 100%;
 			position: relative;
-			margin-top: 300px;
+			margin-top: 200px;
 			flex-direction: row;
 			align-items: center;
 			justify-content: space-between;
+			align-content: center;
 
 			.header-left {
-				width: 50%;
+				width: 40%;
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
@@ -227,12 +268,28 @@ body::-webkit-scrollbar {
 					margin: 10px 0px;
 					font-size: 40px;
 				}
+
+				.header-button {
+					padding: 10px;
+					width: 30%;
+					border-radius: 10px;
+					&:hover {
+						background-color: #eaba67;
+					}
+				}
 			}
 			.header-right {
-				width: 50%;
+				width: 60%;
+				height: 100%;
 				position: relative;
 				align-items: center;
-				bottom: 0px;
+				img {
+					width: 80%;
+					height: 80%;
+					position: relative;
+					z-index: 2;
+					animation: moveRight 1s ease-in infinite alternate;
+				}
 			}
 		}
 	}
@@ -487,7 +544,7 @@ body::-webkit-scrollbar {
 		height: auto;
 		display: flex;
 		flex-direction: row;
-		background: #181a20;
+		background-image: url("/img/banner/footer-bg.jpg");
 		.footer-container {
 			width: 1300px;
 			height: auto;
