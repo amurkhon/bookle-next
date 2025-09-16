@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack, Box } from '@mui/material';
+import { Stack, Box, Divider } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
@@ -84,7 +84,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 								{trendProperties.map((property: Property) => {
 									return (
 										<SwiperSlide key={property._id} className={'trend-property-slide'}>
-											<TrendPropertyCard property={property} likePropertyHandler={likePropertyHandler}/>
+											<TrendPropertyCard />
 										</SwiperSlide>
 									);
 								})}
@@ -100,9 +100,10 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>Trend Properties</span>
+							<span>Trending on Bookio</span>
 							<p>Trend is based on likes</p>
 						</Box>
+						<Divider sx={{width: "45%", height: '5px', backgroundColor: '#f5eaebff'}} />
 						<Box component={'div'} className={'right'}>
 							<div className={'pagination-box'}>
 								<WestIcon className={'swiper-trend-prev'} />
@@ -112,15 +113,21 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 						</Box>
 					</Stack>
 					<Stack className={'card-box'}>
-						{trendProperties.length === 0 ? (
+						{[1,2,3,4].length === 0 ? (
 							<Box component={'div'} className={'empty-list'}>
 								Trends Empty
 							</Box>
 						) : (
 							<Swiper
 								className={'trend-property-swiper'}
+								loop={true}
 								slidesPerView={'auto'}
 								spaceBetween={15}
+								speed={5000}
+								autoplay={{
+									delay: 0,
+									disableOnInteraction: false,
+								}}
 								modules={[Autoplay, Navigation, Pagination]}
 								navigation={{
 									nextEl: '.swiper-trend-next',
@@ -130,10 +137,10 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 									el: '.swiper-trend-pagination',
 								}}
 							>
-								{trendProperties.map((property: Property) => {
+								{[1,2,3,4,5,6,].map((ele, index) => {
 									return (
-										<SwiperSlide key={property._id} className={'trend-property-slide'}>
-											<TrendPropertyCard property={property} likePropertyHandler={likePropertyHandler}/>
+										<SwiperSlide key={index} className={'trend-property-slide'}>
+											<TrendPropertyCard />
 										</SwiperSlide>
 									);
 								})}

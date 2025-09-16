@@ -1,4 +1,4 @@
-import { PropertyLocation, PropertyStatus, PropertyType } from '../../enums/property.enum';
+import { PropertyCategory, PropertyStatus } from '../../enums/property.enum';
 import { Member } from '../member/member';
 
 export interface MeLiked {
@@ -13,27 +13,26 @@ export interface TotalCounter {
 
 export interface Property {
 	_id: string;
-	propertyType: PropertyType;
+	propertyCategory: PropertyCategory;
 	propertyStatus: PropertyStatus;
-	propertyLocation: PropertyLocation;
-	propertyAddress: string;
 	propertyTitle: string;
 	propertyPrice: number;
-	propertySquare: number;
-	propertyBeds: number;
-	propertyRooms: number;
+	propertyAuthor: string;
+	propertyPages: number;
+	isbn: string;
 	propertyViews: number;
 	propertyLikes: number;
 	propertyComments: number;
 	propertyRank: number;
 	propertyImages: string[];
+	propertyLanguages: string[];
 	propertyDesc?: string;
-	propertyBarter: boolean;
-	propertyRent: boolean;
+	propertyDownloads: number;
+	propertyFile: string;
 	memberId: string;
-	soldAt?: Date;
+	propertyAudio: string;
 	deletedAt?: Date;
-	constructedAt?: Date;
+	publicationDate: Date;
 	createdAt: Date;
 	updatedAt: Date;
 	/** from aggregation **/

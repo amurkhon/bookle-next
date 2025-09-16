@@ -3,12 +3,50 @@
 		position: relative;
 		width: 100%;
 		height: auto;
+		.maininfo-box {
+			margin-top: 40px;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+
+			.info-item {
+				width: 30%;
+				padding: 50px;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-evenly;
+				align-items: center;
+				border-bottom: 2px solid #d16655;
+				background-color: #f8ebe5;
+				border-radius: 20px;
+				&:hover {
+					background-color: #be767a;
+					transition-duration: 0.5s;
+					.icon-box {
+						background-color: white;
+						transition-duration: 0.5s;
+						.icon {
+							color: #be767a;
+							transition-duration: 0.5s;
+						}
+					}
+				}
+
+				.icon-box {
+					padding: 10px;
+					border-radius: 15px;
+					background-color: #d16655;
+				}
+			}
+		}
 		.info-box {
 			width: 100%;
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
+			align-items: center;
 			.left {
+				width: 30%;
 				display: flex;
 				flex-direction: column;
 				span {
@@ -37,6 +75,7 @@
 				}
 			}
 			.right {
+				width: 15%;
 				display: flex;
 				flex-direction: row;
 				align-items: flex-end;
@@ -141,55 +180,37 @@
 						flex-direction: row;
 						.trend-property-slide {
 							width: auto;
-							height: auto;
+							height: 300px;
 							display: flex;
 							margin: 10px 0 0 10px;
 						}
 					}
 					.trend-card-box {
 						position: relative;
-						width: 300px;
-						height: 375px;
+						width: 200px;
+						height: 300px;
 						display: flex;
-						flex-direction: column;
-						transition: transform 0.3s;
-						&:hover {
-							opacity: 1;
-							transform: scale(1.05);
-						}
-						.card-img {
-							position: relative;
-							width: 100%;
-							height: 203px;
-							background-size: cover;
-							border-radius: 12px 12px 0px 0px;
-							cursor: pointer;
-							div {
-								position: absolute;
-								padding: 8px 12px;
-								left: 12px;
-								bottom: 12px;
-								border-radius: 6px;
-								background: #fff;
-								color: #181a20;
-								font-family: $font;
-								font-size: 15px;
-								font-style: normal;
-								font-weight: 600;
-								line-height: normal;
+						.img-box {
+							transition: transform 0.3s;
+							&:hover {
+								opacity: 1;
+								transform: scale(1.05);
+								border-radius: 12px 12px 0px 0px;
+							}
+							.card-img {
+								position: relative;
+								width: 200px;
+								height: 300px;
 							}
 						}
 						.info {
-							padding: 20px 22px 17px;
 							display: flex;
 							flex-direction: column;
-							box-sizing: border-box;
-							border-radius: 0px 0px 12px 12px;
-							border: 1px solid rgba(196, 196, 196, 0.71);
-							border-top: none;
-							background: #fff;
-							box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+							justify-content: flex-start;
 							.title {
+								position: relative;
+								align-self: flex-start;
+								left: 0;
 								overflow: hidden;
 								color: #181a20;
 								text-overflow: ellipsis;
@@ -202,17 +223,12 @@
 								text-transform: capitalize;
 								cursor: pointer;
 							}
-							.desc {
-								margin-top: 5px;
-								overflow: hidden;
-								color: #717171;
-								font-family: $font;
-								font-size: 13px;
-								font-style: normal;
-								font-weight: 400;
-								line-height: normal;
-								text-overflow: ellipsis;
-								white-space: nowrap;
+							.stats-info {
+								width: 100%;
+								display: flex;
+								flex-direction: row;
+								justify-content: flex-end;
+								align-items: center;
 							}
 							.options {
 								margin-top: 15px;
