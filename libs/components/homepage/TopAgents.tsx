@@ -54,10 +54,10 @@ const TopAgents = (props: TopAgentsProps) => {
 							spaceBetween={29}
 							modules={[Autoplay]}
 						>
-							{topAgents.map((agent: Member) => {
+							{[1,2,3,4,5].map((ele, index) => {
 								return (
-									<SwiperSlide className={'top-agents-slide'} key={agent?._id}>
-										<TopAgentCard agent={agent} key={agent?.memberNick} />
+									<SwiperSlide className={'top-agents-slide'} key={index}>
+										<TopAgentCard />
 									</SwiperSlide>
 								);
 							})}
@@ -97,10 +97,10 @@ const TopAgents = (props: TopAgentsProps) => {
 									prevEl: '.swiper-agents-prev',
 								}}
 							>
-								{topAgents.map((agent: Member) => {
+								{[1,2,3,4,5].map((ele, index) => {
 									return (
-										<SwiperSlide className={'top-agents-slide'} key={agent?._id}>
-											<TopAgentCard agent={agent} key={agent?.memberNick} />
+										<SwiperSlide className={'top-agents-slide'} key={index}>
+											<TopAgentCard />
 										</SwiperSlide>
 									);
 								})}

@@ -7,32 +7,32 @@ import { Member } from '../../types/member/member';
 interface TopAgentProps {
 	agent: Member;
 }
-const TopAgentCard = (props: TopAgentProps) => {
-	const { agent } = props;
+const TopAgentCard = () => {
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const agentImage = agent?.memberImage
-		? `${process.env.REACT_APP_API_URL}/${agent?.memberImage}`
-		: '/img/profile/defaultUser.svg';
+	// const agentImage = agent?.memberImage
+	// 	? `${process.env.REACT_APP_API_URL}/${agent?.memberImage}`
+	// 	: '/img/profile/defaultUser.svg';
 
 	/** HANDLERS **/
 
 	if (device === 'mobile') {
 		return (
 			<Stack className="top-agent-card">
-				<img src={agentImage} alt="" />
+				<img src={'/img/profile/girl.svg'} alt="" />
 
-				<strong>{agent?.memberNick}</strong>
-				<span>{agent?.memberType}</span>
+				<strong>Emma Watson</strong>
+				<span>Author</span>
 			</Stack>
 		);
 	} else {
 		return (
 			<Stack className="top-agent-card">
-				<img src={agentImage} alt="" />
+				<img src={'/img/profile/girl.svg'} alt="" />
+				<span className='gradient'></span>
 
-				<strong>{agent?.memberNick}</strong>
-				<span>{agent?.memberType}</span>
+				<strong>Emma Watson</strong>
+				<span>Author</span>
 			</Stack>
 		);
 	}

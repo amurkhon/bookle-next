@@ -496,9 +496,11 @@
 			padding: 153px 0px 135px;
 			width: 100%;
 			height: 722px;
+			margin-top: 80px;
+			margin-bottom: 80px;
 			display: flex;
 			flex-direction: row;
-			background: #f6f6f6;
+			background-size: cover;
 			.container {
 				position: relative;
 				flex-direction: column;
@@ -545,13 +547,21 @@
 							}
 						}
 						.top-agent-card {
-							width: 205px;
+							position: relative;
+							width: 200px;
 							height: 280px;
 							display: flex;
 							flex-direction: column;
+							margin-left: 7px;
+							&:hover {
+								img {
+									transform: scale(1.05);
+									transition: 2s ease-in;
+								}
+							}
 							img {
-								width: 209px;
-								height: 209px;
+								width: 200px;
+								height: 200px;
 								border-radius: 50%;
 								cursor: pointer;
 								object-fit: cover;
