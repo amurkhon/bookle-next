@@ -16,6 +16,8 @@ import { GET_PROPERTIES } from '../../apollo/user/query';
 import { T } from '../../libs/types/common';
 import { LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import AppsIcon from '@mui/icons-material/Apps';
+import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -131,55 +133,60 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 		return (
 			<div id="property-list-page" style={{ position: 'relative' }}>
 				<div className="container">
-					<Box component={'div'} className={'right'}>
-						<span>Sort by</span>
-						<div>
-							<Button onClick={sortingClickHandler} endIcon={<KeyboardArrowDownRoundedIcon />}>
-								{filterSortName}
-							</Button>
-							<Menu anchorEl={anchorEl} open={sortingOpen} onClose={sortingCloseHandler} sx={{ paddingTop: '5px' }}>
-								<MenuItem
-									onClick={sortingHandler}
-									id={'new'}
-									disableRipple
-									sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
-								>
-									New
-								</MenuItem>
-								<MenuItem
-									onClick={sortingHandler}
-									id={'lowest'}
-									disableRipple
-									sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
-								>
-									Lowest Price
-								</MenuItem>
-								<MenuItem
-									onClick={sortingHandler}
-									id={'highest'}
-									disableRipple
-									sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
-								>
-									Highest Price
-								</MenuItem>
-							</Menu>
-						</div>
-					</Box>
 					<Stack className={'property-page'}>
 						<Stack className={'filter-config'}>
 							{/* @ts-ignore */}
 							<Filter searchFilter={searchFilter} setSearchFilter={setSearchFilter} initialInput={initialInput} />
 						</Stack>
 						<Stack className="main-config" mb={'76px'}>
+							<Box component={'div'} className={'right'}>
+								<Typography>Showing 1-3 of 34 Results</Typography>
+								<Stack className={'additional-func'}>
+									<span>Sort by</span>
+									<div>
+										<Button onClick={sortingClickHandler} endIcon={<KeyboardArrowDownRoundedIcon />}>
+											{filterSortName}
+										</Button>
+										<Menu anchorEl={anchorEl} open={sortingOpen} onClose={sortingCloseHandler} sx={{ paddingTop: '5px' }}>
+											<MenuItem
+												onClick={sortingHandler}
+												id={'new'}
+												disableRipple
+												sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
+											>
+												New
+											</MenuItem>
+											<MenuItem
+												onClick={sortingHandler}
+												id={'lowest'}
+												disableRipple
+												sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
+											>
+												Lowest Price
+											</MenuItem>
+											<MenuItem
+												onClick={sortingHandler}
+												id={'highest'}
+												disableRipple
+												sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
+											>
+												Highest Price
+											</MenuItem>
+										</Menu>
+									</div>
+									<AppsIcon sx={{marginRight: '5px'}} />
+									<ViewHeadlineIcon />
+								</Stack>
+							</Box>
 							<Stack className={'list-config'}>
-								{properties?.length === 0 ? (
+								{[1,2,3,4].length === 0 ? (
 									<div className={'no-data'}>
 										<img src="/img/icons/icoAlert.svg" alt="" />
 										<p>No Properties found!</p>
 									</div>
 								) : (
-									properties.map((property: Property) => {
-										return <PropertyCard property={property} key={property?._id} likePropertyHandler={likePropertyHandler} />;
+									[1,2,3,4,5,6,7,8,9].map((ele, index) => {
+										return <PropertyCard key={index} />;
 									})
 								)}
 							</Stack>
