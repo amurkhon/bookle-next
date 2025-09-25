@@ -31,7 +31,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 	const {key} = props;
 	const device = useDeviceDetect();
 	// const articleImage = article?.articleImage
-	// 	? `${process.env.REACT_APP_API_URL}/${article?.articleImage}`
+	// 	? `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/${article?.articleImage}`
 	// 	: '/img/event.svg';
 
 	console.log("key: ", key);

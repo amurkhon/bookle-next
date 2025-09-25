@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Button, Stack, Typography } from '@mui/material';
 import axios from 'axios';
-import { Messages, REACT_APP_API_URL } from '../../config';
+import { Messages, NEXT_PUBLIC_REACT_APP_API_URL } from '../../config';
 import { getJwtToken, updateStorage, updateUserInfo } from '../../auth';
 import { useMutation, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
@@ -58,20 +58,23 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 			);
 			formData.append('0', image);
 
-			const response = await axios.post(`${process.env.REACT_APP_API_GRAPHQL_URL}`, formData, {
+			console.log("Shu yerdan o'tdi");
+
+			const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_GRAPHQL_URL}`, formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 					'apollo-require-preflight': true,
 					Authorization: `Bearer ${token}`,
 				},
 			});
+			console.log("response: ", response);
 
 			const responseImage = response.data.data.imageUploader;
 			console.log('+responseImage: ', responseImage);
 			updateData.memberImage = responseImage;
 			setUpdateData({ ...updateData });
 
-			return `${REACT_APP_API_URL}/${responseImage}`;
+			return `${NEXT_PUBLIC_REACT_APP_API_URL}/${responseImage}`;
 		} catch (err) {
 			console.log('Error, uploadImage:', err);
 		}
@@ -130,7 +133,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 								<img
 									src={
 										updateData?.memberImage
-											? `${REACT_APP_API_URL}/${updateData?.memberImage}`
+											? `${NEXT_PUBLIC_REACT_APP_API_URL}/${updateData?.memberImage}`
 											: `/img/profile/defaultUser.svg`
 									}
 									alt=""

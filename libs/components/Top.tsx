@@ -20,7 +20,7 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../apollo/store';
 import { Logout } from '@mui/icons-material';
-import { REACT_APP_API_URL } from '../config';
+import { NEXT_PUBLIC_REACT_APP_API_URL } from '../config';
 
 const Top = () => {
 	const device = useDeviceDetect();
@@ -215,7 +215,7 @@ const Top = () => {
 										<div className={'login-user'} onClick={(event: any) => setLogoutAnchor(event.currentTarget)}>
 											<img
 												src={
-													user?.memberImage ? `${REACT_APP_API_URL}/${user?.memberImage}` : '/img/profile/defaultUser.svg'
+													user?.memberImage ? `${NEXT_PUBLIC_REACT_APP_API_URL}/${user?.memberImage}` : '/img/profile/defaultUser.svg'
 												}
 												alt=""
 											/>

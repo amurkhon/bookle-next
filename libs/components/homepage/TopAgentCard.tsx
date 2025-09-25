@@ -11,7 +11,7 @@ const TopAgentCard = () => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	// const agentImage = agent?.memberImage
-	// 	? `${process.env.REACT_APP_API_URL}/${agent?.memberImage}`
+	// 	? `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/${agent?.memberImage}`
 	// 	: '/img/profile/defaultUser.svg';
 
 	/** HANDLERS **/

@@ -5,7 +5,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Property } from '../../types/property/property';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { REACT_APP_API_URL } from '../../config';
+import { NEXT_PUBLIC_REACT_APP_API_URL } from '../../config';
 import { useRouter } from 'next/router';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
@@ -33,7 +33,7 @@ const TopPropertyCard = (props: TopPropertyCardProps) => {
 				<Box
 					component={'div'}
 					className={'card-img'}
-					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
+					style={{ backgroundImage: `url(${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
 					onClick={() => {pushDetailHandler(property?._id)}}
 				>
 					<div>${property?.propertyPrice}</div>
@@ -86,7 +86,7 @@ const TopPropertyCard = (props: TopPropertyCardProps) => {
 				<Box
 					component={'div'}
 					className={'card-img'}
-					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
+					style={{ backgroundImage: `url(${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
 					onClick={() => {pushDetailHandler(property?._id)}}
 				>
 					<div>${property?.propertyPrice}</div>

@@ -81,7 +81,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 			onCompleted: (data: T) => {
 				setBoardArticle(data?.getBoardArticle);
 				if(data?.getBoardArticle?.memberData?.memberImage) {
-					setMemberImage(`${process.env.REACT_APP_API_URL}/${data?.getBoardArticle?.memberData?.memberImage}`);
+					setMemberImage(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/${data?.getBoardArticle?.memberData?.memberImage}`);
 				}
 			},
 		}
@@ -207,7 +207,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 	};
 
 	const getCommentMemberImage = (imageUrl: string | undefined) => {
-		if (imageUrl) return `${process.env.REACT_APP_API_URL}/${imageUrl}`;
+		if (imageUrl) return `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/${imageUrl}`;
 		else return '/img/community/articleImg.png';
 	};
 

@@ -39,9 +39,9 @@ const MyPage: NextPage = () => {
 	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
 
 	/** LIFECYCLES **/
-	// useEffect(() => {
-	// 	if (!user._id) router.push('/').then();
-	// }, [user]);
+	useEffect(() => {
+		if (!user._id) router.push('/').then();
+	}, [user]);
 
 	/** HANDLERS **/
 	const subscribeHandler = async (id: string, refetch: any, query: any) => {

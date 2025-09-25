@@ -6,7 +6,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Property } from '../../types/property/property';
 import Link from 'next/link';
 import { formatterStr } from '../../utils';
-import { REACT_APP_API_URL, topPropertyRank } from '../../config';
+import { NEXT_PUBLIC_REACT_APP_API_URL, topPropertyRank } from '../../config';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import IconButton from '@mui/material/IconButton';
@@ -26,7 +26,7 @@ const PropertyCard = () => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	// const imagePath: string = property?.propertyImages[0]
-	// 	? `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
+	// 	? `${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`
 	// 	: '/img/banner/header1.svg';
 
 	if (device === 'mobile') {
