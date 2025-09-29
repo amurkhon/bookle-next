@@ -5,7 +5,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { PropertyCard } from './PropertyCard';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { Property } from '../../types/property/property';
-import { AgentPropertiesInquiry } from '../../types/property/property.input';
+import { AuthorPropertiesInquiry } from '../../types/property/property.input';
 import { T } from '../../types/common';
 import { PropertyStatus } from '../../enums/property.enum';
 import { userVar } from '../../../apollo/store';
@@ -16,7 +16,7 @@ import { sweetConfirmAlert, sweetErrorHandling } from '../../sweetAlert';
 
 const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
-	const [searchFilter, setSearchFilter] = useState<AgentPropertiesInquiry>(initialInput);
+	const [searchFilter, setSearchFilter] = useState<AuthorPropertiesInquiry>(initialInput);
 	const [agentProperties, setAgentProperties] = useState<Property[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const user = useReactiveVar(userVar);
@@ -37,8 +37,8 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 			variables: { input: searchFilter },
 			notifyOnNetworkStatusChange: true,
 			onCompleted: (data: T) => {
-				setAgentProperties(data?.getAgentProperties?.list);
-				setTotal(data?.getAgentProperties?.metaCounter[0]?.total ?? 0);
+				setAgentProperties(data?.getAuthors?.list);
+				setTotal(data?.getAuthors?.metaCounter[0]?.total ?? 0);
 			},
 		}
 	);
@@ -88,7 +88,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 		}
 	};
 
-	if (user?.memberType !== 'AGENT') {
+	if (user?.memberType !== 'AUTHOR') {
 		router.back();
 	}
 
@@ -110,12 +110,6 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 							className={searchFilter.search.propertyStatus === 'ACTIVE' ? 'active-tab-name' : 'tab-name'}
 						>
 							On Sale
-						</Typography>
-						<Typography
-							onClick={() => changeStatusHandler(PropertyStatus.SOLD)}
-							className={searchFilter.search.propertyStatus === 'SOLD' ? 'active-tab-name' : 'tab-name'}
-						>
-							On Sold
 						</Typography>
 					</Stack>
 					<Stack className="list-box">

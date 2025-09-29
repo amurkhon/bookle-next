@@ -5,8 +5,8 @@ import { gql } from '@apollo/client';
  *************************/
 
 export const GET_AGENTS = gql`
-	query GetAgents($input: AgentsInquiry!) {
-		getAgents(input: $input) {
+	query GetAuthors($input: AuthorsInquiry!) {
+		getAuthors(input: $input) {
 			list {
 				_id
 				memberType
@@ -18,13 +18,17 @@ export const GET_AGENTS = gql`
 				memberImage
 				memberAddress
 				memberDesc
-				memberWarnings
-				memberBlocks
 				memberProperties
-				memberRank
+				memberArticles
+				memberFollowers
+				memberFollowings
 				memberPoints
 				memberLikes
 				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
 				deletedAt
 				createdAt
 				updatedAt
@@ -33,6 +37,11 @@ export const GET_AGENTS = gql`
 					memberId
 					likeRefId
 					myFavorite
+				}
+				meFollowed {
+					followingId
+					followerId
+					myFollowing
 				}
 			}
 			metaCounter {
@@ -86,27 +95,29 @@ export const GET_PROPERTY = gql`
 	query GetProperty($input: String!) {
 		getProperty(propertyId: $input) {
 			_id
-			propertyType
 			propertyStatus
-			propertyLocation
-			propertyAddress
+			propertyCategory
 			propertyTitle
 			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
+			propertyAuthor
+			propertyPages
+			isbn
 			propertyViews
 			propertyLikes
+			propertyComments
+			propertyRank
+			propertyDownloads
 			propertyImages
+			propertyLanguages
 			propertyDesc
-			propertyBarter
-			propertyRent
+			propertyFile
+			propertyAudio
 			memberId
-			soldAt
 			deletedAt
-			constructedAt
+			publicationDate
 			createdAt
 			updatedAt
+			propertyType
 			memberData {
 				_id
 				memberType
@@ -118,11 +129,17 @@ export const GET_PROPERTY = gql`
 				memberImage
 				memberAddress
 				memberDesc
-				memberWarnings
-				memberBlocks
+				memberProperties
+				memberArticles
+				memberFollowers
+				memberFollowings
 				memberPoints
 				memberLikes
 				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
 				deletedAt
 				createdAt
 				updatedAt
@@ -142,28 +159,29 @@ export const GET_PROPERTIES = gql`
 		getProperties(input: $input) {
 			list {
 				_id
-				propertyType
 				propertyStatus
-				propertyLocation
-				propertyAddress
+				propertyCategory
 				propertyTitle
 				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
+				propertyAuthor
+				propertyPages
+				isbn
 				propertyViews
 				propertyLikes
+				propertyComments
 				propertyRank
+				propertyDownloads
 				propertyImages
+				propertyLanguages
 				propertyDesc
-				propertyBarter
-				propertyRent
+				propertyFile
+				propertyAudio
 				memberId
-				soldAt
 				deletedAt
-				constructedAt
+				publicationDate
 				createdAt
 				updatedAt
+				propertyType
 				memberData {
 					_id
 					memberType
@@ -175,16 +193,21 @@ export const GET_PROPERTIES = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
 					memberProperties
-					memberRank
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
+					accessToken
 				}
 				meLiked {
 					memberId
@@ -200,31 +223,65 @@ export const GET_PROPERTIES = gql`
 `;
 
 export const GET_AGENT_PROPERTIES = gql`
-	query GetAgentProperties($input: AgentPropertiesInquiry!) {
-		getAgentProperties(input: $input) {
+	query GetAuthorProperties($input: AuthorPropertiesInquiry!) {
+		getAuthorProperties(input: $input) {
 			list {
 				_id
-				propertyType
 				propertyStatus
-				propertyLocation
-				propertyAddress
+				propertyCategory
 				propertyTitle
 				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
+				propertyAuthor
+				propertyPages
+				isbn
 				propertyViews
 				propertyLikes
+				propertyComments
+				propertyRank
+				propertyDownloads
 				propertyImages
+				propertyLanguages
 				propertyDesc
-				propertyBarter
-				propertyRent
+				propertyFile
+				propertyAudio
 				memberId
-				soldAt
 				deletedAt
-				constructedAt
+				publicationDate
 				createdAt
 				updatedAt
+				propertyType
+				memberData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberProperties
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
+				}
+				meLiked {
+					memberId
+					likeRefId
+					myFavorite
+				}
 			}
 			metaCounter {
 				total
@@ -238,27 +295,26 @@ export const GET_FAVORITES = gql`
 		getFavorites(input: $input) {
 			list {
 				_id
-				propertyType
 				propertyStatus
-				propertyLocation
-				propertyAddress
+				propertyCategory
 				propertyTitle
 				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
+				propertyAuthor
+				propertyPages
+				isbn
 				propertyViews
 				propertyLikes
 				propertyComments
 				propertyRank
+				propertyDownloads
 				propertyImages
+				propertyLanguages
 				propertyDesc
-				propertyBarter
-				propertyRent
+				propertyFile
+				propertyAudio
 				memberId
-				soldAt
 				deletedAt
-				constructedAt
+				publicationDate
 				createdAt
 				updatedAt
 				memberData {
@@ -274,12 +330,12 @@ export const GET_FAVORITES = gql`
 					memberDesc
 					memberProperties
 					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
 					memberComments
-					memberFollowings
-					memberFollowers
 					memberRank
 					memberWarnings
 					memberBlocks
@@ -288,6 +344,12 @@ export const GET_FAVORITES = gql`
 					updatedAt
 					accessToken
 				}
+				meLiked {
+					memberId
+					likeRefId
+					myFavorite
+				}
+				propertyType
 			}
 			metaCounter {
 				total
@@ -301,29 +363,29 @@ export const GET_VISITED = gql`
 		getVisited(input: $input) {
 			list {
 				_id
-				propertyType
 				propertyStatus
-				propertyLocation
-				propertyAddress
+				propertyCategory
 				propertyTitle
 				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
+				propertyAuthor
+				propertyPages
+				isbn
 				propertyViews
 				propertyLikes
 				propertyComments
 				propertyRank
+				propertyDownloads
 				propertyImages
+				propertyLanguages
 				propertyDesc
-				propertyBarter
-				propertyRent
+				propertyFile
+				propertyAudio
 				memberId
-				soldAt
 				deletedAt
-				constructedAt
+				publicationDate
 				createdAt
 				updatedAt
+				propertyType
 				memberData {
 					_id
 					memberType
@@ -337,12 +399,12 @@ export const GET_VISITED = gql`
 					memberDesc
 					memberProperties
 					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
 					memberComments
-					memberFollowings
-					memberFollowers
 					memberRank
 					memberWarnings
 					memberBlocks
@@ -350,6 +412,11 @@ export const GET_VISITED = gql`
 					createdAt
 					updatedAt
 					accessToken
+				}
+				meLiked {
+					memberId
+					likeRefId
+					myFavorite
 				}
 			}
 			metaCounter {

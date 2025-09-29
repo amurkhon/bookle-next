@@ -52,11 +52,12 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 			variables: {input: searchFilter},
 			notifyOnNetworkStatusChange: true,
 			onCompleted: (data: T) => {
-				setAgents(data?.getAgents?.list);
-				setTotal(data?.getAgents?.metaCounter[0]?.total);
+				setAgents(data?.getAuthors?.list);
+				setTotal(data?.getAuthors?.metaCounter[0]?.total);
 			}
 		}
 	);
+	console.log('authors: ', agents);
 	/** LIFECYCLES **/
 	useEffect(() => {
 		if (router.query.input) {
