@@ -73,7 +73,7 @@ const MemberPage: NextPage = () => {
 			if(!id) throw new Error(Messages.error1);
 			if(!user._id) throw new Error(Messages.error2);
 
-			await subscribe({
+			await unsubscribe({
 				variables: {
 					input: id,
 				},
@@ -95,7 +95,7 @@ const MemberPage: NextPage = () => {
 		}
 	};
 
-	const likeMemberHandler = async (refetch: any, query: any, id: string) => {
+	const likeMemberHandler = async (id: string, refetch: any, query: any) => {
 		try {
 			if(!id) return;
 			if(!user) throw new Error(Messages.error2);

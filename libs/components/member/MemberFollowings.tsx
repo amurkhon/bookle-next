@@ -41,7 +41,7 @@ const MemberFollowings = (props: MemberFollowingsProps) => {
 		variables: {
 			input: followInquiry,
 		},
-		skip: !followInquiry?.search?.followingId,
+		skip: !followInquiry?.search?.followerId,
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			setMemberFollowings(data?.getMemberFollowings?.list);
