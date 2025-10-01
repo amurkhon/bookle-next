@@ -18,6 +18,7 @@ import Favorite from '@mui/icons-material/Favorite';
 import Visibility from '@mui/icons-material/Visibility';
 import { CssVarsProvider } from '@mui/joy/styles';
 import { NEXT_PUBLIC_REACT_APP_API_URL } from '../../config';
+import CommentIcon from '@mui/icons-material/Comment';
 
 interface TrendPropertyCardProps {
 	property: Property;
@@ -32,7 +33,7 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 
 	/** HANDLERS **/
 	const pushDetailHandler = async (propertyId: string) => {
-		await router.push({pathname: '/property/detail', query: {id: propertyId}});
+		await router.push({pathname: '/books/detail', query: {id: propertyId}});
 	};
 
 	const pushAuthorDetailHandler = async (memberId: string | undefined) => {
@@ -62,7 +63,6 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 							src={`${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`}
 							loading="lazy"
 							alt="Yosemite by Casey Horner"
-							onClick={() => {pushDetailHandler(property?._id)}}
 							/>
 						</figure>
 						</AspectRatio>
@@ -93,15 +93,15 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 							>
 								<Typography level="h2" noWrap sx={{ fontSize: 'lg' }}>
 									<Link
-									href="#dribbble-shot"
-									overlay
-									underline="none"
-									sx={{
-										color: '#fff',
-										textOverflow: 'ellipsis',
-										overflow: 'hidden',
-										display: 'block',
-									}}
+										onClick={() => {pushDetailHandler(property?._id)}}
+										overlay
+										underline="none"
+										sx={{
+											color: '#fff',
+											textOverflow: 'ellipsis',
+											overflow: 'hidden',
+											display: 'block',
+										}}
 									>
 										{property?.propertyCategory}
 									</Link>
@@ -127,8 +127,18 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 										size="sm"
 										variant="solid"
 										color="neutral"
+										sx={{ bgcolor: 'rgba(0 0 0 / 0.2)', mb: '5px' }}
+									>
+										<CommentIcon />
+										<span style={{marginLeft: '5px'}}>
+											{property?.propertyComments}
+										</span>
+									</IconButton>
+									<IconButton
+										size="sm"
+										variant="solid"
+										color="neutral"
 										sx={{ bgcolor: 'rgba(0 0 0 / 0.2)' }}
-										onClick={() => {likePropertyHandler(user?._id, property?._id)}}
 									>
 										<Visibility />
 										<span style={{marginLeft: '5px'}}>
@@ -141,7 +151,7 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 						</CardCover>
 					</Box>
 					<Box className={'info'} sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-						<Typography className={'title'} sx={{ fontSize: 'sm', fontWeight: 'md' }}>
+						<Typography className={'title'} sx={{ fontSize: 'sm', fontWeight: 'md' }} onClick={() => {pushDetailHandler(property?._id)}}>
 							{property?.propertyTitle && property?.propertyTitle.length >= 22 ? property?.propertyTitle.slice(0, 22) : property?.propertyTitle }
 						</Typography>
 						<Stack className={'stats-info'}>

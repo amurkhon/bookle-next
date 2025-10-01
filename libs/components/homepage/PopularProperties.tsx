@@ -58,7 +58,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 							{popularProperties.map((property: Property) => {
 								return (
 									<SwiperSlide key={property._id} className={'popular-property-slide'}>
-										<PopularPropertyCard  />
+										<PopularPropertyCard property={property} />
 									</SwiperSlide>
 								);
 							})}
@@ -78,7 +78,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 						</Box>
 						<Box component={'div'} className={'right'}>
 							<div className={'more-box'}>
-								<Link href={'/property'}>
+								<Link href={'/books'}>
 									<span>See All Categories</span>
 								</Link>
 								<img src="/img/icons/rightup.svg" alt="" />
@@ -99,10 +99,10 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 								el: '.swiper-popular-pagination',
 							}}
 						>
-							{[1,2,3,4].map((ele, index) => {
+							{popularProperties.map((property: Property) => {
 								return (
-									<SwiperSlide key={index} className={'popular-property-slide'}>
-										<PopularPropertyCard />
+									<SwiperSlide key={property?._id} className={'popular-property-slide'}>
+										<PopularPropertyCard property={property} />
 									</SwiperSlide>
 								);
 							})}

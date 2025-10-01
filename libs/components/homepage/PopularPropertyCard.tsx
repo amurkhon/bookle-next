@@ -8,48 +8,14 @@ import { userVar } from '../../../apollo/store';
 
 import Rating from '@mui/material/Rating';
 import Box from '@mui/joy/Box';
-
-
-const property = {
-		_id: "bwfdg436frg4538888888888888879",
-		propertyStatus: "ACTIVE",
-		propertyCategory: "Fiction",
-		propertyTitle: "Cold Island",
-		propertyAuthor: "Amurkhon Akramjonov",
-		propertyPrice: 17,
-		propertyPages: 239,
-		isbn: "978-1662530388",
-		propertyViews: 0,
-		propertyLikes: 0,
-		propertyComments: 0,
-		propertyRank: 0,
-		propertyDownloads: 0,
-		propertyLanguages: [
-			"Eng",
-			"Kor"
-		],
-		propertyImages: [],
-		propertyFile: "",
-		propertyAudio: "",
-		memberId: {
-			$oid: "68be50c5cd93b2dc035b1434"
-		},
-		publicationDate: {
-			$date: "2025-09-01T00:00:00.000Z"
-		},
-		createdAt: {
-			$date: "2025-09-10T06:12:06.508Z"
-		},
-		updatedAt: {
-			date: "2025-09-10T07:30:35.064Z"
-		},
-	}
+import { NEXT_PUBLIC_REACT_APP_API_URL } from '../../config';
 
 interface PopularPropertyCardProps {
 	property: Property;
 }
 
-const PopularPropertyCard = () => {
+const PopularPropertyCard = (props: PopularPropertyCardProps) => {
+	const { property } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
@@ -57,7 +23,7 @@ const PopularPropertyCard = () => {
 	/** HANDLERS **/
 
 	const pushDetailHandler = async (propertyId: string) => {
-		await router.push({pathname: '/property/detail', query: {id: propertyId}});
+		await router.push({pathname: '/books/detail', query: {id: propertyId}});
 	};
 
 	if (device === 'mobile') {
@@ -68,9 +34,9 @@ const PopularPropertyCard = () => {
 			);
 		} else {
 			return (
-				<Stack className={'popular-card-box'}>
+				<Stack className={'popular-card-box'} onClick={() => {pushDetailHandler(property?._id)}}>
 					<Box className={'image-box'}>
-						<img src="/img/property/brand-img1.png" alt="" />
+						<img src={`${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`} />
 					</Box>
 					<Stack className={'info-box'}>
 						<Rating
@@ -81,16 +47,23 @@ const PopularPropertyCard = () => {
 							}}
 							defaultValue={2}
 						/>
-						<Typography className={'info-item'} variant={'h3'}>
-							Get 20% Off
+						<Typography className={'info-item'} variant={'h4'}>
+							{property?.propertyType.charAt(0) + property?.propertyType.slice(1).toLowerCase()}
 						</Typography>
-						<Typography className={'info-item'} variant={'h2'}>
-							In Since Friction Books Categories
+						<Typography onClick={() => {pushDetailHandler(property?._id)}} className={'info-item'} variant={'h2'}>
+							{property?.propertyTitle}
 						</Typography>
 						<Typography className={'info-item'}>
-							Only From $85.00
+							Only From ${property?.propertyPrice}.00
 						</Typography>
-						<Button className={'button'} variant={'outlined'} sx={{mt: '20px', width: "200px", fontSize:"20px",}}>Shop now</Button>
+						<Button 
+							className={'button'} 
+							variant={'outlined'} 
+							sx={{mt: '20px', width: "200px", fontSize:"20px",}}
+							onClick={() => {pushDetailHandler(property?._id)}}
+						>
+							Shop now
+						</Button>
 					</Stack>
 				</Stack>
 			);
