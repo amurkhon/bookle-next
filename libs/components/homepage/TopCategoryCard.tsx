@@ -12,10 +12,10 @@ import { userVar } from '../../../apollo/store';
 
 interface TopPropertyCardProps {
     property: Property;
-    likePropertyHandler: any
 }
 
-const TopCategoryPropertyCard = () => {
+const TopCategoryPropertyCard = (props: TopPropertyCardProps) => {
+    const { property } = props
     const device = useDeviceDetect();
     const router = useRouter();
     const user = useReactiveVar(userVar);
@@ -23,7 +23,7 @@ const TopCategoryPropertyCard = () => {
     /** HANDLERS **/
 
     const pushDetailHandler = async (propertyId: string) => {
-        await router.push({pathname: '/property/detail', query: {id: propertyId}});
+        await router.push({pathname: '/books/detail', query: {id: propertyId}});
     };
 
     if (device === 'mobile') {
@@ -34,7 +34,7 @@ const TopCategoryPropertyCard = () => {
         return (
             <Stack className={'card-box'}>
                 <Box className={'card-img'}>
-                    <img src="/img/property/solitary.jpg" alt="" />
+                    <img src={`${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`} alt="" />
                 </Box>
                 <Stack className={'card-info'}>
                     <Rating
@@ -46,15 +46,21 @@ const TopCategoryPropertyCard = () => {
                         defaultValue={2}
                     />
                     <Typography className={'info-item'} variant={'h3'}>
-                        Get 20% Off
+                        {property?.propertyType.charAt(0) + property?.propertyType.slice(1).toLowerCase()}
                     </Typography>
                     <Typography className={'info-item'} variant={'h2'}>
-                        In Since Friction Books Categories
+                        {property?.propertyTitle}
                     </Typography>
                     <Typography className={'info-item'}>
-                        Only From $85.00
+                        Only From ${property?.propertyPrice}.00
                     </Typography>
-                    <Button className={'button'} variant={'outlined'}>Shop now</Button>
+                    <Button 
+                        className={'button'} 
+                        variant={'outlined'}
+                        onClick={() => {pushDetailHandler(property?._id)}}
+                    >
+                        Shop now
+                    </Button>
                 </Stack>
             </Stack>
         );

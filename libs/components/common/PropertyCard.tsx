@@ -17,17 +17,15 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 interface PropertyCardType {
 	property: Property;
 	likePropertyHandler?: any;
-	myFavorites?: boolean;
-	recentlyVisited?: boolean;
 }
 
-const PropertyCard = () => {
-	// const { property, likePropertyHandler, myFavorites, recentlyVisited } = props;
+const PropertyCard = (props: PropertyCardType) => {
+	const { property, likePropertyHandler } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
-	// const imagePath: string = property?.propertyImages[0]
-	// 	? `${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`
-	// 	: '/img/banner/header1.svg';
+	const imagePath: string = property?.propertyImages[0]
+		? `${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`
+		: '/img/banner/header1.svg';
 
 	if (device === 'mobile') {
 		return <div>PROPERTY CARD</div>;
@@ -38,7 +36,7 @@ const PropertyCard = () => {
 					<Link
 						href={{
 							pathname: '/books/detail',
-							query: {id: '1'},
+							query: {id: property?._id},
 						}}
 					>
 						<img src={'/img/property/under-sky.webp'} alt="" />
@@ -73,8 +71,8 @@ const PropertyCard = () => {
 						<Stack className="name">
 							<Link
 								href={{
-									pathname: '/property/detail',
-									query: { id: 'qycxwbvwd21687' },
+									pathname: '/books/detail',
+									query: { id: property?._id },
 								}}
 							>
 								<Typography>Atomic Habits</Typography>

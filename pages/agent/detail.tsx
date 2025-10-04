@@ -21,7 +21,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import { GET_COMMENTS, GET_MEMBER, GET_PROPERTIES } from '../../apollo/user/query';
 import { T } from '../../libs/types/common';
-import PropertyCard from '../../libs/components/agent/PropertyCard';
+import PropertyCard from '../../libs/components/common/PropertyCard';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {

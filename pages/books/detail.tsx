@@ -34,6 +34,7 @@ import { T } from '../../libs/types/common';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import { sweetErrorAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import PropertyCard from '../../libs/components/common/PropertyCard';
 
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -50,7 +51,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 	const [propertyId, setPropertyId] = useState<string | null>(null);
 	const [property, setProperty] = useState<Property | null>(null);
 	const [slideImage, setSlideImage] = useState<string>('');
-	const [destinationProperties, setDestinationProperties] = useState<Property[]>([]);
+	const [categoryProperties, setCategoryProperties] = useState<Property[]>([]);
 	const [commentInquiry, setCommentInquiry] = useState<CommentsInquiry>(initialComment);
 	const [propertyComments, setPropertyComments] = useState<Comment[]>([]);
 	const [commentTotal, setCommentTotal] = useState<number>(0);
@@ -81,30 +82,30 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 		}
 	});
 
-	// const {
-	// 	loading: getPropertiesLoading,
-	// 	data: getPropertiesData,
-	// 	error: getPropertiesError,
-	// 	refetch: getPropertiesRefetch,		
-	// } = useQuery(GET_PROPERTIES, {
-	// 	fetchPolicy: "cache-and-network",
-	// 	variables: {
-	// 		input: {
-	// 			page: 1,
-	// 			limit: 4,
-	// 			sort: 'createdAt',
-	// 			direction: Direction.DESC,
-	// 			search: {
-	// 				locationList: property?.propertyLocation ? [property?.propertyLocation] : [],
-	// 			}
-	// 		}
-	// 	},
-	// 	skip: !propertyId && !property,
-	// 	notifyOnNetworkStatusChange: true,
-	// 	onCompleted: (data: T) => {
-	// 		if(data?.getProperties?.list) setDestinationProperties(data?.getProperties?.list);
-	// 	}
-	// });
+	const {
+		loading: getPropertiesLoading,
+		data: getPropertiesData,
+		error: getPropertiesError,
+		refetch: getPropertiesRefetch,		
+	} = useQuery(GET_PROPERTIES, {
+		fetchPolicy: "cache-and-network",
+		variables: {
+			input: {
+				page: 1,
+				limit: 4,
+				sort: 'createdAt',
+				direction: Direction.DESC,
+				search: {
+					propertyCategory: property?.propertyCategory ? [property?.propertyCategory] : [],
+				}
+			}
+		},
+		skip: !propertyId && !property,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if(data?.getProperties?.list) setCategoryProperties(data?.getProperties?.list);
+		}
+	});
 
 	const {
 		loading: getCommentsLoading,
@@ -147,31 +148,31 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 	/** HANDLERS **/
 
-	// const likePropertyHandler = async (user: T, id: string) => {
-	// 	try {
-	// 		if(!id) return;
-	// 		if(!user) throw new Error(Message.NOT_AUTHENTICATED);
+	const likePropertyHandler = async (user: T, id: string) => {
+		try {
+			if(!id) return;
+			if(!user) throw new Error(Message.NOT_AUTHENTICATED);
 
-	// 		await likeTargetProperty({variables: { input: id } } );
+			await likeTargetProperty({variables: { input: id } } );
 
-	// 		await getPropertyRefetch({input: id});
+			await getPropertyRefetch({input: id});
 
-	// 		await getPropertiesRefetch( { input:  {
-	// 				page: 1,
-	// 				limit: 4,
-	// 				sort: 'createdAt',
-	// 				direction: Direction.DESC,
-	// 				search: {
-	// 					locationList: [property?.propertyLocation],
-	// 				}
-	// 			}} );
+			await getPropertiesRefetch( { input:  {
+					page: 1,
+					limit: 4,
+					sort: 'createdAt',
+					direction: Direction.DESC,
+					search: {
+						propertyCategory: [property?.propertyCategory],
+					}
+				}} );
 
-	// 		sweetTopSmallSuccessAlert("success", 800);
-	// 	} catch(err: any) {
-	// 		console.log("Error, likePropertyHandler: ", err.message);
-	// 		sweetMixinErrorAlert(err.message).then();
-	// 	}
-	// };
+			sweetTopSmallSuccessAlert("success", 800);
+		} catch(err: any) {
+			console.log("Error, likePropertyHandler: ", err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
 
 	const createCommentHandler = async () => {
 		try {
@@ -214,9 +215,9 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 						<Stack className={'property-info-config'}>
 							<Stack className={'info'}>
 								<Stack className={'left-box'}>
-									<Typography className={'title-main'}>Under Sky</Typography>
+									<Typography className={'title-main'}>{property?.propertyTitle}</Typography>
 									<Stack className={'top-box'}>
-										<Typography className={'city'}>Paperback</Typography>
+										<Typography className={'city'}>{property?.propertyType}</Typography>
 										<Stack className={'divider'}></Stack>
 										<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
 											<g clipPath="url(#clip0_6505_6282)">
@@ -239,13 +240,13 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 									</Stack>
 									<Stack className={'bottom-box'}>
 										<Stack className="option">
-											<LanguageIcon /> <Typography>English</Typography>
+											<LanguageIcon /> <Typography>{property?.propertyLanguages[0]}</Typography>
 										</Stack>
 										<Stack className="option">
-											<LayersIcon /> <Typography>342 pages</Typography>
+											<LayersIcon /> <Typography>{property?.propertyPages}</Typography>
 										</Stack>
 										<Stack className="option">
-											<Typography>by Amurkhon Akramjonov (Author)</Typography>
+											<Typography>by {property?.propertyAuthor} (Author)</Typography>
 										</Stack>
 									</Stack>
 								</Stack>
@@ -257,7 +258,11 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 										</Stack>
 										<Stack className="button-box">
 											{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-												<FavoriteIcon color="primary" fontSize={'medium'} />
+												<FavoriteIcon 
+													color="primary" 
+													fontSize={'medium'} 
+													onClick={() => likePropertyHandler(user, property?._id)} 
+												/>
 											) : (
 												<FavoriteBorderIcon
 													fontSize={'medium'}
@@ -333,7 +338,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 										</Stack>
 										<Stack className={'option-includes'}>
 											<Typography className={'title'}>Print Length</Typography>
-											<Typography className={'option-data'}>342 pages</Typography>
+											<Typography className={'option-data'}>{property?.propertyPages}</Typography>
 										</Stack>
 									</Stack>
 									<Stack className={'option'}>
@@ -342,7 +347,12 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 										</Stack>
 										<Stack className={'option-includes'}>
 											<Typography className={'title'}>Language</Typography>
-											<Typography className={'option-data'}>English</Typography>
+											<Typography className={'option-data'}>
+												{property?.propertyLanguages.map((lan: String) => {
+													if(property?.propertyLanguages.length !=1)
+														return `${lan} `
+												})}
+											</Typography>
 										</Stack>
 									</Stack>
 									<Stack className={'option'}>
@@ -375,7 +385,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 										</Stack>
 										<Stack className={'option-includes'}>
 											<Typography className={'title'}>ISBN</Typography>
-											<Typography className={'option-data'}>978-1496742711</Typography>
+											<Typography className={'option-data'}>{property?.isbn}</Typography>
 										</Stack>
 									</Stack>
 								</Stack>
@@ -386,7 +396,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 											<Stack className={'left'}>
 												<Box component={'div'} className={'info'}>
 													<Typography className={'title'}>Price</Typography>
-													<Typography className={'data'}>$39.00</Typography>
+													<Typography className={'data'}>${property?.propertyPrice}</Typography>
 												</Box>
 												<Box component={'div'} className={'info'}>
 													<Typography className={'title'}>Dimensions</Typography>
@@ -394,44 +404,24 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 												</Box>
 												<Box component={'div'} className={'info'}>
 													<Typography className={'title'}>Pages</Typography>
-													<Typography className={'data'}>342</Typography>
+													<Typography className={'data'}>{property?.propertyPages}</Typography>
 												</Box>
 											</Stack>
 											<Stack className={'right'}>
 												<Box component={'div'} className={'info'}>
 													<Typography className={'title'}>Publication Date</Typography>
-													<Typography className={'data'}>2025, 1 September</Typography>
+													<Typography className={'data'}>{moment(property?.publicationDate).format('YYYY-MM-DD')}</Typography>
 												</Box>
 												<Box component={'div'} className={'info'}>
 													<Typography className={'title'}>Property Type</Typography>
-													<Typography className={'data'}>Full</Typography>
+													<Typography className={'data'}>{property?.propertyType}</Typography>
 												</Box>
 												<Box component={'div'} className={'info'}>
 													<Typography className={'title'}>Category</Typography>
-													<Typography className={'data'}>Psychology</Typography>
+													<Typography className={'data'}>{property?.propertyCategory}</Typography>
 												</Box>
 											</Stack>
 										</Stack>
-									</Stack>
-								</Stack>
-								<Stack className={'floor-plans-config'}>
-									<Typography className={'title'}>Floor Plans</Typography>
-									<Stack className={'image-box'}>
-										<img src={'/img/property/floorPlan.png'} alt={'image'} />
-									</Stack>
-								</Stack>
-								<Stack className={'address-config'}>
-									<Typography className={'title'}>Address</Typography>
-									<Stack className={'map-box'}>
-										<iframe
-											src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25867.098915951767!2d128.68632810247993!3d35.86402299180927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35660bba427bf179%3A0x1fc02da732b9072f!2sGeumhogangbyeon-ro%2C%20Dong-gu%2C%20Daegu!5e0!3m2!1suz!2skr!4v1695537640704!5m2!1suz!2skr"
-											width="100%"
-											height="100%"
-											style={{ border: 0 }}
-											allowFullScreen={true}
-											loading="lazy"
-											referrerPolicy="no-referrer-when-downgrade"
-										></iframe>
 									</Stack>
 								</Stack>
 								{commentTotal !== 0 && (
@@ -575,11 +565,11 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 								</Stack>
 							</Stack>
 						</Stack>
-						{destinationProperties.length !== 0 && (
+						{categoryProperties.length !== 0 && (
 							<Stack className={'similar-properties-config'}>
 								<Stack className={'title-pagination-box'}>
 									<Stack className={'title-box'}>
-										<Typography className={'main-title'}>Destination Property</Typography>
+										<Typography className={'main-title'}>Category Property</Typography>
 										<Typography className={'sub-title'}>Aliquam lacinia diam quis lacus euismod</Typography>
 									</Stack>
 									<Stack className={'pagination-box'}>
@@ -602,10 +592,10 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 											el: '.swiper-similar-pagination',
 										}}
 									>
-										{destinationProperties.map((property: Property) => {
+										{categoryProperties.map((property: Property) => {
 											return (
 												<SwiperSlide className={'similar-homes-slide'} key={property.propertyTitle}>
-													<PropertyBigCard property={property} key={property?._id} />
+													<PropertyCard property={property} likePropertyHandler={likePropertyHandler} key={property?._id} />
 												</SwiperSlide>
 											);
 										})}
