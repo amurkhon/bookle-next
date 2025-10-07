@@ -35,7 +35,6 @@ const TopCategories = (props: TopCategoryBooks) => {
             setTopCategoryBooks(data?.getProperties?.list);
         }
     });
-    console.log("searchFilter: ", searchFilter);
 
     /* HANDLERS */
     const changePropertyInqueryHandler = useCallback(
@@ -58,7 +57,6 @@ const TopCategories = (props: TopCategoryBooks) => {
     },
     []
   );
-    console.log("+++++++",searchFilter);
     
     if(device === 'mobile') {
         return(

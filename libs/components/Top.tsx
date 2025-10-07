@@ -35,6 +35,7 @@ const Top = () => {
 	let open = Boolean(anchorEl);
 	const [bgColor, setBgColor] = useState<boolean>(false);
 	const [logoutAnchor, setLogoutAnchor] = React.useState<null | HTMLElement>(null);
+	const [hidden, setHidden] = useState(false);
 	const logoutOpen = Boolean(logoutAnchor);
 	
 
@@ -50,7 +51,7 @@ const Top = () => {
 
 	useEffect(() => {
 		switch (router.pathname) {
-			case '/property/detail':
+			case '/books/detail':
 				setBgColor(true);
 				break;
 			default:
@@ -87,6 +88,14 @@ const Top = () => {
 			setColorChange(true);
 		} else {
 			setColorChange(false);
+		}
+	};
+	
+	const changeNavbarSize = () => {
+		if (window.scrollY >= 50) {
+			setHidden(true);
+		} else {
+			setHidden(false);
 		}
 	};
 
@@ -142,6 +151,7 @@ const Top = () => {
 
 	if (typeof window !== 'undefined') {
 		window.addEventListener('scroll', changeNavbarColor);
+		window.addEventListener('scroll', changeNavbarSize);
 	}
 
 	if (device == 'mobile') {
@@ -169,7 +179,7 @@ const Top = () => {
 			<Stack className={'navbar'}>
 				<Stack className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
 					<Stack className={'container'}>
-						<Stack className={'main-info'}>
+						<Stack className={`main-info ${hidden ? 'hider-function' : ''} `} sx={{display: {hidden}}}>
 							<Box className={'info-box'}>
 								<CallIcon />
 								+8265097071
@@ -195,7 +205,7 @@ const Top = () => {
 									<div>{t('Books')}</div>
 								</Link>
 								<Link href={'/agent'}>
-									<div> {t('Agents')} </div>
+									<div> {t('Authors')} </div>
 								</Link>
 								<Link href={'/community?articleCategory=FREE'}>
 									<div> {t('Community')} </div>

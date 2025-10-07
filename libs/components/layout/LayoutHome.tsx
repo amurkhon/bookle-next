@@ -13,11 +13,13 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Typography from '@mui/material/Typography';
+import { useRouter } from 'next/router';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
 		const device = useDeviceDetect();
 		const user = useReactiveVar(userVar);
+		const router = useRouter();
 
 		interface Props {
 			/**
@@ -51,6 +53,10 @@ const withLayoutMain = (Component: any) => {
 		}, []);
 
 		/** HANDLERS **/
+
+		const pushHandler = async () => {
+        await router.push({pathname: '/books'});
+    };
 
 		if (device == 'mobile') {
 			return (
@@ -93,7 +99,7 @@ const withLayoutMain = (Component: any) => {
 									<Typography className={'unique'} variant={'h2'}>Up To 30% Off</Typography>
 									<Typography className={'left-letter'} variant={'h1'}>Get Your New Book</Typography>
 									<Typography className={'left-letter'} variant={'h1'}>With The Best Price</Typography>
-									<Button className={'header-button'} variant={'outlined'} endIcon={<ArrowForwardIcon />}> Shop Now </Button>
+									<Button className={'header-button'} onClick={pushHandler} variant={'outlined'} endIcon={<ArrowForwardIcon />}> Shop Now </Button>
 								</Stack>
 								<Stack className={"header-right"}>
 									<img src="/img/hero/hero-img-1-1.png" alt="" />
