@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Divider } from '@mui/material';
 import CommunityCard from './CommunityCard';
 import { BoardArticle } from '../../types/board-article/board-article';
 import { GET_BOARD_ARTICLES } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
 import { T } from '../../types/common';
-import { BoardArticleCategory } from '../../enums/board-article.enum';
 import { useRouter } from 'next/router';
 
 const CommunityBoards = () => {
@@ -51,6 +49,7 @@ const CommunityBoards = () => {
 						<Box className={'info-box left'}>
 							<span>Community Board Hightlights</span>
 						</Box>
+						<Divider sx={{width: "45%",marginRight: '30px', height: '5px', backgroundColor: '#f5eaebff'}} />
 						<Box component={'div'} className={'right'}>
 							<div className={'more-box'} onClick={pushDetailHandler}>
 								<span>See All Blogs</span>

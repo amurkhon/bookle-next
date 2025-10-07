@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Stack, Box } from '@mui/material';
+import { Stack, Box, Divider } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -74,6 +74,7 @@ const TopAgents = (props: TopAgentsProps) => {
 							<span>Top Authors</span>
 							<p>Our Top Authors are always humble</p>
 						</Box>
+						<Divider sx={{width: "45%", height: '5px', backgroundColor: '#f5eaebff'}} />
 						<Box component={'div'} className={'right'}>
 							<div className={'more-box'}>
 								<span>See All Authors</span>

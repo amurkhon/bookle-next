@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack, Box } from '@mui/material';
+import { Stack, Box, Divider } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
@@ -76,6 +76,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 							<span>Popular properties</span>
 							<p>Popularity is based on views</p>
 						</Box>
+						<Divider sx={{width: "45%", height: '5px', backgroundColor: '#f5eaebff'}} />
 						<Box component={'div'} className={'right'}>
 							<div className={'more-box'}>
 								<Link href={'/books'}>
