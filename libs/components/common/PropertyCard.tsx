@@ -13,6 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { useRouter } from 'next/router';
 
 interface PropertyCardType {
 	property: Property;
@@ -21,11 +22,18 @@ interface PropertyCardType {
 
 const PropertyCard = (props: PropertyCardType) => {
 	const { property, likePropertyHandler } = props;
+	const router = useRouter();
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const imagePath: string = property?.propertyImages[0]
 		? `${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`
 		: '/img/banner/header1.svg';
+
+	/* Handlers*/
+
+	const pushDetailHandler = async (memberId: string) => {
+		await router.push({pathname: '/agent/detail', query: {authorId: memberId}});
+	};
 
 	if (device === 'mobile') {
 		return <div>PROPERTY CARD</div>;
@@ -39,7 +47,7 @@ const PropertyCard = (props: PropertyCardType) => {
 							query: {id: property?._id},
 						}}
 					>
-						<img src={'/img/property/under-sky.webp'} alt="" />
+						<img src={imagePath} alt="" />
 					</Link>
 					{ 4 > topPropertyRank && (
 						<Box component={'div'} className={'top-badge'}>
@@ -52,17 +60,15 @@ const PropertyCard = (props: PropertyCardType) => {
 							<IconButton color={'default'}>
 								<RemoveRedEyeIcon />
 							</IconButton>
-							<Typography className="view-cnt">43</Typography>
-							<IconButton color={'default'} >
-								{true ? (
-									<FavoriteIcon color="primary" />
-								) : false && false ? (
+							<Typography className="view-cnt">{property?.propertyViews}</Typography>
+							<IconButton color={'default'} onClick={() => likePropertyHandler(user, property?._id)} >
+								{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
 									<FavoriteIcon color="primary" />
 								) : (
 									<FavoriteBorderIcon />
 								)}
 							</IconButton>
-							<Typography className="view-cnt">32</Typography>
+							<Typography className="view-cnt">{property?.propertyLikes}</Typography>
 						</Stack>
 					)}
 				</Stack>
@@ -75,24 +81,24 @@ const PropertyCard = (props: PropertyCardType) => {
 									query: { id: property?._id },
 								}}
 							>
-								<Typography>Atomic Habits</Typography>
+								<Typography>{property?.propertyTitle}</Typography>
 							</Link>
 							<span>
-								$39.00
+								${property?.propertyPrice}.00
 							</span>
 						</Stack>
 						<Stack className="address">
 							<Typography>
-								About Psychology
+								About {property?.propertyCategory}
 							</Typography>
 						</Stack>
 					</Stack>
 					<Stack className="options">
 						<Stack className="option">
-							<AutoStoriesIcon fontSize={'small'} /> <Typography>300 pages</Typography>
+							<AutoStoriesIcon fontSize={'small'} /> <Typography>{property?.propertyPages} pages</Typography>
 						</Stack>
 						<Stack className="option">
-							<StarBorderIcon fontSize={'small'} /> <Typography>3.4 (25)</Typography>
+							<StarBorderIcon fontSize={'small'} sx={{color: 'orange'}} /> <Typography>3.4 (25)</Typography>
 						</Stack>
 					</Stack>
 					<Stack className="type-buttons">
@@ -106,8 +112,9 @@ const PropertyCard = (props: PropertyCardType) => {
 							<Typography
 								sx={{ fontWeight: 500, fontSize: '13px' }}
 								className={'disabled-type'}
+								onClick={() => {pushDetailHandler(property?.memberId)}}
 							>
-								Amurkhon
+								{property?.propertyAuthor}
 							</Typography>
 						</Stack>
 					</Stack>

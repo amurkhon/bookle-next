@@ -9,6 +9,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
+import { useRouter } from 'next/router';
 
 interface AgentCardProps {
 	agent: any;
@@ -19,41 +20,41 @@ const AgentCard = (props: AgentCardProps) => {
 	const { agent, likePropertyHandler } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
+	const router = useRouter();
 	const imagePath: string = agent?.memberImage
 		? `${NEXT_PUBLIC_REACT_APP_API_URL}/${agent?.memberImage}`
 		: '/img/profile/defaultUser.svg';
+	
+	/* Handlers */
+	const pushDetailHandler = async (memberId: string) => {
+		await router.push({pathname: '/agent/detail', query: {authorId: memberId}});
+	};
 
 	if (device === 'mobile') {
 		return <div>AGENT CARD</div>;
 	} else {
 		return (
 			<Stack className="agent-general-card">
-				<Link
-					href={{
-						pathname: '/agent/detail',
-						query: { agentId: agent?._id },
+				<Box
+					component={'div'}
+					className={'agent-img'}
+					style={{
+						backgroundImage: `url(${imagePath})`,
+						backgroundSize: 'cover',
+						backgroundPosition: 'center',
+						backgroundRepeat: 'no-repeat',
 					}}
+					onClick={() => {pushDetailHandler(agent?._id)}}
 				>
-					<Box
-						component={'div'}
-						className={'agent-img'}
-						style={{
-							backgroundImage: `url(${imagePath})`,
-							backgroundSize: 'cover',
-							backgroundPosition: 'center',
-							backgroundRepeat: 'no-repeat',
-						}}
-					>
-						<div>{agent?.memberProperties} properties</div>
-					</Box>
-				</Link>
+					<div>{agent?.memberProperties} properties</div>
+				</Box>
 
 				<Stack className={'agent-desc'}>
 					<Box component={'div'} className={'agent-info'}>
 						<Link
 							href={{
 								pathname: '/agent/detail',
-								query: { agentId: 'id' },
+								query: { authorId: 'id' },
 							}}
 						>
 							<strong>{agent?.memberFullName ?? agent?.memberNick}</strong>

@@ -121,7 +121,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		if (router.query.agentId) setMbId(router.query.agentId as string);
+		if (router.query.authorId) setMbId(router.query.authorId as string);
 	}, [router]);
 
 	useEffect(() => {
@@ -210,7 +210,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 							{agentProperties.map((property: Property) => {
 								return (
 									<div className={'wrap-main'} key={property?._id}>
-										<PropertyCard  />
+										<PropertyCard property={property} likePropertyHandler={likePropertyHandler} />
 									</div>
 								);
 							})}
