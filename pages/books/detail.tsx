@@ -35,6 +35,7 @@ import { Direction, Message } from '../../libs/enums/common.enum';
 import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import { sweetErrorAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import PropertyCard from '../../libs/components/common/PropertyCard';
+import { PropertyCategory, PropertyType } from '../../libs/enums/property.enum';
 
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -289,26 +290,38 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 								<Stack className={'right'}>
 									<Stack className={'row'}>
 										<Box className={'item'}>
-											<Box className={'audio'}>
-												<Box sx={{width: '30px', height:'20px', marginRight: '5px'}}><img style={{width: '100%', height: '100%'}} src={'/img/logo/audible.png'} /></Box>
-												<Typography>AudioBook</Typography>
-											</Box>
-											<span>$0.00</span>
-											<Typography sx={{fontSize: '15px'}}>with membership trail</Typography>
+											{user?.memberMembership ? (<a href={user?.memberMembership ? `http://localhost:4007/${property?.propertyAudio}` : '#'} download={property?.propertyAudio.slice(14)}>
+												<Box className={'audio'}>
+													<Box sx={{width: '30px', height:'20px', marginRight: '5px'}}><img style={{width: '100%', height: '100%'}} src={'/img/logo/audible.png'} /></Box>
+													<Typography>AudioBook</Typography>
+												</Box>
+												<span>$0.00</span>
+												<Typography sx={{fontSize: '15px'}}>{user?.memberMembership ? 'Audio available!' : "with membership trail"}</Typography>
+											</a>) : (<a href={user?.memberMembership ? `http://localhost:4007/${property?.propertyAudio}` : '#'}>
+												<Box className={'audio'}>
+													<Box sx={{width: '30px', height:'20px', marginRight: '5px'}}><img style={{width: '100%', height: '100%'}} src={'/img/logo/audible.png'} /></Box>
+													<Typography>AudioBook</Typography>
+												</Box>
+												<span>$0.00</span>
+												<Typography sx={{fontSize: '15px'}}>{user?.memberMembership ? 'Audio available!' : "with membership trail"}</Typography>
+											</a>)}
 										</Box>
 										<Box className={'item'}>
 											<Typography>HardCover</Typography>
 											<span>$31.99</span>
+											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.HARDCOVER || property?.propertyType === PropertyType.FULL ? "" : "No exist!"}</Typography>
 										</Box>
 									</Stack>
 									<Stack className={'row'}>
 										<Box className={'item'}>
 											<Typography>PaperBack</Typography>
 											<span>$31.99</span>
+											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.PAPERBACK || property?.propertyType === PropertyType.FULL ? "" : "No exist!"}</Typography>
 										</Box>
 										<Box className={'item'}>
 											<Typography>Audio CD</Typography>
 											<span>$31.99</span>
+											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "" : "No exist!"}</Typography>
 										</Box>
 									</Stack>
 									<Stack className={'row'}>

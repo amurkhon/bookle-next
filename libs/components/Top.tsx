@@ -275,7 +275,7 @@ const Top = () => {
 									</Box>
 								</Button>
 
-								<StyledMenu anchorEl={anchorEl2} open={drop} onClose={langClose} sx={{ position: 'absolute' }}>
+								<StyledMenu anchorEl={anchorEl2} open={drop} onClose={langClose} sx={{ position: 'absolute', zIndex:'100' }}>
 									<MenuItem disableRipple onClick={langChoice} id="en">
 										<img
 											className="img-flag"

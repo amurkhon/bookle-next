@@ -85,7 +85,7 @@ body::-webkit-scrollbar {
 					background-color: rgb(202, 183, 183);
 					transition-duration: 2s;
 					opacity: 0.8;
-					top: -40px;
+					top: -50px;
 				}
 				.container {
 					flex-direction: column;
@@ -204,7 +204,7 @@ body::-webkit-scrollbar {
 						display: flex;
 						align-items: center;
 						.notification-icon {
-							color: white;
+							color: black;
 						}
 						.btn-lang {
 							border-radius: 4px;
