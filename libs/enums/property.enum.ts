@@ -1,5 +1,4 @@
 export enum PropertyStatus {
-	SOLD='SOLD',
 	ACTIVE = 'ACTIVE',
 	DELETE = 'DELETE',
 }

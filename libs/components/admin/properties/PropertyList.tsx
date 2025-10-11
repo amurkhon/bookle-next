@@ -68,7 +68,7 @@ const headCells: readonly HeadCell[] = [
 		id: 'location',
 		numeric: false,
 		disablePadding: false,
-		label: 'LOCATION',
+		label: 'CATEGORY',
 	},
 	{
 		id: 'type',
@@ -99,7 +99,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 	return (
 		<TableHead>
 			<TableRow>
-				{headCells.map((headCell) => (
+				{headCells.map((headCell: any) => (
 					<TableCell
 						key={headCell.id}
 						align={headCell.numeric ? 'left' : 'center'}
@@ -177,7 +177,7 @@ export const PropertyPanelList = (props: PropertyPanelListType) => {
 										</TableCell>
 										<TableCell align="center">{property.propertyPrice}</TableCell>
 										<TableCell align="center">{property.memberData?.memberNick}</TableCell>
-										<TableCell align="center">{property.propertyLocation}</TableCell>
+										<TableCell align="center">{property.propertyCategory}</TableCell>
 										<TableCell align="center">{property.propertyType}</TableCell>
 										<TableCell align="center">
 											{property.propertyStatus === PropertyStatus.DELETE && (
@@ -188,10 +188,6 @@ export const PropertyPanelList = (props: PropertyPanelListType) => {
 												>
 													<DeleteIcon fontSize="small" />
 												</Button>
-											)}
-
-											{property.propertyStatus === PropertyStatus.SOLD && (
-												<Button className={'badge warning'}>{property.propertyStatus}</Button>
 											)}
 
 											{property.propertyStatus === PropertyStatus.ACTIVE && (

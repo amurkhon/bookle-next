@@ -47,27 +47,29 @@ export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
 		getAllPropertiesByAdmin(input: $input) {
 			list {
 				_id
-				propertyType
 				propertyStatus
-				propertyLocation
-				propertyAddress
+				propertyCategory
 				propertyTitle
 				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
+				propertyAuthor
+				propertyPages
+				isbn
 				propertyViews
 				propertyLikes
+				propertyComments
+				propertyRank
+				propertyDownloads
 				propertyImages
+				propertyLanguages
 				propertyDesc
-				propertyBarter
-				propertyRent
+				propertyFile
+				propertyAudio
 				memberId
-				soldAt
 				deletedAt
-				constructedAt
+				publicationDate
 				createdAt
 				updatedAt
+				propertyType
 				memberData {
 					_id
 					memberType
@@ -79,17 +81,26 @@ export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
 					memberProperties
-					memberRank
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
 					accessToken
+				}
+				meLiked {
+					memberId
+					likeRefId
+					myFavorite
 				}
 			}
 			metaCounter {
