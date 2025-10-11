@@ -149,6 +149,24 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 	/** HANDLERS **/
 
+	const handleAudioDownload = async () => {
+		const resp = await fetch(`http://localhost:4007/${property?.propertyAudio}`, {
+			// headers: { Authorization: `Bearer ${token}` }, // if needed
+			credentials: 'include', // if cookie-based auth
+		});
+		console.log("=============: ", resp);
+		if (!resp.ok) return; // handle error
+		const blob = await resp.blob();
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = property?.propertyAudio ?? 'audio.mp3';
+		document.body.appendChild(a);
+		a.click();
+		URL.revokeObjectURL(url);
+		a.remove();
+	};
+
 	const likePropertyHandler = async (user: T, id: string) => {
 		try {
 			if(!id) return;
@@ -290,38 +308,44 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 								<Stack className={'right'}>
 									<Stack className={'row'}>
 										<Box className={'item'}>
-											{user?.memberMembership ? (<a href={user?.memberMembership ? `http://localhost:4007/${property?.propertyAudio}` : '#'} download={property?.propertyAudio.slice(14)}>
+											{false ? (<button style={{padding: '5px'}} onClick={handleAudioDownload}>
 												<Box className={'audio'}>
 													<Box sx={{width: '30px', height:'20px', marginRight: '5px'}}><img style={{width: '100%', height: '100%'}} src={'/img/logo/audible.png'} /></Box>
 													<Typography>AudioBook</Typography>
 												</Box>
 												<span>$0.00</span>
 												<Typography sx={{fontSize: '15px'}}>{user?.memberMembership ? 'Audio available!' : "with membership trail"}</Typography>
-											</a>) : (<a href={user?.memberMembership ? `http://localhost:4007/${property?.propertyAudio}` : '#'}>
+											</button>) : (<button style={{padding: '5px'}}>
 												<Box className={'audio'}>
 													<Box sx={{width: '30px', height:'20px', marginRight: '5px'}}><img style={{width: '100%', height: '100%'}} src={'/img/logo/audible.png'} /></Box>
 													<Typography>AudioBook</Typography>
 												</Box>
 												<span>$0.00</span>
 												<Typography sx={{fontSize: '15px'}}>{user?.memberMembership ? 'Audio available!' : "with membership trail"}</Typography>
-											</a>)}
+											</button>)}
 										</Box>
-										<Box className={'item'}>
+										<Box className={'item'} sx={{backgroundColor: '#e5e5e5'}}>
 											<Typography>HardCover</Typography>
 											<span>$31.99</span>
-											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.HARDCOVER || property?.propertyType === PropertyType.FULL ? "" : "No exist!"}</Typography>
+											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.HARDCOVER || property?.propertyType === PropertyType.FULL ? "Available!" : "No exist!"}</Typography>
 										</Box>
 									</Stack>
 									<Stack className={'row'}>
-										<Box className={'item'}>
+										<Box className={'item'} sx={{backgroundColor: '#e5e5e5'}}>
 											<Typography>PaperBack</Typography>
 											<span>$31.99</span>
-											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.PAPERBACK || property?.propertyType === PropertyType.FULL ? "" : "No exist!"}</Typography>
+											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.PAPERBACK || property?.propertyType === PropertyType.FULL ? "Available!" : "No exist!"}</Typography>
 										</Box>
 										<Box className={'item'}>
-											<Typography>Audio CD</Typography>
-											<span>$31.99</span>
-											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "" : "No exist!"}</Typography>
+											{true ? (<button style={{padding: '5px', width: '100%'}}>
+												<Typography>E-book</Typography>
+												<span>$31.99</span>
+												<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "Available!" : "No exist!"}</Typography>
+											</button>) : (<a href={user?.memberMembership ? `http://localhost:4007/${property?.propertyFile}` : '#'}>
+												<Typography>E-book</Typography>
+												<span>$31.99</span>
+												<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "Available!" : "No exist!"}</Typography>
+											</a>)}
 										</Box>
 									</Stack>
 									<Stack className={'row'}>
