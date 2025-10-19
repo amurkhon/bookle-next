@@ -1,0 +1,34 @@
+#pc-wrap {
+    .notification-page {
+        width: 100%;
+        height: auto;
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+
+            .notification-list {
+                width: 30%;
+                height: 550px;
+                padding: 10px;
+
+                .controller {
+                    display: flex;
+                    flex-direction: row;
+
+                    .con-button {
+                        font-size: 20px;
+                        margin-right: 20px;
+                    }
+                }
+            }
+            .notification-detail {
+                width: 65%;
+                height: 550px;
+                padding: 10px;
+                background-color: rgb(236, 231, 220);
+            }
+        }
+    }
+}
