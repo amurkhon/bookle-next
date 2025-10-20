@@ -683,3 +683,144 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 		}
 	}
 `;
+
+/**************************
+ *         NOTIFICATIONS       *
+ *************************/
+
+export const GET_NOTIFICATION = gql`
+	query GetNotification($input: String!) {
+		getNotification(notificationId: $input) {
+			_id
+			notificationType
+			notificationStatus
+			notificationGroup
+			notificationTitle
+			notificationDesc
+			authorId
+			receiverId
+			propertyId
+			articleId
+			createdAt
+			updatedAt
+			memberData {
+				_id
+				memberType
+				memberStatus
+				memberAuthType
+				memberPhone
+				memberNick
+				memberFullName
+				memberImage
+				memberAddress
+				memberDesc
+				memberProperties
+				memberArticles
+				memberFollowers
+				memberFollowings
+				memberPoints
+				memberLikes
+				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
+				deletedAt
+				createdAt
+				updatedAt
+				accessToken
+			}
+		}
+	}
+`;
+
+export const GET_NOTIFICATIONS = gql`
+	query GetNotifications($input: NotificationsInquiry!) {
+		getNotifications(input: $input) {
+			list {
+				_id
+				notificationType
+				notificationStatus
+				notificationGroup
+				notificationTitle
+				notificationDesc
+				authorId
+				receiverId
+				propertyId
+				articleId
+				createdAt
+				updatedAt
+				memberData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberProperties
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
+				}
+				propertyData {
+					_id
+					propertyStatus
+					propertyCategory
+					propertyType
+					propertyTitle
+					propertyPrice
+					propertyAuthor
+					propertyPages
+					isbn
+					propertyViews
+					propertyLikes
+					propertyComments
+					propertyRank
+					propertyDownloads
+					propertyImages
+					propertyLanguages
+					propertyDesc
+					propertyFile
+					propertyAudio
+					memberId
+					deletedAt
+					publicationDate
+					createdAt
+					updatedAt
+				}
+				articleData {
+					_id
+					articleCategory
+					articleStatus
+					articleTitle
+					articleContent
+					articleImage
+					articleViews
+					articleLikes
+					articleComments
+					memberId
+					createdAt
+					updatedAt
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;

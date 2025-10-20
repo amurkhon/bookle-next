@@ -17,17 +17,33 @@ import { CaretDown } from 'phosphor-react';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import Link from 'next/link';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import { useReactiveVar } from '@apollo/client';
+import { useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../apollo/store';
 import { Logout } from '@mui/icons-material';
 import { NEXT_PUBLIC_REACT_APP_API_URL } from '../config';
-import zIndex from '@mui/material/styles/zIndex';
+import { Notification } from '../types/notification/notification';
+import { GET_NOTIFICATIONS } from '../../apollo/user/query';
+import { T } from '../types/common';
+import { NotificationStatus } from '../enums/notification.enum';
+import Badge, { BadgeProps } from '@mui/material/Badge';
+import Moment from 'react-moment';
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: 10,
+    top: 0,
+    padding: '0 4px',
+  },
+}));
+
 
 const Top = () => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const { t, i18n } = useTranslation('common');
 	const router = useRouter();
+	const [notifications, setNotifications] = useState<Notification[]>([]);
+	const [total, setTotal] = useState<number>(0);
 	const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
 	const [lang, setLang] = useState<string | null>('en');
 	const drop = Boolean(anchorEl2);
@@ -41,12 +57,32 @@ const Top = () => {
 	const [anchorEl3, setAnchorEl3] = React.useState<null | HTMLElement>(null);
 	const openNot = Boolean(anchorEl3);
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		true ? router.push({pathname: '/mypage/notifications'}) : setAnchorEl3(event.currentTarget);
+		notifications.length == 0 ? router.push({pathname: '/mypage/notifications'}) : setAnchorEl3(event.currentTarget);
 	};
 	const handleCloseNot = () => {
 		setAnchorEl3(null);
 	};
-	
+
+
+	/* APOLLO REQUESTS*/
+
+	const {
+		loading: getNotificationsLoading,
+		data: getNotificationsData,
+		error: getNotificationsError,
+		refetch: getNotificationsRefetch,
+	} = useQuery(
+		GET_NOTIFICATIONS,
+		{
+			fetchPolicy: "network-only",
+			variables: {input: { status: NotificationStatus.WAIT }},
+			notifyOnNetworkStatusChange: true,
+			onCompleted: (data: T) => {
+				setNotifications(data?.getNotifications?.list);
+				setTotal(data?.getNotifications?.metaCounter[0]?.total);
+			}
+		}
+	);
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -269,29 +305,35 @@ const Top = () => {
 							<LightModeIcon />
 							<div className={'lan-box'}>
 								{user?._id && 
-									<NotificationsOutlinedIcon 
-										id="basic-button"
-										aria-controls={openNot ? 'basic-menu' : undefined}
-										aria-haspopup="true"
-										aria-expanded={openNot ? 'true' : undefined}
-										onClick={handleClick} 
-										className={'notification-icon'} />
+									<StyledBadge badgeContent={`${total}`} color="primary">
+										<NotificationsOutlinedIcon 
+											id="basic-button"
+											aria-controls={openNot ? 'basic-menu' : undefined}
+											aria-haspopup="true"
+											aria-expanded={openNot ? 'true' : undefined}
+											onClick={handleClick} 
+											className={'notification-icon'}
+										/>
+									</StyledBadge>
 								}
 								<StyledMenu
 									className="basic-menu"
 									anchorEl={anchorEl3}
 									open={openNot}
 									onClose={handleCloseNot}
-									sx={{width:'400px', height:'500px', top:'10px', borderRadius: '10px', position: 'absolute', zIndex:'100'}}
+									sx={{width:'400px', height:'600px', top:'10px', borderRadius: '10px', position: 'absolute', zIndex:'100'}}
 								>
 									<List className={'list'}>
-										{[1,2,3,4,5,6,7,8,9].map((ele) => {
+										{notifications.map((notification: Notification) => {
+											const imagePath = `${NEXT_PUBLIC_REACT_APP_API_URL}/${notification?.memberData?.memberImage}` ?
+												`${NEXT_PUBLIC_REACT_APP_API_URL}/${notification?.memberData?.memberImage}` : 
+												'/img/profile/defaultUser.svg';
 											return (
-												<MenuItem onClick={handleCloseNot}>
+												<MenuItem key={notification?._id} onClick={handleCloseNot}>
 													<Stack 
 														className={'list-item'}
 														sx={{
-															width:'100%', 
+															width:'400px', 
 															height:'70px', 
 															padding:'10px',
 															display: 'flex',
@@ -309,7 +351,7 @@ const Top = () => {
 															}}
 														>
 															<img
-																src="/img/profile/girl.svg"
+																src={imagePath}
 																style={{
 																	width: '50px',
 																	height: '50px',
@@ -325,17 +367,19 @@ const Top = () => {
 															}}
 														>
 															<span className={'title'} style={{fontWeight: '500'}}>
-																Commented
+																{notification?.notificationTitle.slice(0, 14)}
 															</span>
-															<span style={{fontSize: '12px',position: 'absolute', right: '0px', top:'0px'}}> 18:20, 29.09.2025</span>
-															<Typography variant={'h5'}>I liked your book because of its ...</Typography>
+															<span style={{fontSize: '12px',position: 'absolute', right: '0px', top:'-7px'}}>
+																<Moment format={'HH:mm, DD.MM.YYYY'}>{notification?.createdAt}</Moment>
+															</span>
+															<Typography variant={'h5'}>{notification?.notificationDesc}</Typography>
 														</Box>
 													</Stack>
 												</MenuItem>
 											);
 										})}
 									</List>
-									<Box sx={{ width:'330px', height: '40px', color: 'white',display: 'flex', justifyContent: 'center', position:'fixed', zIndex: '100', top: '442px'}}>
+									<Box sx={{ width:'330px', height: '40px', color: 'white',display: 'flex', justifyContent: 'center'}}>
 										<Button variant={'contained'} color={'secondary'} sx={{color: 'white', heigth: '30px'}}>
 											See all notifications
 										</Button>
