@@ -306,7 +306,7 @@ const Top = () => {
 							<LightModeIcon />
 							<div className={'lan-box'}>
 								{user?._id && 
-									<NotificationMenu notifications={notifications} total={total}/>
+									<NotificationMenu notifications={notifications} total={total} refetch={getNotificationsRefetch}/>
 								}
 								<Button
 									disableRipple

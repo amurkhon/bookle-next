@@ -17,25 +17,57 @@ import {
 } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Moment from 'react-moment'; // For date formatting (install: npm install react-moment moment)
-import { NEXT_PUBLIC_REACT_APP_API_URL } from '../../config';
+import { Messages, NEXT_PUBLIC_REACT_APP_API_URL } from '../../config';
 import { Notification, Notifications } from '../../types/notification/notification';
 import { useRouter } from 'next/router';
+import { useMutation } from '@apollo/client';
+import { UPDATE_NOTIFICATIONS_AS_READ } from '../../../apollo/user/mutation';
+import { userVar } from '../../../apollo/store';
+import { NotificationStatus } from '../../enums/notification.enum';
+import { sweetErrorHandling } from '../../sweetAlert';
 
 // Define the type for a single notification item
 interface NotificationMenu {
   notifications: Notification[],
   total: number,
+  refetch: any,
 }
 
 
 export function NotificationMenu(props: NotificationMenu) {
-    const { notifications, total } = props;
+    const { notifications, total, refetch } = props;
+    const user = userVar();
     const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
+  /* APOLLO REQUEST */
+
+  const [updateNotificationsAsRead] = useMutation(UPDATE_NOTIFICATIONS_AS_READ);
+
+    const markHandler = async () => {
+        try {
+            if(!user._id) throw new Error(Messages.error2);
+  
+            await updateNotificationsAsRead({
+                variables: {
+                    input: {
+                        status: NotificationStatus.WAIT,
+                    },
+                },
+            });
+            await refetch({ status: NotificationStatus.WAIT });
+        } catch (err: any) {
+            sweetErrorHandling(err).then();
+        }
+    };
+
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    if(notifications.length !==0)
+        setAnchorEl(event.currentTarget);
+    else {
+        router.push({pathname: '/mypage/notifications'});
+    }
   };
 
   const handleCloseMenu = () => {
@@ -50,6 +82,10 @@ export function NotificationMenu(props: NotificationMenu) {
         await router.push({pathname: '/mypage/notifications'});
     };
 
+    const pushMemberHandler = async (memberId: string | undefined) => {
+		await router.push({pathname: '/member', query: {memberId: memberId}});
+	};
+
 
   return (
     <Box sx={{ flexGrow: 0 }}>
@@ -63,7 +99,7 @@ export function NotificationMenu(props: NotificationMenu) {
         color="inherit"
         sx={{ mr: 2 }}
       >
-        <Badge badgeContent={total} color="error">
+        <Badge badgeContent={total} color="error" invisible={total !==0 || 'undefined' ? false : true}>
           <NotificationsIcon />
         </Badge>
       </IconButton>
@@ -95,7 +131,7 @@ export function NotificationMenu(props: NotificationMenu) {
           <Typography variant="h6" component="div" fontWeight="bold">
             Notifications
           </Typography>
-          <Button size="small">Mark All Read</Button>
+          <Button size="small" onClick={markHandler}>Mark All Read</Button>
         </Box>
         <Divider />
 
@@ -116,7 +152,7 @@ export function NotificationMenu(props: NotificationMenu) {
                   cursor: 'pointer', 
                   backgroundColor: 'action.hover', // Highlight unread
                   '&:hover': {
-                    backgroundColor: 'action.hover',
+                    backgroundColor: '#d3c2b2ff',
                   },
                 }}
               >
@@ -124,7 +160,8 @@ export function NotificationMenu(props: NotificationMenu) {
                   <Avatar 
                     alt={notification?.notificationTitle} 
                     src={imagePath} 
-                    sx={{ width: 35, height: 35, ml: 1 }} 
+                    sx={{ width: 35, height: 35, ml: 1 }}
+                    onClick={() => {pushMemberHandler(notification?.authorId)}}
                   />
                 </ListItemAvatar>
                 
