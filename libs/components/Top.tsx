@@ -27,6 +27,7 @@ import { T } from '../types/common';
 import { NotificationStatus } from '../enums/notification.enum';
 import Badge, { BadgeProps } from '@mui/material/Badge';
 import Moment from 'react-moment';
+import { NotificationMenu } from './common/NotificationMenu';
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -305,86 +306,8 @@ const Top = () => {
 							<LightModeIcon />
 							<div className={'lan-box'}>
 								{user?._id && 
-									<StyledBadge badgeContent={`${total}`} color="primary">
-										<NotificationsOutlinedIcon 
-											id="basic-button"
-											aria-controls={openNot ? 'basic-menu' : undefined}
-											aria-haspopup="true"
-											aria-expanded={openNot ? 'true' : undefined}
-											onClick={handleClick} 
-											className={'notification-icon'}
-										/>
-									</StyledBadge>
+									<NotificationMenu notifications={notifications} total={total}/>
 								}
-								<StyledMenu
-									className="basic-menu"
-									anchorEl={anchorEl3}
-									open={openNot}
-									onClose={handleCloseNot}
-									sx={{width:'400px', height:'600px', top:'10px', borderRadius: '10px', position: 'absolute', zIndex:'100'}}
-								>
-									<List className={'list'}>
-										{notifications.map((notification: Notification) => {
-											const imagePath = `${NEXT_PUBLIC_REACT_APP_API_URL}/${notification?.memberData?.memberImage}` ?
-												`${NEXT_PUBLIC_REACT_APP_API_URL}/${notification?.memberData?.memberImage}` : 
-												'/img/profile/defaultUser.svg';
-											return (
-												<MenuItem key={notification?._id} onClick={handleCloseNot}>
-													<Stack 
-														className={'list-item'}
-														sx={{
-															width:'400px', 
-															height:'70px', 
-															padding:'10px',
-															display: 'flex',
-															flexDirection: 'row',
-															alignItems:'center',
-															cursor: 'pointer'
-														}}
-													>
-														<Box 
-															className={'profile-img'}
-															sx={{
-																width: '20%',
-																height: '100%',
-																borderRadius: '100%'
-															}}
-														>
-															<img
-																src={imagePath}
-																style={{
-																	width: '50px',
-																	height: '50px',
-																	borderRadius: '100%'
-																}}
-															/>
-														</Box>
-														<Box 
-															className={'inform'}
-															sx={{
-																width:'80%',
-																position: 'relative'
-															}}
-														>
-															<span className={'title'} style={{fontWeight: '500'}}>
-																{notification?.notificationTitle.slice(0, 14)}
-															</span>
-															<span style={{fontSize: '12px',position: 'absolute', right: '0px', top:'-7px'}}>
-																<Moment format={'HH:mm, DD.MM.YYYY'}>{notification?.createdAt}</Moment>
-															</span>
-															<Typography variant={'h5'}>{notification?.notificationDesc}</Typography>
-														</Box>
-													</Stack>
-												</MenuItem>
-											);
-										})}
-									</List>
-									<Box sx={{ width:'330px', height: '40px', color: 'white',display: 'flex', justifyContent: 'center'}}>
-										<Button variant={'contained'} color={'secondary'} sx={{color: 'white', heigth: '30px'}}>
-											See all notifications
-										</Button>
-									</Box>
-								</StyledMenu>
 								<Button
 									disableRipple
 									className="btn-lang"
