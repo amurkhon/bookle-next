@@ -12,9 +12,9 @@ import RadioGroup from '@mui/joy/RadioGroup';
 import Sheet from '@mui/joy/Sheet';
 import { CssVarsProvider, List } from "@mui/joy";
 import Typography from '@mui/joy/Typography';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState,ChangeEvent, MouseEvent, } from "react";
 import CloseIcon from '@mui/icons-material/Close';
-import { GET_NOTIFICATIONS } from "../../apollo/user/query";
+import { GET_NOTIFICATION, GET_NOTIFICATIONS } from "../../apollo/user/query";
 import { T } from "../../libs/types/common";
 import { Messages, NEXT_PUBLIC_REACT_APP_API_URL } from "../../libs/config";
 import { Notification } from "../../libs/types/notification/notification";
@@ -39,6 +39,12 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
 
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [total, setTotal] = useState<number>(0);
+    const [ notificationVar, setNotificationVar ] = useState<Notification>();
+    const [ notId, setNotId ] = useState<string>('');
+
+    const image = `${NEXT_PUBLIC_REACT_APP_API_URL}/${notificationVar?.memberData?.memberImage}` ?
+        `${NEXT_PUBLIC_REACT_APP_API_URL}/${notificationVar?.memberData?.memberImage}` : 
+        '/img/profile/defaultUser.svg';
 
 
     /* APOLLO REQUESTS*/
@@ -59,6 +65,23 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
             onCompleted: (data: T) => {
                 setNotifications(data?.getNotifications?.list);
                 setTotal(data?.getNotifications?.metaCounter[0]?.total);
+            }
+        }
+    );
+
+    const {
+        loading: getNotificationLoading,
+        data: getNotificationData,
+        error: getNotificationError,
+        refetch: getNotificationRefetch,
+    } = useQuery(
+        GET_NOTIFICATION,
+        {
+            fetchPolicy: "network-only",
+            variables: {input: notId},
+            notifyOnNetworkStatusChange: true,
+            onCompleted: (data: T) => {
+                setNotificationVar(data?.getNotification);
             }
         }
     );
@@ -90,6 +113,10 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
     }, [router]);
 
     useEffect(() => {getNotificationsRefetch({input: searchFilter})}, [searchFilter]);
+
+    useEffect(() => {
+        getNotificationRefetch({ input: notId });
+    }, [notId]);
 
     /* Haandlers */
 
@@ -143,6 +170,11 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
 		);
         console.log("searchFilter: ", searchFilter);
     }
+
+    const getNotificationHandler = (e: React.MouseEvent<HTMLElement>) => {
+        setNotId(e.currentTarget.id);
+        console.log("notId: ", notId);
+    };
 
     if(device === 'mobile') {
         return <div>Notifications</div>
@@ -234,7 +266,7 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
                                         `${NEXT_PUBLIC_REACT_APP_API_URL}/${notification?.memberData?.memberImage}` : 
                                         '/img/profile/defaultUser.svg';
                                     return (
-                                        <Stack className={'list-item'}>
+                                        <Stack className={'list-item'} id={notification?._id} onClick={getNotificationHandler}>
                                             <Box className={'profile-img'} onClick={() => pushMemberHandler(notification?.memberData?._id)}>
                                                 <img
                                                     src={imagePath}
@@ -257,21 +289,31 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
                             </List>
                         </CssVarsProvider>
                     </Stack>
-                    <Stack className={'notification-detail'}>
-                        <Stack className={'header'}>
-                            <Stack className={'notification-info'}>
-                                <img src="/img/profile/defaultUser.svg" alt="" />
-                                <Box>
-                                    <Typography>Notification Title</Typography>
-                                    <span>15:36, 23.06.2025</span>
-                                </Box>
+                    {notificationVar ? (
+                        <Stack className={'notification-detail'}>
+                            <Stack className={'header'}>
+                                <Stack className={'notification-info'}>
+                                    <img src={image} alt="" />
+                                    <Box>
+                                        <Typography>{notificationVar?.notificationTitle}</Typography>
+                                        <span>
+                                            <Moment format={'HH:mm, DD.MM.YYYY'}>
+                                                {notificationVar?.createdAt}
+                                            </Moment>
+                                        </span>
+                                    </Box>
+                                </Stack>
+                                <CloseIcon variant={'lg'} />
                             </Stack>
-                            <CloseIcon variant={'lg'} />
+                            <Box className={'main-body'}>
+                                {notificationVar?.notificationDesc}
+                            </Box>
                         </Stack>
-                        <Box className={'main-body'}>
-                            Full Stack Python kursi Django asoslari (YANGI) moduliga yangi Django yangi versiyalar bilan ishlash videodarsi qoʻshildi.
-                        </Box>
-                    </Stack>
+                    ) : (
+                        <Stack className={'notification-detail'}>
+                                
+                        </Stack>
+                    )}
                 </div>
             </div>
         )
