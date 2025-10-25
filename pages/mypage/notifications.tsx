@@ -20,7 +20,7 @@ import { Messages, NEXT_PUBLIC_REACT_APP_API_URL } from "../../libs/config";
 import { Notification } from "../../libs/types/notification/notification";
 import Moment from "react-moment";
 import { NotificationsInquiry } from "../../libs/types/notification/notification.input";
-import { NotificationStatus } from "../../libs/enums/notification.enum";
+import { NotificationGroup, NotificationStatus } from "../../libs/enums/notification.enum";
 import { sweetErrorHandling } from "../../libs/sweetAlert";
 import { UPDATE_NOTIFICATIONS_AS_READ } from "../../apollo/user/mutation";
 import { getJwtToken, updateUserInfo } from "../../libs/auth";
@@ -144,6 +144,15 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
 
     const pushMemberHandler = async (memberId: string | undefined) => {
       await router.push({pathname: '/member', query: {memberId: memberId}});
+    };
+
+    const pushTargetHandler = async (e: React.MouseEvent<HTMLElement>) => {
+        if (notificationVar?.propertyId) {
+            await router.push({pathname: '/books/detail', query: {id: e.currentTarget.id}});
+        } 
+        if (notificationVar?.articleId) {
+            await router.push({pathname: '/community/detail', query: {articleCategory: notificationVar?.articleData?.articleCategory, id: e.currentTarget.id}});
+        }
     };
 
     const unreadNotificationsHandler = async () => {
@@ -308,10 +317,25 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
                             <Box className={'main-body'}>
                                 {notificationVar?.notificationDesc}
                             </Box>
+                            {
+                                notificationVar?.propertyId && notificationVar?.articleId ? '' : (
+                                    <Box className={'link'} onClick={pushTargetHandler} id={notificationVar?.propertyId ? notificationVar?.propertyId : notificationVar?.articleId}>
+                                        Click here to see {notificationVar?.notificationGroup === NotificationGroup.PROPERTY ? 'Property' : 'Article'}
+                                    </Box>
+                                )
+                            }
                         </Stack>
                     ) : (
-                        <Stack className={'notification-detail'}>
-                                
+                        <Stack className={'notification-detail-info'}>
+                                <span
+                                    style={{
+                                        fontFamily: 'Robot',
+                                        fontSize: '24px',
+                                        fontWeight: '400'
+                                    }}
+                                >
+                                    Select One of the Notifications
+                                </span>
                         </Stack>
                     )}
                 </div>
