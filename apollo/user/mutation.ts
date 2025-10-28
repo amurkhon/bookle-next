@@ -355,3 +355,19 @@ export const UPDATE_NOTIFICATIONS_AS_READ = gql`
 		}
 	}
 `;
+
+/**************************
+ *         NOTICE        *
+ *************************/
+
+
+export const CREATE_NOTICE = gql`
+mutation CreateNotice($input: NoticeInput!) {
+    createNotice(input: $input) {
+        noticeCategory
+        noticeStatus
+        noticeTitle
+        noticeContent
+        memberId
+    }
+}`;
