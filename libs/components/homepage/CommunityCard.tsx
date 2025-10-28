@@ -70,7 +70,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 									{article?.articleTitle}
 								</Typography>
 								<Typography variant={'h2'}>
-									{article?.articleContent.slice(0, 35)}...
+									{article?.articleContent.length > 43 ? `${article?.articleContent.slice(0, 43)}..` : article?.articleContent.slice(0, 45)}
 								</Typography>
 								<Divider className={'devider'} textAlign={'left'} light={true} sx={{width: '100%',marginBottom: "10px",marginTop:"10px", height: "3px", backgroundColor: "#bd7579"}} />
 								<Button 
