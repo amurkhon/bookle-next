@@ -70,20 +70,6 @@ const NoticeMain = () => {
 	/** LIFECYCLES **/
 	/** HANDLERS **/
 
-	const data = [
-		{
-			no: 1,
-			event: true,
-			title: 'Register to use and get discounts',
-			date: '01.03.2024',
-		},
-		{
-			no: 2,
-			title: "It's absolutely free to upload and trade properties",
-			date: '31.03.2024',
-		},
-	];
-
 	if (device === 'mobile') {
 		return <div>NOTICE MOBILE</div>;
 	} else {
