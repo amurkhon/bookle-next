@@ -95,21 +95,21 @@ const FaqArticles: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 	};
 
 	const insertInquiryHandler = useCallback(async () => {
-			try {
-				const result = await createNotice({
-					variables: {
-						input: insertFaqData,
-					},
-				});
-	
-				await sweetMixinSuccessAlert('Answer has been sent successfully.');
-				getNoticesRefetch({input: searchInquiryData});
+		try {
+			const result = await createNotice({
+				variables: {
+					input: insertFaqData,
+				},
+			});
 
-				setInsertFaqData(initialValues);
-			} catch (err: any) {
-				sweetErrorHandling(err).then();
-			}
-		}, [insertFaqData]);
+			await sweetMixinSuccessAlert('Answer has been sent successfully.');
+			getNoticesRefetch({input: searchInquiryData});
+
+			setInsertFaqData(initialValues);
+		} catch (err: any) {
+			sweetErrorHandling(err).then();
+		}
+	}, [insertFaqData]);
 
 	const menuIconClickHandler = (e: any, index: number) => {
 		const tempAnchor = anchorEl.slice();
@@ -123,7 +123,6 @@ const FaqArticles: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 
 	const updateNoticeHandler = async (updateData: NoticeUpdate) => {
 		try {
-			console.log("input: ", updateData);
 			await updateNotice(
 				{
 					variables: {

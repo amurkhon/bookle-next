@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
-import { Box, Button, InputAdornment, Stack } from '@mui/material';
+import { Box, Button, InputAdornment, Stack, TextareaAutosize, TextField } from '@mui/material';
 import { List, ListItem } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -13,28 +13,187 @@ import TablePagination from '@mui/material/TablePagination';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { NoticeList } from '../../../libs/components/admin/cs/NoticeList';
+import { NoticeInput, NoticesInquiry } from '../../../libs/types/notice/notice.input';
+import { NoticeCategory, NoticeStatus } from '../../../libs/enums/notice.enum';
+import CloseIcon from '@mui/icons-material/Close';
+import { CREATE_NOTICE, UPDATE_NOTICE } from '../../../apollo/user/mutation';
+import { useMutation, useQuery } from '@apollo/client';
+import { sweetErrorHandling, sweetMixinSuccessAlert } from '../../../libs/sweetAlert';
+import { GET_NOTICES } from '../../../apollo/user/query';
+import { Notice } from '../../../libs/types/notice/notice';
+import { T } from '../../../libs/types/common';
+import { NoticeUpdate } from '../../../libs/types/notice/notice.update';
 
-const AdminNotice: NextPage = (props: any) => {
+const AdminNotice: NextPage = ({initialInquiry, initialValues, ...props}: any) => {
 	const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
+	const [ noticeTerms, setNoticeTerms ] = useState<Notice[]>([]);
+	const [ open, setOpen ] = useState<boolean>(false);
+	const [insertTermsData, setInsertTermsData] = useState<NoticeInput>(initialValues);
+	const [searchInquiryData, setSearchInquiryData] = useState<NoticesInquiry>(initialInquiry);
+	const [total, setTotal] = useState<number>(0);
+	const [searchText, setSearchText ] = useState<string>('');
+	const [tab, setTab ] = useState<string>('all');
 
 	/** APOLLO REQUESTS **/
+
+	const [ createNotice ] = useMutation(CREATE_NOTICE);
+
+	const [ updateNotice ] = useMutation(UPDATE_NOTICE);
+
+	const {
+		loading: getTermsLoading,
+		data: getTermsData,
+		error: getTermsError,
+		refetch: getTermsRefetch,
+	} = useQuery(
+		GET_NOTICES,
+		{
+			fetchPolicy: "network-only",
+			variables: {
+				input: searchInquiryData,
+			},
+			notifyOnNetworkStatusChange: true,
+			onCompleted: (data: T) => {
+				setNoticeTerms(data?.getNotices?.list);
+				setTotal(data?.getNotices?.metaCounter[0]?.total);
+			}
+		}
+	);
+	console.log("terms: ", noticeTerms);
+
 	/** LIFECYCLES **/
+
+	useEffect(() => {
+		getTermsRefetch({input: searchInquiryData});
+	}, [searchInquiryData]);
+
+	useEffect(() => {
+		getTermsRefetch({input: searchInquiryData});
+	}, [searchText]);
+
+
 	/** HANDLERS **/
+
+	const handleTabChange = (e: React.MouseEvent, tab: string) => {
+		setTab(tab);
+		if( tab === 'all' ) {
+			setSearchInquiryData(initialInquiry);
+		} else if ( tab === 'active') {
+			setSearchInquiryData({ ...searchInquiryData, search: {noticeCategory: NoticeCategory.TERMS, noticeStatus: NoticeStatus.ACTIVE }});
+		} else {
+			setSearchInquiryData({ ...searchInquiryData, search: {noticeCategory: NoticeCategory.TERMS, noticeStatus: NoticeStatus.DELETE }});
+		}
+	}
+
+	const doDisabledCheck = () => {
+		if (
+			insertTermsData.noticeTitle === '' ||
+			insertTermsData.noticeContent === ''
+			
+		) {
+			return true;
+		}
+	};
+
+	const insertInquiryHandler = useCallback(async () => {
+		try {
+			const result = await createNotice({
+				variables: {
+					input: insertTermsData,
+				},
+			});
+
+			await sweetMixinSuccessAlert('Term has been sent successfully.');
+			getTermsRefetch({input: searchInquiryData});
+
+			setInsertTermsData(initialValues);
+		} catch (err: any) {
+			sweetErrorHandling(err).then();
+		}
+	}, [insertTermsData]);
+
+	const updateTermsHandler = async (updateData: NoticeUpdate) => {
+		try {
+			await updateNotice(
+				{
+					variables: {
+						input: updateData,
+					},
+				},
+			);
+
+
+			handleMenuIconClose();
+			await getTermsRefetch({ input: searchInquiryData });
+		} catch (err: any) {
+			sweetErrorHandling(err).then();
+		}
+	};
+
+	const handleMenuIconClick = (e: any, index: number) => {
+		const tempAnchor = anchorEl.slice();
+		tempAnchor[index] = e.currentTarget;
+		setAnchorEl(tempAnchor);
+	};
+
+	const handleMenuIconClose = () => {
+		setAnchorEl([]);
+	};
 
 	return (
 		// @ts-ignore
 		<Box component={'div'} className={'content'}>
 			<Box component={'div'} className={'title flex_space'}>
 				<Typography variant={'h2'}>Notice Management</Typography>
-				<Button
-					className="btn_add"
-					variant={'contained'}
-					size={'medium'}
-					// onClick={() => router.push(`/_admin/cs/faq_create`)}
-				>
-					<AddRoundedIcon sx={{ mr: '8px' }} />
-					ADD
-				</Button>
+				{ open ? (
+					<Stack className={'contact-main'}>
+						<Stack className={'head-items'}>
+							<Typography>
+								Create Term Notice
+							</Typography>
+							<CloseIcon onClick={() => {setOpen(false)}} className={'close-icon'} />
+						</Stack>
+						<Stack className={'inquiry-box'}>
+							<TextField
+								className={'title-input'}
+								type='text'
+								placeholder='Term Title'
+								value={insertTermsData.noticeTitle}
+								onChange={({ target: { value }}) =>
+									setInsertTermsData({ ...insertTermsData, noticeTitle: value})
+								}
+							/>
+							<TextareaAutosize
+								className={'content-input'}
+								maxRows={5}
+								placeholder='Message Here...'
+								style={{height: '200px'}}
+								value={insertTermsData.noticeContent}
+								onChange={({ target: { value }}) =>
+									setInsertTermsData({ ...insertTermsData, noticeContent: value})
+								}
+							/>
+							<Button
+								className={'button'}
+								disabled={doDisabledCheck()}
+								onClick={insertInquiryHandler}
+								variant="outlined"
+							>
+								Create
+							</Button>
+						</Stack>
+					</Stack>
+				) : (
+					<Button
+						className="btn_add"
+						variant={'contained'}
+						size={'medium'}
+						onClick={() => {setOpen(true)}}
+					>
+						<AddRoundedIcon sx={{ mr: '8px' }} />
+						ADD
+					</Button>
+				)}
 			</Box>
 			<Box component={'div'} className={'table-wrap'}>
 				<Box component={'div'} sx={{ width: '100%', typography: 'body1' }}>
@@ -42,54 +201,78 @@ const AdminNotice: NextPage = (props: any) => {
 						<Box component={'div'}>
 							<List className={'tab-menu'}>
 								<ListItem
-									// onClick={(e) => handleTabChange(e, 'all')}
+									onClick={(e: any) => handleTabChange(e, 'all')}
 									value="all"
-									className={'all' === 'all' ? 'li on' : 'li'}
+									className={tab === 'all' ? 'li on' : 'li'}
 								>
-									All (0)
+									All
 								</ListItem>
 								<ListItem
-									// onClick={(e) => handleTabChange(e, 'active')}
+									onClick={(e: any) => handleTabChange(e, 'active')}
 									value="active"
-									className={'all' === 'all' ? 'li on' : 'li'}
+									className={tab === 'active' ? 'li on' : 'li'}
 								>
-									Active (0)
+									Active
 								</ListItem>
 								<ListItem
-									// onClick={(e) => handleTabChange(e, 'blocked')}
-									value="blocked"
-									className={'all' === 'all' ? 'li on' : 'li'}
-								>
-									Blocked (0)
-								</ListItem>
-								<ListItem
-									// onClick={(e) => handleTabChange(e, 'deleted')}
+									onClick={(e: any) => handleTabChange(e, 'deleted')}
 									value="deleted"
-									className={'all' === 'all' ? 'li on' : 'li'}
+									className={tab === 'deleted' ? 'li on' : 'li'}
 								>
-									Deleted (0)
+									Deleted
 								</ListItem>
 							</List>
 							<Divider />
 							<Stack className={'search-area'} sx={{ m: '24px' }}>
-								<Select sx={{ width: '160px', mr: '20px' }} value={'searchCategory'}>
-									<MenuItem value={'mb_nick'}>mb_nick</MenuItem>
-									<MenuItem value={'mb_id'}>mb_id</MenuItem>
-								</Select>
-
 								<OutlinedInput
-									value={'searchInput'}
-									// onChange={(e) => handleInput(e.target.value)}
+									value={searchText}
+									onChange={(e) => setSearchText(e.target.value)}
 									sx={{ width: '100%' }}
 									className={'search'}
-									placeholder="Search user name"
+									placeholder="Search term by title"
 									onKeyDown={(event) => {
-										// if (event.key == 'Enter') searchTargetHandler().then();
+										if (event.key == 'Enter') {
+											setSearchInquiryData(
+												{
+													...searchInquiryData,
+													search: {
+														...searchInquiryData.search,
+														text: searchText
+													}
+												}
+											);
+										};
 									}}
 									endAdornment={
 										<>
-											{true && <CancelRoundedIcon onClick={() => {}} />}
-											<InputAdornment position="end" onClick={() => {}}>
+											{searchText && <CancelRoundedIcon
+												sx={{cursor: 'pointer'}} 
+												onClick={() => {
+													setSearchText('');
+													setSearchInquiryData(
+														{
+															...searchInquiryData,
+															search: {
+																...searchInquiryData.search,
+																text: '',
+															}
+														}
+													);
+												}}
+											/>}
+											<InputAdornment position="end" 
+												onClick={() => {
+													setSearchInquiryData(
+														{
+															...searchInquiryData,
+															search: {
+																...searchInquiryData.search,
+																text: searchText
+															}
+														}
+													);
+												}}
+											>
 												<img src="/img/icons/search_icon.png" alt={'searchIcon'} />
 											</InputAdornment>
 										</>
@@ -103,9 +286,10 @@ const AdminNotice: NextPage = (props: any) => {
 							// membersData={membersData}
 							// searchMembers={searchMembers}
 							anchorEl={anchorEl}
-							// handleMenuIconClick={handleMenuIconClick}
-							// handleMenuIconClose={handleMenuIconClose}
-							// generateMentorTypeHandle={generateMentorTypeHandle}
+							noticeTerms={noticeTerms}
+							handleMenuIconClick={handleMenuIconClick}
+							handleMenuIconClose={handleMenuIconClose}
+							updateTermsHandler={updateTermsHandler}
 						/>
 
 						<TablePagination
@@ -122,6 +306,20 @@ const AdminNotice: NextPage = (props: any) => {
 			</Box>
 		</Box>
 	);
+};
+AdminNotice.defaultProps = {
+	initialValues: {
+		noticeCategory: NoticeCategory.TERMS,
+		noticeTitle: '',
+		noticeContent: '',
+	},
+	initialInquiry: {
+		page: 1,
+		limit: 10,
+		search: {
+			noticeCategory: NoticeCategory.TERMS
+		}
+	}
 };
 
 export default withAdminLayout(AdminNotice);
