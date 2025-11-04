@@ -16,6 +16,10 @@ import {
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
+import { Notice } from '../../../types/notice/notice';
+import { NEXT_PUBLIC_REACT_APP_API_URL } from '../../../config';
+import Moment from 'react-moment';
+import { NoticeStatus } from '../../../enums/notice.enum';
 
 interface Data {
 	category: string;
@@ -106,6 +110,7 @@ interface InquiryPanelListType {
 	handleMenuIconClick?: any;
 	handleMenuIconClose?: any;
 	generateMentorTypeHandle?: any;
+	inquiryData: Notice[];
 }
 
 export const InquiryList = (props: InquiryPanelListType) => {
@@ -117,6 +122,7 @@ export const InquiryList = (props: InquiryPanelListType) => {
 		handleMenuIconClick,
 		handleMenuIconClose,
 		generateMentorTypeHandle,
+		inquiryData,
 	} = props;
 	const router = useRouter();
 
@@ -131,31 +137,35 @@ export const InquiryList = (props: InquiryPanelListType) => {
 					{/*@ts-ignore*/}
 					<EnhancedTableHead />
 					<TableBody>
-						{[1, 2, 3, 4, 5].map((ele: any, index: number) => {
-							const member_image = '/img/profile/defaultUser.svg';
+						{inquiryData.map((inquiry: Notice, index: number) => {
+							const image = `${NEXT_PUBLIC_REACT_APP_API_URL}/${inquiry?.memberData?.memberImage}` ?
+								`${NEXT_PUBLIC_REACT_APP_API_URL}/${inquiry?.memberData?.memberImage}` : 
+								'/img/profile/defaultUser.svg';
 
 							let status_class_name = '';
 
 							return (
 								<TableRow hover key={'member._id'} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-									<TableCell align="left">mb id</TableCell>
-									<TableCell align="left">member.mb_full_name</TableCell>
+									<TableCell align="left">{inquiry?.noticeCategory}</TableCell>
+									<TableCell align="left">{inquiry?.noticeTitle}</TableCell>
 									<TableCell align="left" className={'name'}>
 										<Stack direction={'row'}>
-											<Link href={`/_admin/users/detail?mb_id=$'{member._id'}`}>
+											<Link href={`/member?memberId=${inquiry?.memberData?._id}`}>
 												<div>
-													<Avatar alt="Remy Sharp" src={member_image} sx={{ ml: '2px', mr: '10px' }} />
+													<Avatar alt="Remy Sharp" src={image} sx={{ ml: '2px', mr: '10px' }} />
 												</div>
 											</Link>
-											<Link href={`/_admin/users/detail?mb_id=${'member._id'}`}>
-												<div>member.mb_nick</div>
+											<Link href={`/member?memberId=${inquiry?.memberData?._id}`}>
+												<div>{inquiry?.memberData?.memberNick}</div>
 											</Link>
 										</Stack>
 									</TableCell>
-									<TableCell align="left">member.mb_phone</TableCell>
+									<TableCell align="left">
+										<Moment format={'DD.MM.YYYY'}>{inquiry?.createdAt}</Moment>
+									</TableCell>
 									<TableCell align="center">
 										<Button onClick={(e: any) => handleMenuIconClick(e, index)} className={'badge success'}>
-											member.mb_type
+											{inquiry?.noticeStatus}
 										</Button>
 
 										<Menu
@@ -171,12 +181,7 @@ export const InquiryList = (props: InquiryPanelListType) => {
 										>
 											<MenuItem onClick={(e: any) => generateMentorTypeHandle('member._id', 'mentor', 'originate')}>
 												<Typography variant={'subtitle1'} component={'span'}>
-													MENTOR
-												</Typography>
-											</MenuItem>
-											<MenuItem onClick={(e: any) => generateMentorTypeHandle('member._id', 'user', 'remove')}>
-												<Typography variant={'subtitle1'} component={'span'}>
-													USER
+													{NoticeStatus.DELETE}
 												</Typography>
 											</MenuItem>
 										</Menu>

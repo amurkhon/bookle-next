@@ -12,13 +12,66 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import TablePagination from '@mui/material/TablePagination';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { InquiryList } from '../../../libs/components/admin/cs/InquiryList';
+import { Notice } from '../../../libs/types/notice/notice';
+import { useQuery } from '@apollo/client';
+import { GET_NOTICES } from '../../../apollo/user/query';
+import { T } from '../../../libs/types/common';
+import { NoticesInquiry } from '../../../libs/types/notice/notice.input';
+import { NoticeCategory, NoticeStatus } from '../../../libs/enums/notice.enum';
 
-const InquiryArticles: NextPage = (props: any) => {
+const InquiryArticles: NextPage = ({initialInquiry, initialValues, ...props}: any) => {
 	const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
+	const [ inquiryData, setInquiryData ] = useState<Notice[]>([]);
+	const [searchInquiryData, setSearchInquiryData] = useState<NoticesInquiry>(initialInquiry);
+	const [total, setTotal] = useState<number>(0);
+	const [tab, setTab ] = useState<string>('all');
+	const [searchText, setSearchText ] = useState<string>('');
 
 	/** APOLLO REQUESTS **/
+
+	const {
+		loading: getInquiryLoading,
+		data: getInquiryData,
+		error: getInquiryError,
+		refetch: getInquiryRefetch,
+	} = useQuery(
+		GET_NOTICES,
+		{
+			fetchPolicy: "network-only",
+			variables: {
+				input: searchInquiryData,
+			},
+			notifyOnNetworkStatusChange: true,
+			onCompleted: (data: T) => {
+				setInquiryData(data?.getNotices?.list);
+				setTotal(data?.getNotices?.metaCounter[0]?.total);
+			}
+		}
+	);
+
 	/** LIFECYCLES **/
 	/** HANDLERS **/
+
+	const handleTabChange = (e: React.MouseEvent, tab: string) => {
+		setTab(tab);
+		if( tab === 'all' ) {
+			setSearchInquiryData(initialInquiry);
+		} else if ( tab === 'active') {
+			setSearchInquiryData({ ...searchInquiryData, search: {noticeCategory: NoticeCategory.INQUIRY, noticeStatus: NoticeStatus.ACTIVE }});
+		} else {
+			setSearchInquiryData({ ...searchInquiryData, search: {noticeCategory: NoticeCategory.INQUIRY, noticeStatus: NoticeStatus.DELETE }});
+		}
+	}
+
+	const handleMenuIconClick = (e: any, index: number) => {
+		const tempAnchor = anchorEl.slice();
+		tempAnchor[index] = e.currentTarget;
+		setAnchorEl(tempAnchor);
+	};
+
+	const handleMenuIconClose = () => {
+		setAnchorEl([]);
+	};
 
 	return (
 		<Box component={'div'} className={'content'}>
@@ -31,54 +84,78 @@ const InquiryArticles: NextPage = (props: any) => {
 						<Box component={'div'}>
 							<List className={'tab-menu'}>
 								<ListItem
-									// onClick={(e) => handleTabChange(e, 'all')}
+									onClick={(e: any) => handleTabChange(e, 'all')}
 									value="all"
-									className={'all' === 'all' ? 'li on' : 'li'}
+									className={tab === 'all' ? 'li on' : 'li'}
 								>
-									All (0)
+									All
 								</ListItem>
 								<ListItem
-									// onClick={(e) => handleTabChange(e, 'active')}
+									onClick={(e: any) => handleTabChange(e, 'active')}
 									value="active"
-									className={'all' === 'all' ? 'li on' : 'li'}
+									className={tab === 'active' ? 'li on' : 'li'}
 								>
-									Active (0)
+									Active
 								</ListItem>
 								<ListItem
-									// onClick={(e) => handleTabChange(e, 'blocked')}
-									value="blocked"
-									className={'all' === 'all' ? 'li on' : 'li'}
-								>
-									Blocked (0)
-								</ListItem>
-								<ListItem
-									// onClick={(e) => handleTabChange(e, 'deleted')}
+									onClick={(e: any) => handleTabChange(e, 'deleted')}
 									value="deleted"
-									className={'all' === 'all' ? 'li on' : 'li'}
+									className={tab === 'deleted' ? 'li on' : 'li'}
 								>
-									Deleted (0)
+									Viewed
 								</ListItem>
 							</List>
 							<Divider />
 							<Stack className={'search-area'} sx={{ m: '24px' }}>
-								<Select sx={{ width: '160px', mr: '20px' }} value={'searchCategory'}>
-									<MenuItem value={'mb_nick'}>mb_nick</MenuItem>
-									<MenuItem value={'mb_id'}>mb_id</MenuItem>
-								</Select>
-
 								<OutlinedInput
-									value={'searchInput'}
-									// onChange={(e) => handleInput(e.target.value)}
+									value={searchText}
+									onChange={(e) => setSearchText(e.target.value)}
 									sx={{ width: '100%' }}
 									className={'search'}
-									placeholder="Search user name"
+									placeholder="Search inquiry by title"
 									onKeyDown={(event) => {
-										// if (event.key == 'Enter') searchTargetHandler().then();
+										if (event.key == 'Enter') {
+											setSearchInquiryData(
+												{
+													...searchInquiryData,
+													search: {
+														...searchInquiryData.search,
+														text: searchText
+													}
+												}
+											);
+										};
 									}}
 									endAdornment={
 										<>
-											{true && <CancelRoundedIcon onClick={() => {}} />}
-											<InputAdornment position="end" onClick={() => {}}>
+											{searchText && <CancelRoundedIcon
+												sx={{cursor: 'pointer'}}
+												onClick={() => {
+													setSearchText('');
+													setSearchInquiryData(
+														{
+															...searchInquiryData,
+															search: {
+																...searchInquiryData.search,
+																text: '',
+															}
+														}
+													);
+												}}
+											/>}
+											<InputAdornment position="end" 
+												onClick={() => {
+													setSearchInquiryData(
+														{
+															...searchInquiryData,
+															search: {
+																...searchInquiryData.search,
+																text: searchText
+															}
+														}
+													);
+												}}
+											>
 												<img src="/img/icons/search_icon.png" alt={'searchIcon'} />
 											</InputAdornment>
 										</>
@@ -92,8 +169,9 @@ const InquiryArticles: NextPage = (props: any) => {
 							// membersData={membersData}
 							// searchMembers={searchMembers}
 							anchorEl={anchorEl}
-							// handleMenuIconClick={handleMenuIconClick}
-							// handleMenuIconClose={handleMenuIconClose}
+							inquiryData={inquiryData}
+							handleMenuIconClick={handleMenuIconClick}
+							handleMenuIconClose={handleMenuIconClose}
 							// generateMentorTypeHandle={generateMentorTypeHandle}
 						/>
 
@@ -111,6 +189,16 @@ const InquiryArticles: NextPage = (props: any) => {
 			</Box>
 		</Box>
 	);
+};
+
+InquiryArticles.defaultProps = {
+	initialInquiry: {
+		page: 1,
+		limit: 10,
+		search: {
+			noticeCategory: NoticeCategory.INQUIRY
+		}
+	}
 };
 
 export default withAdminLayout(InquiryArticles);

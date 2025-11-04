@@ -5,8 +5,6 @@ import { Box, Button, InputAdornment, Stack, TextareaAutosize, TextField } from 
 import { List, ListItem } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import { TabContext } from '@mui/lab';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import TablePagination from '@mui/material/TablePagination';
@@ -22,7 +20,6 @@ import { sweetErrorHandling, sweetMixinSuccessAlert } from '../../../libs/sweetA
 import { GET_NOTICES } from '../../../apollo/user/query';
 import { Notice } from '../../../libs/types/notice/notice';
 import { T } from '../../../libs/types/common';
-import { NoticeUpdate } from '../../../libs/types/notice/notice.update';
 import { useRouter } from 'next/router';
 import { GET_NOTICE } from '../../../apollo/admin/query';
 
