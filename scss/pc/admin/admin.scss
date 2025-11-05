@@ -394,6 +394,56 @@
           padding: 0 0 0 15px;
         }
       }
+      .question_box {
+        width: 100%;
+        height: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: rgb(145 158 171 / 20%) 0px 0px 2px 5px, rgb(145 158 171 / 12%) 0px 12px 24px -4px;
+        
+        .head {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+
+          .close-icon {
+            &:hover {
+              background-color: red;
+              color: white;
+              scale: 1.2;
+              transition: 1s;
+            }
+          }
+          .title {
+            display: flex;
+            flex-direction: row;
+
+            img {
+              width: 60px;
+              height: 60px;
+              margin-right: 15px;
+              border-radius: 100%;
+            }
+
+            p {
+              font-size: 20px;
+              font-family: sans-serif;
+              font-variant: normal;
+            }
+          }
+        }
+        .body {
+          width: 100%;
+          height: auto;
+          padding: 10px;
+          border-radius: 0px 10px 10px 10px;
+          background-color: bisque;
+
+        }
+      }
       thead {
         tr {
           background: #fafafa;
@@ -415,6 +465,20 @@
         color: #616161;
         tr {
           border-bottom: 1px solid #eee;
+          .btn-wrap {
+            color: #fff;
+            font-weight: 500;
+            box-shadow: rgb(255 48 48 / 24%) 0px 8px 16px 0px;
+            height: 40px;
+            margin-top: 20px;
+            background-color: #d16655;
+            font-weight: bold;
+            color: white;
+            &:hover {
+              background-color: #2e4a5b;
+              box-shadow:0 8px 16px 0 rgba(0,0,0,0.6)
+            }
+          }
         }
         tr:last-child {
           border-bottom: 0;

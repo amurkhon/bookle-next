@@ -200,7 +200,8 @@ export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
 															{status}
 														</Typography>
 													</MenuItem>
-												))}
+												)
+											)}
 										</Menu>
 									</TableCell>
 								</TableRow>

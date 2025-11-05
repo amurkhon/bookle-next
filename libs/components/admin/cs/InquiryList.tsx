@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import {
@@ -12,6 +12,8 @@ import {
 	Menu,
 	Fade,
 	MenuItem,
+	TextareaAutosize,
+	Box,
 } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
@@ -19,11 +21,18 @@ import { Stack } from '@mui/material';
 import { Notice } from '../../../types/notice/notice';
 import { NEXT_PUBLIC_REACT_APP_API_URL } from '../../../config';
 import Moment from 'react-moment';
-import { NoticeStatus } from '../../../enums/notice.enum';
+import { NoticeCategory, NoticeStatus } from '../../../enums/notice.enum';
+import CloseIcon from '@mui/icons-material/Close';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_NOTICE } from '../../../../apollo/admin/query';
+import { T } from '../../../types/common';
+import { UPDATE_NOTICE } from '../../../../apollo/user/mutation';
+import { NoticesInquiry } from '../../../types/notice/notice.input';
 
 interface Data {
 	category: string;
 	qna_case_status: string;
+	inquiry_action: string;
 	title: string;
 	writer: string;
 	date: string;
@@ -69,7 +78,13 @@ const headCells: readonly HeadCell[] = [
 		id: 'qna_case_status',
 		numeric: false,
 		disablePadding: false,
-		label: 'QNA STATUS',
+		label: 'STATUS',
+	},
+	{
+		id: 'inquiry_action',
+		numeric: false,
+		disablePadding: false,
+		label: 'Action',
 	},
 ];
 
@@ -111,6 +126,9 @@ interface InquiryPanelListType {
 	handleMenuIconClose?: any;
 	generateMentorTypeHandle?: any;
 	inquiryData: Notice[];
+	updateTermsHandler: any;
+	getInquiriesRefetch: any;
+	searchInquiryData: NoticesInquiry;
 }
 
 export const InquiryList = (props: InquiryPanelListType) => {
@@ -123,15 +141,98 @@ export const InquiryList = (props: InquiryPanelListType) => {
 		handleMenuIconClose,
 		generateMentorTypeHandle,
 		inquiryData,
+		updateTermsHandler,
+		getInquiriesRefetch,
+		searchInquiryData
 	} = props;
 	const router = useRouter();
+	const [ open, setOpen ] = useState<boolean>(false);
+	const [ inquiry, setInquiry ] = useState<Notice>();
+
+	const image = `${NEXT_PUBLIC_REACT_APP_API_URL}/${inquiry?.memberData?.memberImage}` ?
+		`${NEXT_PUBLIC_REACT_APP_API_URL}/${inquiry?.memberData?.memberImage}` : 
+		'/img/profile/defaultUser.svg';
 
 	/** APOLLO REQUESTS **/
+
+	const [ updateNotice ] = useMutation(UPDATE_NOTICE);
+
+	const {
+		loading: getInquiryLoading,
+		data: getInquiryData,
+		error: getInquiryError,
+		refetch: getInquiryRefetch,
+	} = useQuery(
+		GET_NOTICE,
+		{
+			fetchPolicy: "network-only",
+			variables: {
+				input: router.query.id,
+			},
+			skip: !router.query.id,
+			notifyOnNetworkStatusChange: true,
+			onCompleted: (data: T) => {
+				setInquiry(data?.getNotice);
+			}
+		}
+	);
+
 	/** LIFECYCLES **/
+
+	useEffect(() => {
+		if(!open) {
+			router.push(`/_admin/cs/inquiry`);
+		}
+
+		getInquiryRefetch({input: router.query.id});
+		getInquiriesRefetch( { input: { ...searchInquiryData } });
+	}, [open])
+
 	/** HANDLERS **/
+
+	const inquiryViewHandler = async (id: string) => {
+		await router.push({
+			pathname: '/_admin/cs/inquiry',
+			query: { id: id },
+		});
+		setOpen(true);
+		await updateNotice(
+			{
+				variables: {
+					input: {
+						_id: id,
+						noticeStatus: NoticeStatus.HOLD,
+						noticeCategory: NoticeCategory.INQUIRY,
+					},
+				},
+			},
+		);
+	};
 
 	return (
 		<Stack>
+			{ open ? <Stack className={'question_box'}>
+						<Stack className={'head'}>
+							<Stack className={'title'}>
+								<img src={image} />
+								<Box>
+									<Typography>
+										{inquiry?.memberData?.memberNick}
+									</Typography>
+									<span>
+										<Moment format='DD.MM.YYYY'>{inquiry?.createdAt}</Moment>
+									</span>
+								</Box>
+							</Stack>
+							<CloseIcon onClick={() => {setOpen(false)}} className={'close-icon'} />
+						</Stack>
+						<Box className={'body'}>
+							<Typography>
+								{inquiry?.noticeContent}
+							</Typography>
+						</Box>
+					</Stack> : ''
+			}
 			<TableContainer>
 				<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}>
 					{/*@ts-ignore*/}
@@ -179,12 +280,49 @@ export const InquiryList = (props: InquiryPanelListType) => {
 											TransitionComponent={Fade}
 											sx={{ p: 1 }}
 										>
-											<MenuItem onClick={(e: any) => generateMentorTypeHandle('member._id', 'mentor', 'originate')}>
-												<Typography variant={'subtitle1'} component={'span'}>
-													{NoticeStatus.DELETE}
-												</Typography>
-											</MenuItem>
+											{Object.values(NoticeStatus)
+												.filter((ele: string) => ele !== inquiry?.noticeStatus)
+												.map((status: string) => {
+													
+													return status === NoticeStatus.ACTIVE ? (
+													<MenuItem disabled onClick={(e: any) => {updateTermsHandler(
+														{
+															_id: inquiry?._id,
+															noticeStatus: status,
+															noticeCategory: NoticeCategory.INQUIRY,
+														}
+													);
+													}}>
+														<Typography variant={'subtitle1'} component={'span'}>
+															{status}
+														</Typography>
+													</MenuItem>
+												) : 
+												(
+													<MenuItem onClick={(e: any) => {updateTermsHandler(
+														{
+															_id: inquiry?._id,
+															noticeStatus: status,
+															noticeCategory: NoticeCategory.INQUIRY,
+														}
+													);
+													}}>
+														<Typography variant={'subtitle1'} component={'span'}>
+															{status}
+														</Typography>
+													</MenuItem>
+												)}
+											)}
 										</Menu>
+									</TableCell>
+									<TableCell align='center'>
+										<Button
+											className={'btn-wrap'}
+											variant={'outlined'}
+											onClick={() => {inquiryViewHandler(inquiry._id)}}
+										>
+											View
+										</Button>
 									</TableCell>
 								</TableRow>
 							);

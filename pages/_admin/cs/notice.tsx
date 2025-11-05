@@ -137,14 +137,11 @@ const AdminNotice: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 		}
 	}, [insertTermsData]);
 
-	console.log("insertTersmsData: ", insertTermsData);
-
 	const updateTermsHandler = useCallback( async ( ) => {
 		try {
 
 			// @ts-ignore
 			insertTermsData._id = getNoticeData?.getNotice?._id;
-			console.log("insertTermsData: ", insertTermsData);
 			await updateNotice(
 				{
 					variables: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { NextPage } from 'next';
 import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
 import { Box, InputAdornment, Stack } from '@mui/material';
@@ -13,11 +13,14 @@ import TablePagination from '@mui/material/TablePagination';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { InquiryList } from '../../../libs/components/admin/cs/InquiryList';
 import { Notice } from '../../../libs/types/notice/notice';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { GET_NOTICES } from '../../../apollo/user/query';
 import { T } from '../../../libs/types/common';
 import { NoticesInquiry } from '../../../libs/types/notice/notice.input';
 import { NoticeCategory, NoticeStatus } from '../../../libs/enums/notice.enum';
+import { UPDATE_NOTICE } from '../../../apollo/user/mutation';
+import { sweetErrorHandling, sweetMixinSuccessAlert } from '../../../libs/sweetAlert';
+import { NoticeUpdate } from '../../../libs/types/notice/notice.update';
 
 const InquiryArticles: NextPage = ({initialInquiry, initialValues, ...props}: any) => {
 	const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
@@ -28,6 +31,8 @@ const InquiryArticles: NextPage = ({initialInquiry, initialValues, ...props}: an
 	const [searchText, setSearchText ] = useState<string>('');
 
 	/** APOLLO REQUESTS **/
+
+	const [ updateNotice ] = useMutation(UPDATE_NOTICE);
 
 	const {
 		loading: getInquiryLoading,
@@ -52,12 +57,33 @@ const InquiryArticles: NextPage = ({initialInquiry, initialValues, ...props}: an
 	/** LIFECYCLES **/
 	/** HANDLERS **/
 
+	const updateTermsHandler = async ( data: NoticeUpdate ) => {
+		try {
+			await updateNotice(
+				{
+					variables: {
+						input: data
+					},
+				},
+			);
+
+
+			handleMenuIconClose();
+			await getInquiryRefetch({ input: searchInquiryData });
+			await sweetMixinSuccessAlert('Inquiry has been changed successfully!');
+		} catch (err: any) {
+			sweetErrorHandling(err).then();
+		}
+	};
+
 	const handleTabChange = (e: React.MouseEvent, tab: string) => {
 		setTab(tab);
 		if( tab === 'all' ) {
 			setSearchInquiryData(initialInquiry);
 		} else if ( tab === 'active') {
 			setSearchInquiryData({ ...searchInquiryData, search: {noticeCategory: NoticeCategory.INQUIRY, noticeStatus: NoticeStatus.ACTIVE }});
+		} else if ( tab === 'hold') {
+			setSearchInquiryData({ ...searchInquiryData, search: {noticeCategory: NoticeCategory.INQUIRY, noticeStatus: NoticeStatus.HOLD }});
 		} else {
 			setSearchInquiryData({ ...searchInquiryData, search: {noticeCategory: NoticeCategory.INQUIRY, noticeStatus: NoticeStatus.DELETE }});
 		}
@@ -98,11 +124,18 @@ const InquiryArticles: NextPage = ({initialInquiry, initialValues, ...props}: an
 									Active
 								</ListItem>
 								<ListItem
+									onClick={(e: any) => handleTabChange(e, 'hold')}
+									value="hold"
+									className={tab === 'hold' ? 'li on' : 'li'}
+								>
+									Viewed
+								</ListItem>
+								<ListItem
 									onClick={(e: any) => handleTabChange(e, 'deleted')}
 									value="deleted"
 									className={tab === 'deleted' ? 'li on' : 'li'}
 								>
-									Viewed
+									Deleted
 								</ListItem>
 							</List>
 							<Divider />
@@ -172,7 +205,9 @@ const InquiryArticles: NextPage = ({initialInquiry, initialValues, ...props}: an
 							inquiryData={inquiryData}
 							handleMenuIconClick={handleMenuIconClick}
 							handleMenuIconClose={handleMenuIconClose}
-							// generateMentorTypeHandle={generateMentorTypeHandle}
+							updateTermsHandler={updateTermsHandler}
+							getInquiriesRefetch={getInquiryRefetch}
+							searchInquiryData={searchInquiryData}
 						/>
 
 						<TablePagination
