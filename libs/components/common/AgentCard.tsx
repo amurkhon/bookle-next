@@ -46,7 +46,6 @@ const AgentCard = (props: AgentCardProps) => {
 					}}
 					onClick={() => {pushDetailHandler(author?._id)}}
 				>
-					<div>{author?.memberProperties} properties</div>
 				</Box>
 
 				<Stack className={'agent-desc'}>
@@ -59,7 +58,7 @@ const AgentCard = (props: AgentCardProps) => {
 						>
 							<strong>{author?.memberFullName ?? author?.memberNick}</strong>
 						</Link>
-						<span>Agent</span>
+						<span style={{fontStyle: 'italic'}}>Total of books: {author?.memberProperties} </span>
 					</Box>
 					<Box component={'div'} className={'buttons'}>
 						<IconButton color={'default'}>
