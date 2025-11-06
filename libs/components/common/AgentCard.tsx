@@ -35,18 +35,12 @@ const AgentCard = (props: AgentCardProps) => {
 	} else {
 		return (
 			<Stack className="agent-general-card">
-				<Box
-					component={'div'}
+				<span
 					className={'agent-img'}
-					style={{
-						backgroundImage: `url(${imagePath})`,
-						backgroundSize: 'cover',
-						backgroundPosition: 'center',
-						backgroundRepeat: 'no-repeat',
-					}}
 					onClick={() => {pushDetailHandler(author?._id)}}
 				>
-				</Box>
+					<img src={imagePath} />
+				</span>
 
 				<Stack className={'agent-desc'}>
 					<Box component={'div'} className={'agent-info'}>
