@@ -33,12 +33,12 @@ const TopAgentCard = (props: TopAuthorProps) => {
 	} else {
 		return (
 			<Stack className="top-agent-card">
-				<Box 
-					className={'img-box'}
+				<span 
+					className={'agent-img'}
 					onClick={() => {pushAuthorDetailHandler(author?._id)}}
 				>
 					<img src={agentImage} alt="" />
-				</Box>
+				</span>
 				<span className='gradient'></span>
 
 				<strong>{author?.memberNick}</strong>
