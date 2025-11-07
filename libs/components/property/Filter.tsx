@@ -21,6 +21,7 @@ import Option from '@mui/joy/Option';
 import { Box, Chip, CssVarsProvider } from '@mui/joy';
 import { PropertiesInquiry } from '../../types/property/property.input';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import SearchIcon from '@mui/icons-material/Search';
 
 interface FilterType {
 	searchFilter: PropertiesInquiry;
@@ -322,40 +323,52 @@ const Filter = (props: FilterType) => {
 						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
 						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
 					</Box>
-					<Input
-						value={searchText}
-						disableUnderline={true} 
-						sx={{
-							padding: '5px 15px',
-							width: "100%",
-							borderRadius: '20px',
-							backgroundColor: '#ffffff',
-							marginBottom: '20px',
-						}}
-						placeholder={'Search Here...'}
-						onChange={(e: any) => setSearchText(e.target.value)}
-						onKeyDown={(event: any) => {
-							if (event.key == 'Enter') {
-								setSearchFilter({
-									...searchFilter,
-									search: { ...searchFilter.search, text: searchText },
-								});
+					<Stack className={'input-box'}>
+						<Input
+							value={searchText}
+							disableUnderline={true} 
+							sx={{
+								padding: '5px 15px',
+								width: "100%",
+								borderRadius: '2px',
+								backgroundColor: '#ffffff',
+								marginBottom: '20px',
+							}}
+							placeholder={'Search Here...'}
+							onChange={(e: any) => setSearchText(e.target.value)}
+							onKeyDown={(event: any) => {
+								if (event.key == 'Enter') {
+									setSearchFilter({
+										...searchFilter,
+										search: { ...searchFilter.search, text: searchText },
+									});
+								}
+							}}
+							endAdornment={
+								<Tooltip title="Search">
+									<IconButton onClick={() => {
+										setSearchFilter({
+											...searchFilter,
+											search: { ...searchFilter.search, text: searchText },
+										});
+									}}>
+										<SearchIcon />
+									</IconButton>
+								</Tooltip>
 							}
-						}}
-						endAdornment={
-							<Tooltip title="Reset">
-								<IconButton onClick={refreshHandler}>
-									<RefreshIcon />
-								</IconButton>
-							</Tooltip>
-						}
-					/>
+						/>
+						<Tooltip title="Reset" sx={{top:'-10px'}}>
+							<IconButton onClick={refreshHandler}>
+								<RefreshIcon />
+							</IconButton>
+						</Tooltip>
+					</Stack>
 					<Button
+					 	className={'filter-button'}
 						sx={{
 							width: '30%',
 							padding: '10px',
-							backgroundColor: '#d16655',
-							borderRadius: '20px'
+							backgroundColor: '#d16655'
 						}}
 					>
 						Search
@@ -382,7 +395,7 @@ const Filter = (props: FilterType) => {
 								))}
 								</Box>
 							)}
-							sx={{ minWidth: '15rem', borderRadius: '20px' }}
+							sx={{ minWidth: '15rem' }}
 							slotProps={{
 								listbox: {
 								sx: {
@@ -419,7 +432,7 @@ const Filter = (props: FilterType) => {
 								))}
 								</Box>
 							)}
-							sx={{ minWidth: '15rem', borderRadius: '20px' }}
+							sx={{ minWidth: '15rem' }}
 							slotProps={{
 								listbox: {
 								sx: {
@@ -454,11 +467,11 @@ const Filter = (props: FilterType) => {
 					/>
 					<Stack className={'filter-bottom'}>
 						<Button
+							className={'filter-button'}
 							sx={{
 								width: '30%',
 								padding: '10px',
-								backgroundColor: '#d16655',
-								borderRadius: '20px'
+								backgroundColor: '#d16655'
 							}}
 							onClick={() => {propertyPriceHandler(value1)}}
 						>
@@ -485,11 +498,11 @@ const Filter = (props: FilterType) => {
 					/>
 					<Stack className={'filter-bottom'}>
 						<Button
+							className={'filter-button'}
 							sx={{
 								width: '30%',
 								padding: '10px',
-								backgroundColor: '#d16655',
-								borderRadius: '20px'
+								backgroundColor: '#d16655'
 							}}
 							onClick={() => {propertyPagesHandler(val)}}
 						>
