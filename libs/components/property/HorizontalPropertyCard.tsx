@@ -16,7 +16,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import Star from '@mui/icons-material/Star';
 import { Button, CssVarsProvider } from '@mui/joy';
 import { Property } from '../../types/property/property';
-import { NEXT_PUBLIC_REACT_APP_API_URL } from '../../config';
+import { NEXT_PUBLIC_REACT_APP_API_URL, topPropertyRank } from '../../config';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 
@@ -81,7 +81,7 @@ export default function ColumnPropertyCard(props: ColumnCardProps) {
                 p: 1,
               }}
             >
-              {true && (
+              {property && property?.propertyRank > topPropertyRank && (
                 <Chip
                   sx={{position: 'absolute', top: '25px'}}
                   variant="soft"
@@ -150,7 +150,7 @@ export default function ColumnPropertyCard(props: ColumnCardProps) {
           </Stack>
           <Stack>
             <Typography>
-              {property?.propertyDesc?.slice(0,350)}...
+              {property?.propertyDesc && property?.propertyDesc.length >= 400 ? `${property?.propertyDesc.slice(0, 396)}...` : property?.propertyDesc }
             </Typography>
           </Stack>
           <Stack direction="row" sx={{ slefAlign: 'flex-end' }}>

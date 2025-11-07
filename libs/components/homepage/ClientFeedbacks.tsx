@@ -12,7 +12,39 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 
-const FeedBackCard = () => {
+const userOpinions = [
+	{
+		name: 'Alan Wolker',
+		image: '/img/profile/feature-author.jpg',
+		address: 'South Korea, Daegu',
+		opinion: 'I love how shopping from Bookle supports my local bookstores! Plus, they have great deals and the books always arrive quickly.'
+
+	},
+	{
+		name: 'Shari Lapena',
+		image: '/img/profile/feature-author-1-3.jpg',
+		address: 'USA, California',
+		opinion: 'Perfectly fine online bookstore. You pay a little for that—shipping charges and relatively slow delivery. Bit then, you seldom need a book next day. I try to relax into it.'
+
+	},
+	{
+		name: 'Sharly Bon',
+		image: '/img/profile/secondGirl.jpg',
+		address: 'England, Manchester',
+		opinion: 'I love that I was able to support one of my favorite local independent bookstores and still get the books I wanted. I even found a few books that I haven’t been able to find at the bigger retail bookstores!'
+
+	},
+	{
+		name: 'Akramjonov Amurkhon',
+		image: '/img/profile/feature-author-1-6.jpg',
+		address: 'Uzbekistan, Tashkent',
+		opinion: 'An author led me to this company and I love the vision and mission. It was easy to order online and my books showed up when expected.'
+
+	},
+];
+
+const FeedBackCard = (props: any) => {
+	const { opinion } = props;
 	const device = useDeviceDetect();
 
 	if (device === 'mobile') {
@@ -23,33 +55,30 @@ const FeedBackCard = () => {
 			<Stack className={'card-box'}>
 				<Stack className={'introduction'}>
 					<img
-						src={'/img/profile/girl.svg'}
+						src={opinion?.image}
 						loading="lazy"
 						alt=""
 					/>
 					<Stack>
 						<Typography level="title-lg" id="card-description">
-							Yosemite Park
+							{opinion?.name}
 						</Typography>
 						<Typography
 						level="body-sm"
 						aria-describedby="card-description"
 						sx={{ mb: 1 }}
 						>
-							California, USA
+							{opinion?.address}
 						</Typography>
 					</Stack>
 				</Stack>
 				<Stack className={'card-body'}>
 					<Stack className={'feedback-purpose'}>
 						<BlurOnIcon className={'icon'} sx={{ fontSize: 40, marginRight: '10px', color: '#e96d5a' }} />
-						<Typography>Website adventages</Typography>
+						<Typography>User About Platform</Typography>
 					</Stack>
 					<Typography>
-						Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-						Cupiditate eligendi harum repellendus, similique ipsa ipsam amet. 
-						Magni est magnam, dolorem molestiae vel pariatur, fugit, 
-						velit minus quaerat maxime libero mollitia.
+						{opinion?.opinion}
 					</Typography>
 				</Stack>
 			</Stack>
@@ -90,10 +119,10 @@ const FeedBacks = () => {
 								el: '.swiper-popular-pagination',
 							}}
 						>
-							{[1,2,3,4].map((ele, index) => {
+							{userOpinions.map((ele: any, index: number) => {
 								return (
 									<SwiperSlide key={index} className={'feedback-slide'}>
-										<FeedBackCard />
+										<FeedBackCard opinion={ele} />
 									</SwiperSlide>
 								);
 							})}

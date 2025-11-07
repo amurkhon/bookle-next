@@ -43,7 +43,7 @@ const PropertyCard = (props: PropertyCardType) => {
 					>
 						<img src={imagePath} alt="" />
 					</Link>
-					{ 4 > topPropertyRank && (
+					{ property && property?.propertyRank > topPropertyRank && (
 						<Box component={'div'} className={'top-badge'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<Typography>Top</Typography>
