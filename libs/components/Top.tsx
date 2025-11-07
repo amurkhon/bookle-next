@@ -80,8 +80,8 @@ const Top = () => {
 			variables: {input: { status: NotificationStatus.WAIT }},
 			notifyOnNetworkStatusChange: true,
 			onCompleted: (data: T) => {
-				setNotifications(data?.getNotifications?.list);
-				setTotal(data?.getNotifications?.metaCounter[0]?.total);
+				setNotifications(data?.getNotifications?.list.filter((ele: Notification) => {ele?.authorId===user?._id}));
+				setTotal(notifications.length);
 			}
 		}
 	);

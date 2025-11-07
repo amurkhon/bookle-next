@@ -39,12 +39,13 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
 
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [total, setTotal] = useState<number>(0);
-    const [ notificationVar, setNotificationVar ] = useState<Notification>();
+    const [ close, setClose ] = useState<boolean>(false);
+    const [ notificationVar, setNotificationVar ] = useState<Notification[]>([]);
     const [ notId, setNotId ] = useState<string>(
         `${router?.query?.notificationId}` ? `${router?.query?.notificationId}` : '');
 
-    const image = `${NEXT_PUBLIC_REACT_APP_API_URL}/${notificationVar?.memberData?.memberImage}` ?
-        `${NEXT_PUBLIC_REACT_APP_API_URL}/${notificationVar?.memberData?.memberImage}` : 
+    const image = `${NEXT_PUBLIC_REACT_APP_API_URL}/${notificationVar[0]?.memberData?.memberImage}` ?
+        `${NEXT_PUBLIC_REACT_APP_API_URL}/${notificationVar[0]?.memberData?.memberImage}` : 
         '/img/profile/defaultUser.svg';
 
     /* APOLLO REQUESTS*/
@@ -81,7 +82,7 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
             variables: {input: notId},
             notifyOnNetworkStatusChange: true,
             onCompleted: (data: T) => {
-                setNotificationVar(data?.getNotification);
+                setNotificationVar([data?.getNotification]);
             }
         }
     );
@@ -111,6 +112,12 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
             setSearchFilter(inputObj);
         }
     }, [router]);
+
+    useEffect(() => {
+        if(!notificationVar[0]) {
+             router.push({pathname: '/mypage/notifications'});
+        }
+    },[notificationVar[0]])
 
     useEffect(() => {getNotificationsRefetch({input: searchFilter})}, [searchFilter]);
 
@@ -150,11 +157,11 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
     };
 
     const pushTargetHandler = async (e: React.MouseEvent<HTMLElement>) => {
-        if (notificationVar?.propertyId) {
+        if (notificationVar[0]?.propertyId) {
             await router.push({pathname: '/books/detail', query: {id: e.currentTarget.id}});
         } 
-        if (notificationVar?.articleId) {
-            await router.push({pathname: '/community/detail', query: {articleCategory: notificationVar?.articleData?.articleCategory, id: e.currentTarget.id}});
+        if (notificationVar[0]?.articleId) {
+            await router.push({pathname: '/community/detail', query: {articleCategory: notificationVar[0]?.articleData?.articleCategory, id: e.currentTarget.id}});
         }
     };
 
@@ -301,29 +308,34 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
                             </List>
                         </CssVarsProvider>
                     </Stack>
-                    {notificationVar ? (
+                    {notificationVar[0] ? (
                         <Stack className={'notification-detail'}>
                             <Stack className={'header'}>
                                 <Stack className={'notification-info'}>
                                     <img src={image} alt="" />
                                     <Box>
-                                        <Typography>{notificationVar?.notificationTitle}</Typography>
+                                        <Typography>{notificationVar[0]?.notificationTitle}</Typography>
                                         <span>
                                             <Moment format={'HH:mm, DD.MM.YYYY'}>
-                                                {notificationVar?.createdAt}
+                                                {notificationVar[0]?.createdAt}
                                             </Moment>
                                         </span>
                                     </Box>
                                 </Stack>
-                                <CloseIcon variant={'lg'} />
+                                <Box className={'close-icon'}>
+                                    <CloseIcon variant={'lg'} onClick={() => {
+                                        setNotificationVar([]);
+                                        setNotId('')
+                                    }}/>
+                                </Box>
                             </Stack>
                             <Box className={'main-body'}>
-                                {notificationVar?.notificationDesc}
+                                {notificationVar[0]?.notificationDesc}
                             </Box>
                             {
-                                !notificationVar?.propertyId && !notificationVar?.articleId ? '' : (
-                                    <Box className={'link'} onClick={pushTargetHandler} id={notificationVar?.propertyId ? notificationVar?.propertyId : notificationVar?.articleId}>
-                                        Click here to see {notificationVar?.notificationGroup === NotificationGroup.PROPERTY ? 'Property' : 'Article'}
+                                !notificationVar[0]?.propertyId && !notificationVar[0]?.articleId ? '' : (
+                                    <Box className={'link'} onClick={pushTargetHandler} id={notificationVar[0]?.propertyId ? notificationVar[0]?.propertyId : notificationVar[0]?.articleId}>
+                                        Click here to see {notificationVar[0]?.notificationGroup === NotificationGroup.PROPERTY ? 'Property' : 'Article'}
                                     </Box>
                                 )
                             }
