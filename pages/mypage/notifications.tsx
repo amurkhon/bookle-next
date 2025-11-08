@@ -319,7 +319,7 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
                         <Stack className={'notification-detail'}>
                             <Stack className={'header'}>
                                 <Stack className={'notification-info'}>
-                                    <img src={image} alt="" />
+                                    <img src={image} alt="" onClick={() => pushMemberHandler(notificationVar[0]?.memberData?._id)} />
                                     <Box>
                                         <Typography>{notificationVar[0]?.notificationTitle}</Typography>
                                         <span>
