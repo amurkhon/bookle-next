@@ -3,8 +3,9 @@ import useDeviceDetect from "../../libs/hooks/useDeviceDetect";
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
 import { useRouter } from "next/router";
 import { userVar } from "../../apollo/store";
-import { Button, Divider, Link, Stack } from "@mui/material";
+import { Divider, Link, Stack } from "@mui/material";
 import withLayoutFull from "../../libs/components/layout/LayoutFull";
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 import Box from '@mui/joy/Box';
 import Radio from '@mui/joy/Radio';
@@ -64,7 +65,7 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
             variables: {input: searchFilter},
             notifyOnNetworkStatusChange: true,
             onCompleted: (data: T) => {
-                setNotifications(data?.getNotifications?.list);
+                setNotifications(data?.getNotifications?.list.filter((ele: Notification) => { return ele.authorId !== user?._id;}));
                 setTotal(data?.getNotifications?.metaCounter[0]?.total);
             }
         }
@@ -301,6 +302,12 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
                                                 <Typography>
                                                     {notification?.notificationDesc}
                                                 </Typography>
+                                                { notification?.notificationStatus === NotificationStatus.READ ? (
+                                                    <span className={'badge'} >
+                                                        <DoneAllIcon sx={{color: 'blue'}} />
+                                                    </span>
+                                                ) : ''
+                                                }
                                             </Box>
                                         </Stack>
                                     );

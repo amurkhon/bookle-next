@@ -80,11 +80,14 @@ const Top = () => {
 			variables: {input: { status: NotificationStatus.WAIT }},
 			notifyOnNetworkStatusChange: true,
 			onCompleted: (data: T) => {
-				setNotifications(data?.getNotifications?.list.filter((ele: Notification) => {ele?.authorId===user?._id}));
-				setTotal(notifications.length);
+				setNotifications(data?.getNotifications?.list.filter((ele: Notification) => { return ele.authorId !== user?._id;}));
+				setTotal(data?.getNotifications?.list.filter((ele: Notification) => { return ele.authorId !== user?._id;}).length);
 			}
 		}
 	);
+
+	console.log("notififcations: ",notifications);
+	console.log("total: ", notifications.length);
 
 	/** LIFECYCLES **/
 	useEffect(() => {

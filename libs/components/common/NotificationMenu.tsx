@@ -99,7 +99,7 @@ export function NotificationMenu(props: NotificationMenu) {
         color="inherit"
         sx={{ mr: 2 }}
       >
-        <Badge badgeContent={total} color="error" invisible={total !==0 || 'undefined' ? false : true}>
+        <Badge badgeContent={total} color="error" invisible={total !== 0 || 'undefined' ? false : true}>
           <NotificationsIcon />
         </Badge>
       </IconButton>
