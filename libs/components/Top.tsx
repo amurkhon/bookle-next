@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter, withRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { getJwtToken, logOut, updateUserInfo } from '../auth';
-import { Stack, Box, createTheme, List, Typography } from '@mui/material';
+import { Stack, Box,Typography, Drawer } from '@mui/material';
 import CallIcon from '@mui/icons-material/Call';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -16,7 +16,6 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import { CaretDown } from 'phosphor-react';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import Link from 'next/link';
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../apollo/store';
 import { Logout } from '@mui/icons-material';
@@ -26,8 +25,25 @@ import { GET_NOTIFICATIONS } from '../../apollo/user/query';
 import { T } from '../types/common';
 import { NotificationStatus } from '../enums/notification.enum';
 import Badge, { BadgeProps } from '@mui/material/Badge';
-import Moment from 'react-moment';
 import { NotificationMenu } from './common/NotificationMenu';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Toolbar from '@mui/material/Toolbar';
+import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
+
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import HomeIcon from '@mui/icons-material/Home';
+import BookIcon from '@mui/icons-material/Book';
+import PeopleIcon from '@mui/icons-material/People';
+import PersonIcon from '@mui/icons-material/Person';
+import ArticleIcon from '@mui/icons-material/Article';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -58,12 +74,19 @@ const Top = () => {
 	const logoutOpen = Boolean(logoutAnchor);
 	const [anchorEl3, setAnchorEl3] = React.useState<null | HTMLElement>(null);
 	const openNot = Boolean(anchorEl3);
+
+	/*For Mobile Version */
+	const [openMenu, setOpenMenu] = React.useState(false);
+	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		notifications.length == 0 ? router.push({pathname: '/mypage/notifications'}) : setAnchorEl3(event.currentTarget);
 	};
 	const handleCloseNot = () => {
 		setAnchorEl3(null);
 	};
+	console.log("user: ", user);
 
 
 	/* APOLLO REQUESTS*/
@@ -118,6 +141,26 @@ const Top = () => {
 	}, []);
 
 	/** HANDLERS **/
+
+	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorElNav(event.currentTarget);
+	};
+	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorElUser(event.currentTarget);
+	};
+
+	const handleCloseNavMenu = () => {
+		setAnchorElNav(null);
+	};
+
+	const handleCloseUserMenu = () => {
+		setAnchorElUser(null);
+	};
+
+	const toggleDrawer = (newOpen: boolean) => () => {
+		setOpenMenu(newOpen);
+	};
+
 	const langClick = (e: any) => {
 		setAnchorEl2(e.currentTarget);
 	};
@@ -210,21 +253,154 @@ const Top = () => {
 	if (device == 'mobile') {
 		return (
 			<Stack className={'top'}>
-				<Link href={'/'}>
-					<div>{t('Home')}</div>
-				</Link>
-				<Link href={'/property'}>
-					<div>{t('Properties')}</div>
-				</Link>
-				<Link href={'/author'}>
-					<div> {t('Agents')} </div>
-				</Link>
-				<Link href={'/community?articleCategory=FREE'}>
-					<div> {t('Community')} </div>
-				</Link>
-				<Link href={'/cs'}>
-					<div> {t('CS')} </div>
-				</Link>
+				<Box sx={{ flexGrow: 1}}>
+					<AppBar position="static"
+						sx={{
+							backgroundColor: 'rgba(255, 255, 255, 0.6)',  // semi-transparent white
+							backdropFilter: 'blur(10px)',                  // blur effect
+							boxShadow: 'none',                             // optional: remove shadow
+						}}
+					>
+						<Toolbar>
+							<IconButton
+								size="large"
+								edge="start"
+								color="inherit"
+								aria-label="menu"
+								sx={{ mr: 2 }}
+							>
+								<MenuIcon sx={{color: 'black'}} onClick={toggleDrawer(true)} />
+							</IconButton>
+							<Box className={'logo-box'}>
+								<img src="/img/logo/black-logo.svg" alt="" />
+							</Box>
+							{ !user ? (
+								<Button color="inherit">Login</Button>
+							) : (
+								<Box sx={{ flexGrow: 0 }}>
+									<Tooltip title="Open settings">
+									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+										<Avatar alt="Remy Sharp" src={user?.memberImage ? `${NEXT_PUBLIC_REACT_APP_API_URL}/${user?.memberImage}` : '/img/profile/defaultUser.svg'} />
+									</IconButton>
+									</Tooltip>
+									<Menu
+										sx={{ mt: '45px' }}
+										id="menu-appbar"
+										anchorEl={anchorElUser}
+										anchorOrigin={{
+											vertical: 'top',
+											horizontal: 'right',
+										}}
+										keepMounted
+										transformOrigin={{
+											vertical: 'top',
+											horizontal: 'right',
+										}}
+										open={Boolean(anchorElUser)}
+										onClose={handleCloseUserMenu}
+									>
+										<MenuItem key={'logout'} onClick={handleCloseUserMenu}>
+											<Typography sx={{ textAlign: 'center' }}>Logout</Typography>
+										</MenuItem>
+									</Menu>
+								</Box>
+							)}
+						</Toolbar>
+					</AppBar>
+					<Drawer 
+						className={'drawer'} 
+						open={openMenu} 
+						onClose={toggleDrawer(false)}
+						sx={{
+							padding: '15px'
+						}}
+					>
+						<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+							<Box component={'div'} className={'logo-box'} sx={{padding:'10px'}}>
+								<Link href={'/'}>
+									<img src="/img/logo/black-logo.svg" alt="" />
+								</Link>
+							</Box>
+							<List>
+								<ListItem disablePadding>
+									<ListItemButton>
+										<ListItemIcon sx={{justifyContent: 'center'}}>
+											<HomeIcon />
+										</ListItemIcon>
+										<ListItemText>
+											<Link href={'/'}>
+												<div>{t('Home')}</div>
+											</Link>
+										</ListItemText>
+									</ListItemButton>
+								</ListItem>
+								<ListItem disablePadding>
+									<ListItemButton>
+										<ListItemIcon sx={{justifyContent: 'center'}}>
+											<BookIcon />
+										</ListItemIcon>
+										<ListItemText>
+											<Link href={'/books'}>
+												<div>{t('Books')}</div>
+											</Link>
+										</ListItemText>
+									</ListItemButton>
+								</ListItem>
+								<ListItem disablePadding>
+									<ListItemButton>
+										<ListItemIcon sx={{justifyContent: 'center'}}>
+											<PeopleIcon />
+										</ListItemIcon>
+										<ListItemText>
+											<Link href={'/author'}>
+												<div> {t('Authors')} </div>
+											</Link>
+										</ListItemText>
+									</ListItemButton>
+								</ListItem>
+								<ListItem disablePadding>
+									<ListItemButton>
+										<ListItemIcon sx={{justifyContent: 'center'}}>
+											<ArticleIcon />
+										</ListItemIcon>
+										<ListItemText>
+											<Link href={'/community?articleCategory=FREE'}>
+												<div> {t('Community')} </div>
+											</Link>
+										</ListItemText>
+									</ListItemButton>
+								</ListItem>
+								{user?._id && (
+									<ListItem disablePadding>
+										<ListItemButton>
+											<ListItemIcon sx={{justifyContent: 'center'}}>
+												<PersonIcon />
+											</ListItemIcon>
+											<ListItemText>
+												<Link href={'/mypage'}>
+													<div> {t('My Page')} </div>
+												</Link>
+											</ListItemText>
+										</ListItemButton>
+									</ListItem>
+								)}
+								<ListItem disablePadding>
+									<ListItemButton>
+										<ListItemIcon sx={{justifyContent: 'center'}}>
+											<SupportAgentIcon />
+										</ListItemIcon>
+										<ListItemText>
+											<Link href={'/cs'}>
+												<div> {t('CS')} </div>
+											</Link>
+										</ListItemText>
+									</ListItemButton>
+								</ListItem>
+							</List>
+							<Divider />
+						</Box>
+					</Drawer>
+				</Box>
 			</Stack>
 		);
 	} else {

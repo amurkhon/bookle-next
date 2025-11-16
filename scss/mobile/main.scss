@@ -2,11 +2,19 @@
 
 #mobile-wrap {
   .top {
-    height: 100px;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+    position: fixed;
+    z-index: 101;
+    .logo-box {
+      flex-grow: 1;
+      img {
+        width: 100px;
+      }
+    }
   }
 
   .info-box {
