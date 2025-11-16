@@ -65,6 +65,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<span>Trend Properties</span>
+						<p>Trend is based on likes</p>
 					</Stack>
 					<Stack className={'card-box'}>
 						{trendProperties.length === 0 ? (
