@@ -41,7 +41,49 @@ const CommunityCard = (props: CommunityCardProps) => {
     };
 
 	if (device === 'mobile') {
-		return <div>COMMUNITY CARD (MOBILE)</div>;
+		return (
+			<CssVarsProvider>
+				<Card id={`card${key}`} className={`card`} color="neutral" variant="plain">
+					<CardOverflow>
+						<AspectRatio ratio="1.5">
+							<img
+								src={articleImage}
+								alt=""
+							/>
+						</AspectRatio>
+					</CardOverflow>
+					<CardContent className={'card-content'}>
+						<Stack className={'meta-info'}>
+							<Box className={'info'}>
+								<PersonIcon className={'icon'} />
+								By {article?.memberData?.memberNick}
+							</Box>
+							<Box className={'info'}>
+								<ForumIcon className={'icon'} />
+								{article?.articleComments} Comments
+							</Box>
+						</Stack>
+						<Typography size={'large'}>
+							{article?.articleTitle}
+						</Typography>
+						<Typography variant={'h2'}>
+							{article?.articleContent.length > 43 ? `${article?.articleContent.slice(0, 43)}..` : article?.articleContent.slice(0, 45)}
+						</Typography>
+						<Divider className={'devider'} textAlign={'left'} light={true} sx={{width: '100%',marginBottom: "10px",marginTop:"10px", height: "3px", backgroundColor: "#bd7579"}} />
+						<Button 
+							className={'button'} 
+							sx={{width: "50%",backgroundColor: "#d16655", color: 'white'}} 
+							size={'lg'} 
+							endDecorator={<KeyboardArrowRight />} 
+							color={'#2e4a5b'}
+							onClick={() => {pushDetailHandler(article?._id, article?.articleCategory)}}
+						>
+							Read More
+						</Button>
+					</CardContent>
+				</Card>
+			</CssVarsProvider>
+		);
 	} else {
 		return (
 				<>

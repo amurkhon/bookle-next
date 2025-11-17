@@ -7,6 +7,8 @@ import { GET_BOARD_ARTICLES } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
 import { T } from '../../types/common';
 import { useRouter } from 'next/router';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper';
 
 const CommunityBoards = () => {
 	const device = useDeviceDetect();
@@ -40,7 +42,32 @@ const CommunityBoards = () => {
 
 
 	if (device === 'mobile') {
-		return <div>COMMUNITY BOARDS (MOBILE)</div>;
+		return (
+			<Stack className={'articles'}>
+				<Stack className={'container'}>
+					<Stack className={'info-box'}>
+						<span>Community Board Hightlights</span>
+					</Stack>
+					<Stack className={'wrapper'}>
+						<Swiper
+							className={'article-swiper'}
+							slidesPerView={1}
+							centeredSlides={true}
+							spaceBetween={29}
+							modules={[Autoplay]}
+						>
+							{articles.map((article: BoardArticle) => {
+								return (
+									<SwiperSlide className={'article-slide'} key={article?._id}>
+										<CommunityCard key={article?._id} article={article} />
+									</SwiperSlide>
+								);
+							})}
+						</Swiper>
+					</Stack>
+				</Stack>
+			</Stack>
+		);
 	} else {
 		return (
 			<Stack className={'community-board'}>

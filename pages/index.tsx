@@ -30,6 +30,7 @@ const Home: NextPage = () => {
 				<Advertisement />
 				<TopAgents />
 				<FeedBacks />
+				<CommunityBoards />
 			</Stack>
 		);
 	} else {
