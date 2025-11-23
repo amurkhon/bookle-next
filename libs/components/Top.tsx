@@ -249,7 +249,6 @@ const Top = () => {
 	if (device == 'mobile') {
 		return (
 			<Stack className={'top'}>
-				<Box className={'navbar-box'}>
 					<AppBar position="static"
 						sx={{
 							backgroundColor: 'rgba(255, 255, 255, 0.6)',  // semi-transparent white
@@ -400,7 +399,6 @@ const Top = () => {
 							<Divider />
 						</Box>
 					</Drawer>
-				</Box>
 			</Stack>
 		);
 	} else {

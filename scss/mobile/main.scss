@@ -11,13 +11,10 @@
     align-items: center;
     position: fixed;
     z-index: 101;
-    .navbar-box {
-      width: 100%;
-      .logo-box {
-        flex-grow: 1;
-        img {
-          width: 100px;
-        }
+    .logo-box {
+      flex-grow: 1;
+      img {
+        width: 100px;
       }
     }
   }
