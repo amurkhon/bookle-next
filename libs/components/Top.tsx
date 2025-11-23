@@ -249,7 +249,7 @@ const Top = () => {
 	if (device == 'mobile') {
 		return (
 			<Stack className={'top'}>
-				<Box sx={{ flexGrow: 1}}>
+				<Box sx={{ flexGrow: '1'}}>
 					<AppBar position="static"
 						sx={{
 							backgroundColor: 'rgba(255, 255, 255, 0.6)',  // semi-transparent white
