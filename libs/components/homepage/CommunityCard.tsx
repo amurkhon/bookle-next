@@ -63,10 +63,10 @@ const CommunityCard = (props: CommunityCardProps) => {
 								{article?.articleComments} Comments
 							</Box>
 						</Stack>
-						<Typography variant={'h3'}>
+						<Typography>
 							{article?.articleTitle}
 						</Typography>
-						<Typography variant={'h2'}>
+						<Typography >
 							{article?.articleContent.length > 43 ? `${article?.articleContent.slice(0, 43)}..` : article?.articleContent.slice(0, 45)}
 						</Typography>
 						<Divider className={'devider'} textAlign={'left'} light={true} sx={{width: '100%',marginBottom: "10px",marginTop:"10px", height: "3px", backgroundColor: "#bd7579"}} />
@@ -99,7 +99,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 							</CardOverflow>
 							<CardContent className={'card-content'}>
 								<Moment className={'time'} format={'HH:MM | DD.MM.YYYY'}>{article?.createdAt}</Moment>
-								<Typography variant={'h3'}>
+								<Typography >
 									{article?.articleTitle}
 								</Typography>
 							</CardContent>
