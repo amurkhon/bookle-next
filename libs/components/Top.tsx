@@ -411,7 +411,7 @@ const Top = () => {
 								<CallIcon />
 								+8265097071
 							</Box>
-							<Divider className={'info-box'} orientation="vertical" variant="middle" flexItem backgroundColor="#012e4a" />
+							<Divider className={'info-box'} orientation="vertical" variant="middle" flexItem/>
 							<Box className={'info-box'}>
 								<MailOutlineIcon />
 								info@example.com
