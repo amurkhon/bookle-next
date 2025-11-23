@@ -314,7 +314,7 @@ const Top = () => {
 							padding: '15px'
 						}}
 					>
-						<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+						<Box sx={{ width: 250 }} role="presentation" onClick={() => toggleDrawer(false)}>
 							<Box component={'div'} className={'logo-box'} sx={{padding:'10px'}}>
 								<Link href={'/'}>
 									<img src="/img/logo/black-logo.svg" alt="" />
