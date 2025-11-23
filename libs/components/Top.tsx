@@ -18,7 +18,7 @@ import useDeviceDetect from '../hooks/useDeviceDetect';
 import Link from 'next/link';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../apollo/store';
-import { Logout } from '@mui/icons-material';
+import { Logout, WidthFull } from '@mui/icons-material';
 import { NEXT_PUBLIC_REACT_APP_API_URL } from '../config';
 import { Notification } from '../types/notification/notification';
 import { GET_NOTIFICATIONS } from '../../apollo/user/query';
@@ -249,7 +249,7 @@ const Top = () => {
 	if (device == 'mobile') {
 		return (
 			<Stack className={'top'}>
-				<Box sx={{ flexGrow: '1'}}>
+				<Box sx={{ width: "100%"}}>
 					<AppBar position="static"
 						sx={{
 							backgroundColor: 'rgba(255, 255, 255, 0.6)',  // semi-transparent white
