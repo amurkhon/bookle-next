@@ -306,7 +306,7 @@ const Top = () => {
 							)}
 						</Toolbar>
 					</AppBar>
-					<Drawer 
+					{/* <Drawer 
 						className={'drawer'} 
 						open={openMenu} 
 						onClose={toggleDrawer(false)}
@@ -398,7 +398,7 @@ const Top = () => {
 							</List>
 							<Divider />
 						</Box>
-					</Drawer>
+					</Drawer> */}
 			</Stack>
 		);
 	} else {
