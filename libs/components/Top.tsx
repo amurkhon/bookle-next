@@ -408,7 +408,7 @@ const Top = () => {
 			<Stack className={'navbar'}>
 				<Stack sx={{backgroundColor: color}} className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
 					<Stack className={'container'}>
-						<Stack className={`main-info ${hidden ? 'hider-function' : ''} `} sx={{display: {hidden}}}>
+						<Stack className={`main-info ${hidden ? 'hider-function' : ''} `}>
 							<Box className={'info-box'}>
 								<CallIcon />
 								+8265097071
