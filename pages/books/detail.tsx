@@ -8,7 +8,6 @@ import { NextPage } from 'next';
 import Review from '../../libs/components/property/Review';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Autoplay, Navigation, Pagination } from 'swiper';
-import PropertyBigCard from '../../libs/components/common/PropertyBigCard';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import WestIcon from '@mui/icons-material/West';
@@ -36,6 +35,7 @@ import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation
 import { sweetErrorAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import PropertyCard from '../../libs/components/common/PropertyCard';
 import { PropertyCategory, PropertyType } from '../../libs/enums/property.enum';
+import Swal from "sweetalert2"; 
 
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -314,14 +314,14 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 													<Typography>AudioBook</Typography>
 												</Box>
 												<span>$0.00</span>
-												<Typography sx={{fontSize: '15px'}}>{user?.memberMembership ? 'Audio available!' : "with membership trail"}</Typography>
-											</button>) : (<button style={{padding: '5px'}}>
+												<Typography sx={{fontSize: '15px'}}>Audio available!</Typography>
+											</button>) : (<button style={{padding: '5px'}} onClick={() => {router.push('/subscription')}}>
 												<Box className={'audio'}>
 													<Box sx={{width: '30px', height:'20px', marginRight: '5px'}}><img style={{width: '100%', height: '100%'}} src={'/img/logo/audible.png'} /></Box>
 													<Typography>AudioBook</Typography>
 												</Box>
 												<span>$0.00</span>
-												<Typography sx={{fontSize: '15px'}}>{user?.memberMembership ? 'Audio available!' : "with membership trail"}</Typography>
+												<Typography sx={{fontSize: '15px'}}>with membership trail!</Typography>
 											</button>)}
 										</Box>
 										<Box className={'item'} sx={{backgroundColor: '#e5e5e5'}}>
