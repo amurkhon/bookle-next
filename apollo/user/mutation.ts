@@ -413,3 +413,18 @@ export const UPDATE_NOTICE = gql`
 		}
 	}
 `;
+
+/**************************
+ *         OPENAI       *
+ *************************/
+
+export const GET_CHATBOT_ANSWEAR = gql`
+	mutation GenerateResponse2($input: OpenAIRequestDto!) {
+		generateResponse(input: $input) {
+			role
+			content
+			refusal
+			annotations
+		}
+	}
+`;

@@ -14,6 +14,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
+import AiChatWidget from '../AiChatWidget';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
@@ -110,6 +111,8 @@ const withLayoutMain = (Component: any) => {
 						<Stack id={'main'}>
 							<Component {...props} />
 						</Stack>
+
+						<AiChatWidget />
 
 						<Chat />
 

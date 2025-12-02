@@ -1,0 +1,22 @@
+import React, { useState } from "react";
+import AiChat from "./AiChat";
+
+export default function AiChatWidget() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      {/* Floating Assistant Button */}
+      <button className="ai-chat-float-btn" onClick={() => setOpen(!open)}>
+        🤖
+      </button>
+
+      {/* Chat Box */}
+      {open && (
+        <div className="ai-chat-popup">
+          <AiChat />
+        </div>
+      )}
+    </>
+  );
+}

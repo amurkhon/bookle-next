@@ -14,6 +14,7 @@ import { useTranslation } from 'next-i18next';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import AiChatWidget from '../AiChatWidget';
 
 const withLayoutBasic = (Component: any) => {
 	return (props: any) => {
@@ -142,6 +143,8 @@ const withLayoutBasic = (Component: any) => {
 						<Stack id={'main'}>
 							<Component {...props} />
 						</Stack>
+
+						<AiChatWidget />
 
 						<Chat />
 

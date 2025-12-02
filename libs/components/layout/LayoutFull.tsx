@@ -12,6 +12,7 @@ import { userVar } from '../../../apollo/store';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import AiChatWidget from '../AiChat';
 
 const withLayoutFull = (Component: any) => {
 	return (props: any) => {
@@ -64,6 +65,8 @@ const withLayoutFull = (Component: any) => {
 						<Stack id={'main'}>
 							<Component {...props} />
 						</Stack>
+
+						<AiChatWidget />
 
 						<Chat />
 
