@@ -100,7 +100,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 					}`,
 					variables: {
 						file: null,
-						target: 'book',
+						target: 'pdf',
 					},
 				}),
 			);
@@ -528,7 +528,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 											type="file"
 											id="hidden-input2"
 											onChange={uploadAudio}
-											accept="audio/*"
+											accept="application/*"
 										/>
 										<label htmlFor="hidden-input2" className="labeler">
 											<Box sx={{display: 'flex'}}>

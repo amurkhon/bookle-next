@@ -25,6 +25,7 @@ export interface Member {
 	memberComments: number;
 	memberWarnings: number;
 	memberBlocks: number;
+	memberMembership: boolean;
 	deletedAt?: Date;
 	createdAt: Date;
 	updatedAt: Date;

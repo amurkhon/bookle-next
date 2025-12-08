@@ -28,7 +28,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { GET_COMMENTS, GET_PROPERTIES, GET_PROPERTY } from '../../apollo/user/query';
+import { DOWNLOAD_FILE, GET_COMMENTS, GET_PROPERTIES, GET_PROPERTY } from '../../apollo/user/query';
 import { T } from '../../libs/types/common';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
@@ -51,6 +51,9 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 	const user = useReactiveVar(userVar);
 	const [propertyId, setPropertyId] = useState<string | null>(null);
 	const [property, setProperty] = useState<Property | null>(null);
+	const [fileName, setFileName] = useState<string | null>(null);
+	const [target, setTarget] = useState<string | null>(null);
+	const [url, setUrl] = useState<string>('');
 	const [slideImage, setSlideImage] = useState<string>('');
 	const [categoryProperties, setCategoryProperties] = useState<Property[]>([]);
 	const [commentInquiry, setCommentInquiry] = useState<CommentsInquiry>(initialComment);
@@ -66,6 +69,24 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 	const  [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
 	const  [createComment] = useMutation(CREATE_COMMENT);
+
+	const {
+		loading: getDownloadUrlLoading,
+		data: getDownloadUrlData,
+		error: getDownloadUrlError,
+		refetch: getDownloadUrlRefetch,		
+	} = useQuery(DOWNLOAD_FILE, {
+		fetchPolicy: "network-only",
+		variables: {input: {
+			key: fileName,
+			target: target,
+		}},
+		skip: !fileName,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if(data?.downloadFile) setUrl(data?.downloadFile);
+		}
+	});
 
 	const {
 		loading: getPropertyLoading,
@@ -149,22 +170,34 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 	/** HANDLERS **/
 
-	const handleAudioDownload = async () => {
-		const resp = await fetch(`http://localhost:4007/${property?.propertyAudio}`, {
-			// headers: { Authorization: `Bearer ${token}` }, // if needed
-			credentials: 'include', // if cookie-based auth
+	const handleFileDownload = async (e: any) => {
+		e.preventDefault();  // 🔥 prevents refresh
+		e.stopPropagation();
+
+		const key = e.currentTarget.id;
+		const target = e.currentTarget.value;
+
+		const { data } = await getDownloadUrlRefetch({
+			input: { key, target }
 		});
-		console.log("=============: ", resp);
-		if (!resp.ok) return; // handle error
-		const blob = await resp.blob();
-		const url = URL.createObjectURL(blob);
-		const a = document.createElement('a');
-		a.href = url;
-		a.download = property?.propertyAudio ?? 'audio.mp3';
-		document.body.appendChild(a);
-		a.click();
-		URL.revokeObjectURL(url);
-		a.remove();
+
+		if (!data?.downloadFile) return;
+
+		const signedUrl = data.downloadFile;
+
+		// Download as Blob (forces download without leaving page)
+		const response = await fetch(signedUrl);
+		const blob = await response.blob();
+		const url = window.URL.createObjectURL(blob);
+
+		const link = document.createElement("a");
+		link.href = url;
+		link.download = key;
+		document.body.appendChild(link);
+		link.click();
+		link.remove();
+
+		window.URL.revokeObjectURL(url);
 	};
 
 	const likePropertyHandler = async (user: T, id: string) => {
@@ -308,44 +341,42 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 								<Stack className={'right'}>
 									<Stack className={'row'}>
 										<Box className={'item'}>
-											{false ? (<button style={{padding: '5px'}} onClick={handleAudioDownload}>
+											{user?.memberMembership ? (<button style={{padding: '5px', width: '100%', height: '100%'}} id={property?.propertyAudio} value={'audio'} onClick={handleFileDownload}>
 												<Box className={'audio'}>
 													<Box sx={{width: '30px', height:'20px', marginRight: '5px'}}><img style={{width: '100%', height: '100%'}} src={'/img/logo/audible.png'} /></Box>
 													<Typography>AudioBook</Typography>
 												</Box>
-												<span>$0.00</span>
-												<Typography sx={{fontSize: '15px'}}>Audio available!</Typography>
-											</button>) : (<button style={{padding: '5px'}} onClick={() => {router.push('/subscription')}}>
+												<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "Download" : "No exist!"}</Typography>
+											</button>) : (<button style={{padding: '5px', width: '100%', height: '100%'}} onClick={() => {router.push('/subscription')}}>
 												<Box className={'audio'}>
 													<Box sx={{width: '30px', height:'20px', marginRight: '5px'}}><img style={{width: '100%', height: '100%'}} src={'/img/logo/audible.png'} /></Box>
 													<Typography>AudioBook</Typography>
 												</Box>
-												<span>$0.00</span>
-												<Typography sx={{fontSize: '15px'}}>with membership trail!</Typography>
+												<span>{property?.propertyType === PropertyType.FULL ? `$50.00` : ""}</span>
+												<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "with membership trail!" : "No exist!"}</Typography>
 											</button>)}
 										</Box>
 										<Box className={'item'} sx={{backgroundColor: '#e5e5e5'}}>
 											<Typography>HardCover</Typography>
-											<span>$31.99</span>
-											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.HARDCOVER || property?.propertyType === PropertyType.FULL ? "Available!" : "No exist!"}</Typography>
+											<span>{property?.propertyType === PropertyType.HARDCOVER || property?.propertyType === PropertyType.FULL ? `$${property?.propertyPrice}` : ""}</span>
+											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.HARDCOVER || property?.propertyType === PropertyType.FULL ? "" : "No exist!"}</Typography>
 										</Box>
 									</Stack>
 									<Stack className={'row'}>
 										<Box className={'item'} sx={{backgroundColor: '#e5e5e5'}}>
 											<Typography>PaperBack</Typography>
-											<span>$31.99</span>
-											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.PAPERBACK || property?.propertyType === PropertyType.FULL ? "Available!" : "No exist!"}</Typography>
+											<span>{property?.propertyType === PropertyType.PAPERBACK || property?.propertyType === PropertyType.FULL ? `$${property?.propertyPrice}` : ""}</span>
+											<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.PAPERBACK || property?.propertyType === PropertyType.FULL ? "" : "No exist!"}</Typography>
 										</Box>
 										<Box className={'item'}>
-											{true ? (<button style={{padding: '5px', width: '100%'}}>
+											{user?.memberMembership ? (<button style={{padding: '5px', width: '100%', height: '100%'}} id={property?.propertyFile} value={'pdf'} onClick={property?.propertyType === PropertyType.FULL ? handleFileDownload : undefined}>
 												<Typography>E-book</Typography>
-												<span>$31.99</span>
-												<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "Available!" : "No exist!"}</Typography>
-											</button>) : (<a href={user?.memberMembership ? `http://localhost:4007/${property?.propertyFile}` : '#'}>
+												<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "Download" : "No exist!"}</Typography>
+											</button>) : (<button style={{padding: '5px', width: '100%', height: '100%'}}>
 												<Typography>E-book</Typography>
-												<span>$31.99</span>
-												<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "Available!" : "No exist!"}</Typography>
-											</a>)}
+												<span>{property?.propertyType === PropertyType.FULL ? `$50.00` : ""}</span>
+												<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "with membership trail!" : "No exist!"}</Typography>
+											</button>)}
 										</Box>
 									</Stack>
 									<Stack className={'row'}>

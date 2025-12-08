@@ -12,6 +12,7 @@ export interface MemberUpdate {
 	memberAddress?: string;
 	memberDesc?: string;
 	deletedAt?: Date;
+	memberMembership?: boolean;
 }
 
 export interface AdminMemberUpdate {
@@ -25,4 +26,5 @@ export interface AdminMemberUpdate {
 	memberAddress?: string;
 	memberDesc?: string;
 	deletedAt?: Date;
+	memberMembership?: boolean;
 }

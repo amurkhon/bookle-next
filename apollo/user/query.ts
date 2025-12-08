@@ -29,6 +29,7 @@ export const GET_AUTHORS = gql`
 				memberRank
 				memberWarnings
 				memberBlocks
+				memberMembership
 				deletedAt
 				createdAt
 				updatedAt
@@ -70,10 +71,11 @@ query GetMember($input: String!) {
         memberLikes
         memberViews
         memberFollowings
-				memberFollowers
+		memberFollowers
         memberRank
         memberWarnings
         memberBlocks
+		memberMembership
         deletedAt
         createdAt
         updatedAt
@@ -140,6 +142,7 @@ export const GET_PROPERTY = gql`
 				memberRank
 				memberWarnings
 				memberBlocks
+				memberMembership
 				deletedAt
 				createdAt
 				updatedAt
@@ -204,6 +207,7 @@ export const GET_PROPERTIES = gql`
 					memberRank
 					memberWarnings
 					memberBlocks
+					memberMembership
 					deletedAt
 					createdAt
 					updatedAt
@@ -272,6 +276,7 @@ export const GET_AGENT_PROPERTIES = gql`
 					memberRank
 					memberWarnings
 					memberBlocks
+					memberMembership
 					deletedAt
 					createdAt
 					updatedAt
@@ -339,6 +344,7 @@ export const GET_FAVORITES = gql`
 					memberRank
 					memberWarnings
 					memberBlocks
+					memberMembership
 					deletedAt
 					createdAt
 					updatedAt
@@ -408,6 +414,7 @@ export const GET_VISITED = gql`
 					memberRank
 					memberWarnings
 					memberBlocks
+					memberMembership
 					deletedAt
 					createdAt
 					updatedAt
@@ -463,6 +470,7 @@ export const GET_BOARD_ARTICLE = gql`
 				memberPoints
 				memberLikes
 				memberViews
+				memberMembership
 				deletedAt
 				createdAt
 				updatedAt
@@ -515,6 +523,7 @@ export const GET_BOARD_ARTICLES = gql`
 					memberPoints
 					memberLikes
 					memberViews
+					memberMembership
 					deletedAt
 					createdAt
 					updatedAt
@@ -561,6 +570,7 @@ export const GET_COMMENTS = gql`
 					memberPoints
 					memberLikes
 					memberViews
+					memberMembership
 					deletedAt
 					createdAt
 					updatedAt
@@ -618,6 +628,7 @@ export const GET_MEMBER_FOLLOWERS = gql`
 					memberRank
 					memberWarnings
 					memberBlocks
+					memberMembership
 					deletedAt
 					createdAt
 					updatedAt
@@ -661,6 +672,7 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 					memberRank
 					memberWarnings
 					memberBlocks
+					memberMembership
 					deletedAt
 					createdAt
 					updatedAt
@@ -725,6 +737,7 @@ export const GET_NOTIFICATION = gql`
 				memberRank
 				memberWarnings
 				memberBlocks
+				memberMembership
 				deletedAt
 				createdAt
 				updatedAt
@@ -772,6 +785,7 @@ export const GET_NOTIFICATIONS = gql`
 					memberRank
 					memberWarnings
 					memberBlocks
+					memberMembership
 					deletedAt
 					createdAt
 					updatedAt
@@ -865,6 +879,7 @@ export const GET_NOTICES = gql`
 					memberRank
 					memberWarnings
 					memberBlocks
+					memberMembership
 					deletedAt
 					createdAt
 					updatedAt
@@ -875,5 +890,15 @@ export const GET_NOTICES = gql`
 				total
 			}
 		}
+	}
+`
+
+/**************************
+ *         DOWNLOADER       *
+ *************************/
+
+export const DOWNLOAD_FILE = gql`
+	query DownloadFile($input: DownloadInquiryInput!) {
+		downloadFile(input: $input)
 	}
 `

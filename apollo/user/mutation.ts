@@ -25,6 +25,7 @@ export const SIGN_UP = gql`
 			memberPoints
 			memberLikes
 			memberViews
+			memberMembership
 			deletedAt
 			createdAt
 			updatedAt
@@ -53,6 +54,7 @@ export const LOGIN = gql`
 			memberPoints
 			memberLikes
 			memberViews
+			memberMembership
 			deletedAt
 			createdAt
 			updatedAt
@@ -82,6 +84,7 @@ export const UPDATE_MEMBER = gql`
 			memberViews
 			memberWarnings
 			memberBlocks
+			memberMembership
 			deletedAt
 			createdAt
 			updatedAt
@@ -110,6 +113,7 @@ export const LIKE_TARGET_MEMBER = gql`
 			memberPoints
 			memberLikes
 			memberViews
+			memberMembership
 			deletedAt
 			createdAt
 			updatedAt
@@ -404,6 +408,7 @@ export const UPDATE_NOTICE = gql`
 				memberComments
 				memberRank
 				memberWarnings
+				memberMembership
 				memberBlocks
 				deletedAt
 				createdAt
