@@ -41,7 +41,7 @@ const CommunityBoards = () => {
         await router.push({pathname: '/community'});
     };
 
-	const pushDetailHandler = async (propertyId: string, propertyCat: string) => {
+	const pushDetailHandler = async ( propertyCat: string, propertyId: string) => {
         await router.push({pathname: '/community/detail', query: {articleCategory: propertyCat, id: propertyId}});
     };
 

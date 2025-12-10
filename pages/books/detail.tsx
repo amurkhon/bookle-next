@@ -372,7 +372,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 											{user?.memberMembership ? (<button style={{padding: '5px', width: '100%', height: '100%'}} id={property?.propertyFile} value={'pdf'} onClick={property?.propertyType === PropertyType.FULL ? handleFileDownload : undefined}>
 												<Typography>E-book</Typography>
 												<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "Download" : "No exist!"}</Typography>
-											</button>) : (<button style={{padding: '5px', width: '100%', height: '100%'}}>
+											</button>) : (<button style={{padding: '5px', width: '100%', height: '100%'}} onClick={() => {router.push('/subscription')}}>
 												<Typography>E-book</Typography>
 												<span>{property?.propertyType === PropertyType.FULL ? `$50.00` : ""}</span>
 												<Typography sx={{fontSize: '15px'}}>{property?.propertyType === PropertyType.FULL ? "with membership trail!" : "No exist!"}</Typography>

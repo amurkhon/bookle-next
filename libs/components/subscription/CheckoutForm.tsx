@@ -1,8 +1,13 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Swal from "sweetalert2";
 import { userVar } from "../../../apollo/store";
-import { useReactiveVar } from "@apollo/client";
+import { useMutation, useReactiveVar } from "@apollo/client";
+import { UPDATE_MEMBER } from "../../../apollo/user/mutation";
+import { MemberUpdate } from "../../types/member/member.update";
+import { Messages } from "../../config";
+import { updateStorage, updateUserInfo } from "../../auth";
+import { sweetErrorHandling } from "../../sweetAlert";
 
 export default function MembershipPayment() {
   const user = useReactiveVar(userVar);
@@ -16,6 +21,10 @@ export default function MembershipPayment() {
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvv, setCVV] = useState("");
+  const [updateData, setUpdateData] = useState<MemberUpdate>({ _id: ''});
+
+  /** APOLLO REQUESTS **/
+    const [updateMember] = useMutation(UPDATE_MEMBER);
 
   const validateForm = () => {
     // 1. Check user login
@@ -76,24 +85,42 @@ export default function MembershipPayment() {
     return true;
   };
 
-  const handlePay = () => {
+  const handlePay = async () => {
     if (!validateForm()) return;
+    try {
+      if (!user._id) throw new Error(Messages.error2);
+      updateData._id = user._id;
+      updateData.memberMembership = true;
 
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-
-      Swal.fire({
-        title: "🎉 Membership Activated!",
-        text: "Welcome to your upgraded access!",
-        icon: "success",
-        confirmButtonColor: "#6c63ff",
-        background: "#ffffff",
-        color: "#000000",
+      const result = await updateMember({
+        variables: {
+          input: updateData,
+        },
       });
 
-      router.push("/");
-    }, 1500);
+      // @ts-ignore
+      const jwtToken = result.data.updateMember?.accessToken;
+      await updateStorage({ jwtToken });
+      updateUserInfo(result.data.updateMember?.accessToken);
+
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+
+        Swal.fire({
+          title: "🎉 Membership Activated!",
+          text: "Welcome to your upgraded access!",
+          icon: "success",
+          confirmButtonColor: "#6c63ff",
+          background: "#ffffff",
+          color: "#000000",
+        });
+
+        router.push("/");
+      }, 1500);
+    } catch (err: any) {
+      sweetErrorHandling(err).then();
+    }
   };
 
   return (

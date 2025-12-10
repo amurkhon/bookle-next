@@ -37,6 +37,9 @@ const TopAgents = (props: TopAgentsProps) => {
 		}
 	});
 	/** HANDLERS **/
+	const pushDetailHandler = async () => {
+		await router.push({pathname: '/author'});
+	};
 
 	if (device === 'mobile') {
 		return (
@@ -76,7 +79,7 @@ const TopAgents = (props: TopAgentsProps) => {
 						</Box>
 						<Divider sx={{width: "45%", height: '5px', backgroundColor: '#f5eaebff'}} />
 						<Box component={'div'} className={'right'}>
-							<div className={'more-box'}>
+							<div className={'more-box'} onClick={pushDetailHandler}>
 								<span>See All Authors</span>
 								<img src="/img/icons/rightup.svg" alt="" />
 							</div>

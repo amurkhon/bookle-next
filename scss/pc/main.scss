@@ -418,8 +418,8 @@ body::-webkit-scrollbar {
 	===================================================== */
 	.ai-chat-float-btn {
 		position: fixed;
-		right: 30px;
-		bottom: 146px;
+		right: 100px;
+		bottom: 89px;
 		z-index: 999999;
 
 		width: 50px;
@@ -453,11 +453,11 @@ body::-webkit-scrollbar {
 	.ai-chat-popup {
 		position: fixed;
 		right: 96px;
-		bottom: 125px;
+		bottom: 150px;
 		z-index: 999999;
 
 		width: 400px;
-		height: 600px;
+		height: 560px;
 
 		background: #fff;
 		border-radius: 16px;
