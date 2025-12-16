@@ -21,7 +21,7 @@ import { Messages, NEXT_PUBLIC_REACT_APP_API_URL } from "../../libs/config";
 import { Notification } from "../../libs/types/notification/notification";
 import Moment from "react-moment";
 import { NotificationsInquiry } from "../../libs/types/notification/notification.input";
-import { NotificationGroup, NotificationStatus } from "../../libs/enums/notification.enum";
+import { NotificationGroup, NotificationStatus, NotificationType } from "../../libs/enums/notification.enum";
 import { sweetErrorHandling } from "../../libs/sweetAlert";
 import { UPDATE_NOTIFICATIONS_AS_READ } from "../../apollo/user/mutation";
 import { getJwtToken, updateUserInfo } from "../../libs/auth";
@@ -300,7 +300,7 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
                                                     <Moment fromNow>{notification?.createdAt}</Moment>
                                                 </span>
                                                 <Typography>
-                                                    {notification?.notificationDesc}
+                                                    {`${notification?.memberData?.memberNick} ${notification?.notificationDesc}`}
                                                 </Typography>
                                                 { notification?.notificationStatus === NotificationStatus.READ ? (
                                                     <span className={'badge'} >
@@ -337,12 +337,12 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
                                 </Box>
                             </Stack>
                             <Box className={'main-body'}>
-                                {notificationVar[0]?.notificationDesc}
+                                {`${notificationVar[0].memberData?.memberNick} ${notificationVar[0]?.notificationDesc}`}
                             </Box>
                             {
                                 !notificationVar[0]?.propertyId && !notificationVar[0]?.articleId ? '' : (
                                     <Box className={'link'} onClick={pushTargetHandler} id={notificationVar[0]?.propertyId ? notificationVar[0]?.propertyId : notificationVar[0]?.articleId}>
-                                        Click here to see {notificationVar[0]?.notificationGroup === NotificationGroup.PROPERTY ? 'Property' : 'Article'}
+                                        Click here to see {notificationVar[0]?.notificationGroup === NotificationGroup.PROPERTY ? 'the book' : 'the article'}
                                     </Box>
                                 )
                             }

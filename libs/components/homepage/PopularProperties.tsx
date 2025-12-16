@@ -45,7 +45,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 			<Stack className={'popular-properties'}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
-						<span>Popular properties</span>
+						<span>Popular Books</span>
 						<p>Popularity is based on views</p>
 					</Stack>
 					<Stack className={'card-box'}>
@@ -74,7 +74,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>Popular properties</span>
+							<span>Popular Books</span>
 							<p>Popularity is based on views</p>
 						</Box>
 						<Divider sx={{width: "45%", height: '5px', backgroundColor: '#f5eaebff'}} />

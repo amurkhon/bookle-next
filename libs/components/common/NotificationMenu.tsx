@@ -169,14 +169,14 @@ export function NotificationMenu(props: NotificationMenu) {
                   primary={
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Typography variant="body2" >
-                        {notification?.notificationDesc}
+                        {notification?.notificationTitle}
                       </Typography>
                       <Typography variant="caption" color="text.secondary" sx={{ flexShrink: 0 }}>
                         <Moment fromNow>{notification.createdAt}</Moment>
                       </Typography>
                     </Box>
                   }
-                  secondary={notification?.notificationTitle}
+                  secondary={`${notification?.memberData?.memberNick} ${notification?.notificationDesc}`}
                   secondaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
                 />
               </ListItem>

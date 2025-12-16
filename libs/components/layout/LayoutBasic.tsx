@@ -31,7 +31,7 @@ const withLayoutBasic = (Component: any) => {
 
 			switch (router.pathname) {
 				case '/books':
-					title = 'Property Search';
+					title = 'Books Search';
 					desc = 'We are glad to see you again!';
 					bgImage = '/img/bg/categorie-bg1.jpg';
 					break;
