@@ -433,3 +433,214 @@ export const GET_CHATBOT_ANSWEAR = gql`
 		}
 	}
 `;
+
+/**************************
+ *         ORDER        *
+ *************************/
+
+export const CREATE_ORDER = gql`
+	mutation CreateOrder($input: CreateOrderInput!) {
+		createOrder(input: $input) {
+			_id
+			orderStatus
+			paymentStatus
+			orderNumber
+			totalAmount
+			memberId
+			paymentMethod
+			paymentId
+			paymentIntentId
+			transactionId
+			notes
+			completedAt
+			cancelledAt
+			createdAt
+			updatedAt
+			items {
+				propertyId
+				propertyTitle
+				propertyPrice
+				quantity
+				propertyData {
+					_id
+					propertyTitle
+					propertyImages
+					propertyAuthor
+				}
+			}
+			shippingAddress {
+				fullName
+				address
+				city
+				postalCode
+				country
+			}
+			memberData {
+				_id
+				memberType
+				memberStatus
+				memberAuthType
+				memberPhone
+				memberNick
+				memberMembership
+				memberFullName
+				memberImage
+				memberAddress
+				memberDesc
+				memberProperties
+				memberArticles
+				memberFollowers
+				memberFollowings
+				memberPoints
+				memberLikes
+				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
+				deletedAt
+				createdAt
+				updatedAt
+				accessToken
+			}
+		}
+	}
+`;
+
+export const UPDATE_ORDER = gql`
+	mutation ConfirmPayment($input: ConfirmPaymentInput!) {
+		confirmPayment(input: $input) {
+			_id
+			orderStatus
+			paymentStatus
+			orderNumber
+			totalAmount
+			memberId
+			paymentMethod
+			paymentId
+			paymentIntentId
+			transactionId
+			notes
+			completedAt
+			cancelledAt
+			createdAt
+			updatedAt
+			items {
+				propertyId
+				propertyTitle
+				propertyPrice
+				quantity
+				propertyData {
+					_id
+					propertyTitle
+					propertyImages
+					propertyAuthor
+				}
+			}
+			shippingAddress {
+				fullName
+				address
+				city
+				postalCode
+				country
+			}
+			memberData {
+				_id
+				memberType
+				memberStatus
+				memberAuthType
+				memberPhone
+				memberNick
+				memberMembership
+				memberFullName
+				memberImage
+				memberAddress
+				memberDesc
+				memberProperties
+				memberArticles
+				memberFollowers
+				memberFollowings
+				memberPoints
+				memberLikes
+				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
+				deletedAt
+				createdAt
+				updatedAt
+				accessToken
+			}
+		}
+	}
+`;
+
+export const CANCEL_ORDER = gql`
+	mutation CancelOrder ($input: String!) {
+		cancelOrder(orderId: $input) {
+			_id
+			orderStatus
+			paymentStatus
+			orderNumber
+			totalAmount
+			memberId
+			paymentMethod
+			paymentId
+			paymentIntentId
+			transactionId
+			notes
+			completedAt
+			cancelledAt
+			createdAt
+			updatedAt
+			items {
+				propertyId
+				propertyTitle
+				propertyPrice
+				quantity
+				propertyData {
+					_id
+					propertyTitle
+					propertyImages
+					propertyAuthor
+				}
+			}
+			shippingAddress {
+				fullName
+				address
+				city
+				postalCode
+				country
+			}
+			memberData {
+				_id
+				memberType
+				memberStatus
+				memberAuthType
+				memberPhone
+				memberNick
+				memberMembership
+				memberFullName
+				memberImage
+				memberAddress
+				memberDesc
+				memberProperties
+				memberArticles
+				memberFollowers
+				memberFollowings
+				memberPoints
+				memberLikes
+				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
+				deletedAt
+				createdAt
+				updatedAt
+				accessToken
+			}
+		}
+	}
+`;

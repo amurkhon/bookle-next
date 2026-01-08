@@ -902,3 +902,150 @@ export const DOWNLOAD_FILE = gql`
 		downloadFile(input: $input)
 	}
 `
+
+/**************************
+ *         ORDER        *
+ *************************/
+
+export const GET_ORDER = gql`
+	query GetOrder($input: String!) {
+		getOrder(orderId: $input) {
+			_id
+			orderStatus
+			paymentStatus
+			orderNumber
+			totalAmount
+			memberId
+			paymentMethod
+			paymentId
+			paymentIntentId
+			transactionId
+			notes
+			completedAt
+			cancelledAt
+			createdAt
+			updatedAt
+			items {
+				propertyId
+				propertyTitle
+				propertyPrice
+				quantity
+				propertyData {
+					_id
+					propertyTitle
+					propertyImages
+					propertyAuthor
+				}
+			}
+			shippingAddress {
+				fullName
+				address
+				city
+				postalCode
+				country
+			}
+			memberData {
+				_id
+				memberType
+				memberStatus
+				memberAuthType
+				memberPhone
+				memberNick
+				memberMembership
+				memberFullName
+				memberImage
+				memberAddress
+				memberDesc
+				memberProperties
+				memberArticles
+				memberFollowers
+				memberFollowings
+				memberPoints
+				memberLikes
+				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
+				deletedAt
+				createdAt
+				updatedAt
+				accessToken
+			}
+		}
+	}
+`;
+
+export const GET_ORDERS = gql`
+	query GetOrders($input: OrdersInquiry!) {
+		getOrders(input: $input) {
+			list {
+				_id
+				orderStatus
+				paymentStatus
+				orderNumber
+				totalAmount
+				memberId
+				paymentMethod
+				paymentId
+				paymentIntentId
+				transactionId
+				notes
+				completedAt
+				cancelledAt
+				createdAt
+				updatedAt
+				items {
+					propertyId
+					propertyTitle
+					propertyPrice
+					quantity
+					propertyData {
+						_id
+						propertyTitle
+						propertyImages
+						propertyAuthor
+					}
+				}
+				shippingAddress {
+					fullName
+					address
+					city
+					postalCode
+					country
+				}
+				memberData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberNick
+					memberMembership
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberProperties
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;

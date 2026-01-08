@@ -12,7 +12,7 @@ import { userVar } from '../../../apollo/store';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import AiChatWidget from '../AiChat';
+import AiChatWidget from '../AiChatWidget';
 
 const withLayoutFull = (Component: any) => {
 	return (props: any) => {

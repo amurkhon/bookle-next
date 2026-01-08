@@ -5,6 +5,7 @@ import {
   MenuItem, 
   IconButton, 
   Badge, 
+  BadgeProps,
   Typography, 
   Box, 
   Divider, 
@@ -15,6 +16,7 @@ import {
   ListItemText, 
   Button 
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Moment from 'react-moment'; // For date formatting (install: npm install react-moment moment)
 import { Messages, NEXT_PUBLIC_REACT_APP_API_URL } from '../../config';
@@ -25,6 +27,24 @@ import { UPDATE_NOTIFICATIONS_AS_READ } from '../../../apollo/user/mutation';
 import { userVar } from '../../../apollo/store';
 import { NotificationStatus } from '../../enums/notification.enum';
 import { sweetErrorHandling } from '../../sweetAlert';
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    left: '20px',
+    bottom: '30px',
+    minWidth: '18px',
+    height: '18px',
+    padding: '0 4px',
+    fontSize: '11px',
+    fontWeight: 700,
+    background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    border: '2px solid white',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+  },
+  '& .MuiBadge-invisible': {
+    display: 'none !important',
+  },
+}));
 
 // Define the type for a single notification item
 interface NotificationMenu {
@@ -99,9 +119,9 @@ export function NotificationMenu(props: NotificationMenu) {
         color="inherit"
         sx={{ mr: 2 }}
       >
-        <Badge badgeContent={total} color="error" invisible={total !== 0 || 'undefined' ? false : true}>
+        <StyledBadge badgeContent={total} color="error" invisible={total === 0} showZero={false}>
           <NotificationsIcon />
-        </Badge>
+        </StyledBadge>
       </IconButton>
 
       {/* 2. THE DROPDOWN MENU */}

@@ -35,6 +35,7 @@
 @import '/scss/pc/member/memberProperties.scss';
 
 @import '/scss/pc/subscription/payment.scss';
+@import '/scss/pc/order/order.scss';
 
 body {
 	-ms-overflow-style: none; /* for Internet Explorer, Edge */
@@ -127,6 +128,7 @@ body::-webkit-scrollbar {
 								width: 150px;
 								cursor: pointer;
 							}
+							margin-right: 30px;
 						}
 						.router-box {
 							position: relative;
@@ -201,11 +203,38 @@ body::-webkit-scrollbar {
 								border-radius: 50%;
 								object-fit: cover;
 							}
+							margin-right: 20px;
 						}
 					}
 					.lan-box {
 						display: flex;
 						align-items: center;
+						gap: 10px;
+						
+						// Shopping Cart Icon Styles
+						.MuiIconButton-root {
+							transition: all 0.3s ease;
+							
+							&:hover {
+								transform: scale(1.1);
+							}
+							
+							.MuiBadge-badge {
+								background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+								font-weight: 700;
+								animation: pulse 2s infinite;
+							}
+						}
+						
+						@keyframes pulse {
+							0%, 100% {
+								transform: scale(1);
+							}
+							50% {
+								transform: scale(1.1);
+							}
+						}
+						
 						.notification-icon {
 							color: black;
 							margin-right: 10px;

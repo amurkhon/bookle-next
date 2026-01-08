@@ -14,11 +14,13 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentIcon from '@mui/icons-material/Comment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Star from '@mui/icons-material/Star';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Button, CssVarsProvider } from '@mui/joy';
 import { Property } from '../../types/property/property';
 import { NEXT_PUBLIC_REACT_APP_API_URL, topPropertyRank } from '../../config';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
+import { addToCart } from '../../utils/cart';
 
 type ColumnCardProps = {
   property: Property;
@@ -137,6 +139,26 @@ export default function ColumnPropertyCard(props: ColumnCardProps) {
               <CommentIcon />
             </IconButton>
             <Typography className="view-cnt">{property?.propertyComments}</Typography>
+            <IconButton
+              variant="plain"
+              size="sm"
+              sx={{ 
+                borderRadius: '50%',
+                '&:hover': {
+                  color: '#667eea',
+                  backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                },
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (property) {
+                  addToCart(property, 1);
+                }
+              }}
+            >
+              <ShoppingCartIcon />
+            </IconButton>
           </Stack>
           <Stack
             spacing="0.25rem 1rem"
@@ -170,8 +192,8 @@ export default function ColumnPropertyCard(props: ColumnCardProps) {
               4.0
             </Typography>
             <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: 'right' }}>
-              <strong>$20</strong>
-              <Typography level="body-md">
+              <strong>${property?.propertyPrice}</strong>
+              <Typography level="body-md" sx={{ display: 'flex', gap: '10px', mt: 1 }}>
                 <Link
                   href={{
                     pathname: '/books/detail',
@@ -179,11 +201,11 @@ export default function ColumnPropertyCard(props: ColumnCardProps) {
                   }}
                 >
                   <Button 
-                    variant='outlined' 
-                    color='success' 
-                    style={{marginLeft: "10px"}}
+                    variant='contained' 
+                    color='primary' 
+                    size="small"
                   >
-                    Buy
+                    View Details
                   </Button>
                 </Link>
               </Typography>

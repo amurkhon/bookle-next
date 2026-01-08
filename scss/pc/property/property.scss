@@ -219,6 +219,24 @@
 									.view-cnt {
 										font-size: 13px;
 									}
+									
+									// Shopping Cart Icon Styling
+									.MuiIconButton-root {
+										transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+										
+										&:hover {
+											transform: scale(1.15);
+											background-color: rgba(102, 126, 234, 0.1) !important;
+											
+											svg {
+												color: #667eea !important;
+											}
+										}
+										
+										&:active {
+											transform: scale(1.05);
+										}
+									}
 								}
 							}
 							.bottom {

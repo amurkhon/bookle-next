@@ -35,7 +35,9 @@ import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation
 import { sweetErrorAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import PropertyCard from '../../libs/components/common/PropertyCard';
 import { PropertyCategory, PropertyType } from '../../libs/enums/property.enum';
-import Swal from "sweetalert2"; 
+import Swal from "sweetalert2";
+import { addToCart } from '../../libs/utils/cart';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
 
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -379,8 +381,31 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 											</button>)}
 										</Box>
 									</Stack>
-									<Stack className={'row'}>
-										<Button sx={{backgroundColor: '#e4d4cdff'}} size={'large'} variant="outlined">
+									<Stack className={'row'} sx={{gap: '10px'}}>
+										<Button 
+											sx={{backgroundColor: '#e4d4cdff', flex: 1}} 
+											size={'large'} 
+											variant="outlined"
+											onClick={() => {
+												if (property) {
+													addToCart(property, 1);
+												}
+											}}
+											startIcon={<ShoppingCartIcon />}
+										>
+											Add to Cart
+										</Button>
+										<Button 
+											sx={{backgroundColor: '#667eea', color: 'white', flex: 1}} 
+											size={'large'} 
+											variant="contained"
+											onClick={() => {
+												if (property) {
+													addToCart(property, 1);
+													router.push('/order/checkout');
+												}
+											}}
+										>
 											Buy Now
 										</Button>
 									</Stack>

@@ -13,6 +13,8 @@ import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { addToCart } from '../../utils/cart';
 import { useRouter } from 'next/router';
 
 interface PropertyCardType {
@@ -69,6 +71,24 @@ const PropertyCard = (props: PropertyCardType) => {
 								)}
 							</IconButton>
 							<Typography className="view-cnt">{property?.propertyLikes}</Typography>
+							<IconButton 
+								color={'default'} 
+								onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+									e.preventDefault();
+									e.stopPropagation();
+									if (property) {
+										addToCart(property, 1);
+									}
+								}}
+								sx={{
+									'&:hover': {
+										color: '#667eea',
+										backgroundColor: 'rgba(102, 126, 234, 0.1)',
+									},
+								}}
+							>
+								<ShoppingCartIcon />
+							</IconButton>
 						</Stack>
 					)}
 				</Stack>

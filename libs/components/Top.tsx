@@ -6,18 +6,19 @@ import { getJwtToken, logOut, updateUserInfo } from '../auth';
 import { Stack, Box,Typography, Drawer } from '@mui/material';
 import CallIcon from '@mui/icons-material/Call';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import LightModeIcon from '@mui/icons-material/LightMode';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import { alpha, styled } from '@mui/material/styles';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import { CaretDown } from 'phosphor-react';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import Link from 'next/link';
 import { useQuery, useReactiveVar } from '@apollo/client';
-import { userVar } from '../../apollo/store';
+import { userVar, cartVar } from '../../apollo/store';
 import { Logout, WidthFull } from '@mui/icons-material';
 import { NEXT_PUBLIC_REACT_APP_API_URL } from '../config';
 import { Notification } from '../types/notification/notification';
@@ -26,6 +27,7 @@ import { T } from '../types/common';
 import { NotificationStatus } from '../enums/notification.enum';
 import Badge, { BadgeProps } from '@mui/material/Badge';
 import { NotificationMenu } from './common/NotificationMenu';
+import { getCartItemCount } from '../utils/cart';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -47,9 +49,19 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {
-    right: 10,
-    top: 0,
+    left: '20px',
+    bottom: '40px',
+    minWidth: '18px',
+    height: '18px',
     padding: '0 4px',
+    fontSize: '11px',
+    fontWeight: 700,
+    background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    border: '2px solid white',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+  },
+  '& .MuiBadge-invisible': {
+    display: 'none !important',
   },
 }));
 
@@ -57,6 +69,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 const Top = () => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
+	const cartItems = useReactiveVar(cartVar);
 	const { t, i18n } = useTranslation('common');
 	const router = useRouter();
 	const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -269,6 +282,24 @@ const Top = () => {
 							<Box className={'logo-box'}>
 								<img src="/img/logo/black-logo.svg" alt="" />
 							</Box>
+							{/* Shopping Cart Icon for Mobile */}
+							<IconButton
+								onClick={() => router.push('/order/cart')}
+								sx={{
+									marginRight: '10px',
+									color: 'black',
+									position: 'relative',
+									'&:hover': {
+										color: '#667eea',
+										backgroundColor: 'rgba(102, 126, 234, 0.1)',
+									},
+								}}
+								title="Shopping Cart"
+							>
+								<StyledBadge badgeContent={getCartItemCount()} color="error" invisible={getCartItemCount() === 0} showZero={false}>
+									<ShoppingCartIcon />
+								</StyledBadge>
+							</IconButton>
 							{ !user?._id ? (
 								<Link href={'/account/join'}>
 									<Button color="inherit">
@@ -370,18 +401,30 @@ const Top = () => {
 									</ListItemButton>
 								</ListItem>
 								{user?._id && (
-									<ListItem disablePadding>
-										<ListItemButton>
-											<ListItemIcon sx={{justifyContent: 'center'}}>
-												<PersonIcon />
-											</ListItemIcon>
-											<ListItemText>
-												<Link href={'/mypage'}>
-													<div> {t('My Page')} </div>
-												</Link>
-											</ListItemText>
-										</ListItemButton>
-									</ListItem>
+									<>
+										<ListItem disablePadding>
+											<ListItemButton>
+												<ListItemIcon sx={{justifyContent: 'center'}}>
+													<PersonIcon />
+												</ListItemIcon>
+												<ListItemText>
+													<Link href={'/mypage'}>
+														<div> {t('My Page')} </div>
+													</Link>
+												</ListItemText>
+											</ListItemButton>
+										</ListItem>
+										<ListItem disablePadding>
+											<ListItemButton onClick={() => { router.push('/order'); toggleDrawer(false); }}>
+												<ListItemIcon sx={{justifyContent: 'center'}}>
+													<ReceiptIcon />
+												</ListItemIcon>
+												<ListItemText>
+													<div>My Orders</div>
+												</ListItemText>
+											</ListItemButton>
+										</ListItem>
+									</>
 								)}
 								<ListItem disablePadding>
 									<ListItemButton>
@@ -392,6 +435,18 @@ const Top = () => {
 											<Link href={'/cs'}>
 												<div> {t('CS')} </div>
 											</Link>
+										</ListItemText>
+									</ListItemButton>
+								</ListItem>
+								<ListItem disablePadding>
+									<ListItemButton onClick={() => { router.push('/order/cart'); toggleDrawer(false); }}>
+										<ListItemIcon sx={{justifyContent: 'center'}}>
+											<Badge badgeContent={getCartItemCount()} color="error" invisible={getCartItemCount() === 0} showZero={false}>
+												<ShoppingCartIcon />
+											</Badge>
+										</ListItemIcon>
+										<ListItemText>
+											<div>Shopping Cart {getCartItemCount() > 0 && `(${getCartItemCount()})`}</div>
 										</ListItemText>
 									</ListItemButton>
 								</ListItem>
@@ -484,8 +539,45 @@ const Top = () => {
 									</Link>
 								)}
 							</Box>
-							<LightModeIcon />
 							<div className={'lan-box'}>
+								{/* Shopping Cart Icon */}
+								<IconButton
+									onClick={() => router.push('/order/cart')}
+									sx={{
+										marginRight: '10px',
+										color: '#616161',
+										position: 'relative',
+										'&:hover': {
+											color: '#667eea',
+											backgroundColor: 'rgba(102, 126, 234, 0.1)',
+										},
+									}}
+									title="Shopping Cart"
+								>
+									<StyledBadge badgeContent={getCartItemCount()} color="error" invisible={getCartItemCount() === 0}>
+										<ShoppingCartIcon />
+									</StyledBadge>
+								</IconButton>
+								
+								{/* My Orders Icon - Only show if user is logged in */}
+								{user?._id && (
+									<IconButton
+										onClick={() => router.push('/order')}
+										sx={{
+											marginRight: '10px',
+											color: '#616161',
+											position: 'relative',
+											'&:hover': {
+												color: '#667eea',
+												backgroundColor: 'rgba(102, 126, 234, 0.1)',
+											},
+										}}
+										title="My Orders"
+									>
+										<ReceiptIcon />
+									</IconButton>
+								)}
+								
 								{user?._id && 
 									<NotificationMenu notifications={notifications} total={total} refetch={getNotificationsRefetch}/>
 								}
