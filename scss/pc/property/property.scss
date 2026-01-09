@@ -1,7 +1,8 @@
 #pc-wrap {
 	#property-list-page {
 		padding-bottom: 40px;
-		background: #f6f6f6;
+		background: var(--bg-secondary);
+		transition: background-color 0.3s ease;
 		.container {
 			.property-page {
 				position: relative;
@@ -20,9 +21,10 @@
 						display: flex;
 						flex-direction: column;
 						justify-content: flex-start;
-						background-color: #f8ebe5;
+						background-color: var(--surface);
 						border-radius: 10px;
 						margin-bottom: 20px;
+						transition: background-color 0.3s ease;
 						transition-property: height;
 						transition-duration: 2s;
 						transition-timing-function: linear;
@@ -33,7 +35,7 @@
 						display: flex;
 						flex-direction: column;
 						justify-content: flex-start;
-						background-color: #f8ebe5;
+						background-color: var(--surface);
 						margin-bottom: 20px;
 						border-radius: 2px;
 						.input-box {
@@ -81,16 +83,17 @@
 								flex-direction: row;
 								align-items: center;
 								justify-content: space-between;
-								background-color: white;
+								background-color: var(--surface);
 								border-radius: 2px;
+								transition: background-color 0.3s ease;
 								&:hover {
-									background-color: #f79e90;
+									background-color: var(--bg-secondary);
 									.icon-default {
 										color: white;
 									}
 								}
 								.icon-checked {
-									background-color: #eb6753;
+									background-color: #42a5f5; // Lighter blue
 									border-radius: 50%;
 									color: white;
 								}
@@ -110,25 +113,29 @@
 						display: flex;
 						flex-direction: row;
 						justify-content: space-between;
-						border: 1px solid;
+						border: 1px solid var(--border-color);
+						border-radius: 8px;
 						padding: 10px;
 						top: 3%;
 						display: flex;
 						flex-direction: row;
 						align-items: center;
 						z-index: 2;
+						background: var(--surface);
+						transition: background-color 0.3s ease, border-color 0.3s ease;
 						.additional-func {
 							display: flex;
 							flex-direction: row;
 							align-items: center;
 							button {
 								margin-left: 10px;
-								color: #181a20;
+								color: var(--text-primary);
 								font-family: $font;
 								font-size: 14px;
 								font-style: normal;
 								font-weight: bold;
 								line-height: 26px;
+								transition: color 0.3s ease;
 								&:hover {
 									background: none;
 								}
@@ -147,10 +154,18 @@
 							align-items: center;
 							height: 413px;
 							margin-bottom: 7px;
-							background-color: #fff;
+							background-color: var(--surface);
 							box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+							transition: background-color 0.3s ease, box-shadow 0.3s ease;
+							[data-theme='dark'] & {
+								background-color: #1a3a5f; /* Lighter shade to stand out from body */
+								box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.4);
+							}
 							&:hover {
 								box-shadow: 2px 5px 10px 2px rgba(24, 26, 32, 0.07);
+								[data-theme='dark'] & {
+									box-shadow: 2px 5px 10px 2px rgba(255, 255, 255, 0.1);
+								}
 								img {
 									transform: scale(1.1);
 									transition-duration: 1s;
@@ -186,7 +201,7 @@
 									align-items: center;
 									border-radius: 6px;
 									padding: 6px 20px;
-									background: #eb6753;
+									background: #42a5f5; // Lighter blue
 									color: #fff;
 									text-align: center;
 									text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -256,28 +271,30 @@
 										justify-content: space-between;
 										overflow: hidden;
 										p {
-											color: #181a20;
+											color: var(--text-primary);
 											font-family: $font;
 											font-size: 15px;
 											font-style: normal;
 											font-weight: 600;
 											line-height: normal;
 											text-transform: capitalize;
+											transition: color 0.3s ease;
 										}
 										span {
-											color: #ff6500;
+											color: #64b5f6; // Lighter blue
 										}
 									}
 									.address {
 										width: 100%;
 										overflow: hidden;
 										p {
-											color: #717171;
+											color: var(--text-secondary);
 											font-family: $font;
 											font-size: 13px;
 											font-style: normal;
 											font-weight: 400;
 											line-height: normal;
+											transition: color 0.3s ease;
 										}
 									}
 								}
@@ -293,20 +310,22 @@
 										gap: 5px;
 										align-items: center;
 										p {
-											color: #181a20;
+											color: var(--text-primary);
 											font-family: $font;
 											font-size: 13px;
 											font-style: normal;
 											font-weight: 400;
 											line-height: normal;
+											transition: color 0.3s ease;
 										}
 									}
 								}
 								.divider {
 									width: 100%;
 									height: 1px;
-									background: #ddd;
+									background: var(--border-color);
 									margin-bottom: 17px;
+									transition: background-color 0.3s ease;
 								}
 								.type-buttons {
 									flex-direction: row;
@@ -319,21 +338,23 @@
 										gap: 7px;
 										&:hover {
 											p {
-												color:#181a20;
+												color: var(--text-primary);
 												cursor: pointer;
 											}
 										}
 										p {
-											color: #181a20;
+											color: var(--text-primary);
 											font-family: $font;
 											font-style: normal;
 											line-height: normal;
+											transition: color 0.3s ease;
 										}
 										.disabled-type {
-											color: rgba(143, 143, 143, 0.54);
+											color: var(--text-secondary);
 											font-family: $font;
 											font-style: normal;
 											line-height: normal;
+											transition: color 0.3s ease;
 										}
 									}
 								}
@@ -370,13 +391,14 @@
 						}
 						.total-result {
 							p {
-								color: #181a20;
+								color: var(--text-primary);
 								text-align: center;
 								font-family: $font;
 								font-size: 24px;
 								font-style: normal;
 								font-weight: 275;
 								line-height: 26px;
+								transition: color 0.3s ease;
 							}
 						}
 					}

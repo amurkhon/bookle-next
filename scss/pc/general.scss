@@ -22,7 +22,7 @@
 			display: flex;
 			align-items: center;
 			border-radius: 6px;
-			background: #eb6753;
+			background: #42a5f5; // Lighter blue
 			img {
 				width: 14px;
 				height: 14px;
@@ -44,13 +44,14 @@
 			left: 20px;
 			bottom: 20px;
 			border-radius: 6px;
-			background: #fff;
-			color: #181a20;
+			background: var(--surface);
+			color: var(--text-primary);
 			font-family: $font;
 			font-size: 15px;
 			font-style: normal;
 			font-weight: 600;
 			line-height: normal;
+			transition: background-color 0.3s ease, color 0.3s ease;
 		}
 	}
 	.info {
@@ -59,12 +60,13 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		border-radius: 0px 0px 12px 12px;
-		border: 1px solid #ddd;
+		border: 1px solid var(--border-color);
 		border-top: none;
-		background: #fff;
+		background: var(--surface);
+		transition: background-color 0.3s ease, border-color 0.3s ease;
 		.title {
 			overflow: hidden;
-			color: #181a20;
+			color: var(--text-primary);
 			text-overflow: ellipsis;
 			white-space: nowrap;
 			font-family: $font;
@@ -74,11 +76,12 @@
 			line-height: normal;
 			text-transform: capitalize;
 			cursor: pointer;
+			transition: color 0.3s ease;
 		}
 		.desc {
 			margin-top: 5px;
 			overflow: hidden;
-			color: #717171;
+			color: var(--text-secondary);
 			font-family: $font;
 			font-size: 13px;
 			font-style: normal;
@@ -86,6 +89,7 @@
 			line-height: normal;
 			text-overflow: ellipsis;
 			white-space: nowrap;
+			transition: color 0.3s ease;
 		}
 		.options {
 			margin-top: 15px;
@@ -101,12 +105,13 @@
 					height: 17px;
 				}
 				span {
-					color: #181a20;
+					color: var(--text-primary);
 					font-family: $font;
 					font-size: 13px;
 					font-style: normal;
 					font-weight: 400;
 					line-height: normal;
+					transition: color 0.3s ease;
 				}
 			}
 		}
@@ -123,23 +128,25 @@
 				justify-content: space-between;
 			}
 			p {
-				color: #181a20;
+				color: var(--text-primary);
 				font-family: $font;
 				font-size: 13px;
 				font-style: normal;
 				font-weight: 500;
 				line-height: normal;
 				text-transform: capitalize;
+				transition: color 0.3s ease;
 			}
 			span {
 				margin-left: 6px;
-				color: rgba(143, 143, 143, 0.54);
+				color: var(--text-secondary);
 				font-family: $font;
 				font-size: 15px;
 				font-style: normal;
 				font-weight: 500;
 				line-height: normal;
 				text-transform: capitalize;
+				transition: color 0.3s ease;
 			}
 			button {
 				margin-left: 15px;
@@ -189,7 +196,7 @@
 			height: 200px;
 			bottom: 0;
 			left: 0;
-			background: #D16655;
+			background: #42a5f5; // Lighter blue
 			background: linear-gradient(179deg, rgba(209, 102, 85, 0) 0%, rgba(209, 102, 85, 0.71) 100%);
 			transition: all 0.5s ease;
 			z-index: 100;
@@ -273,21 +280,23 @@
 		width: 100%;
 		height: 80px;
 		.title {
-			color: #717171;
+			color: var(--text-secondary);
 			font-family: $font;
 			font-size: 13px;
 			font-style: normal;
 			font-weight: 400;
 			line-height: normal;
+			transition: color 0.3s ease;
 		}
 		.desc {
-			color: #181a20;
+			color: var(--text-primary);
 			font-family: $font;
 			font-size: 15px;
 			font-style: normal;
 			font-weight: 600;
 			line-height: 26px;
 			text-transform: capitalize;
+			transition: color 0.3s ease;
 		}
 		.buttons {
 			width: auto;
@@ -314,24 +323,30 @@
 		top: 235px;
 		right: 20px;
 		border-radius: 12px;
-		background: #fff;
+		background: var(--surface);
 		box-shadow: 0px 6px 15px 0px rgba(64, 79, 104, 0.05);
+		transition: background-color 0.3s ease, box-shadow 0.3s ease;
+		[data-theme='dark'] & {
+			box-shadow: 0px 6px 15px 0px rgba(0, 0, 0, 0.4);
+		}
 		.month {
-			color: #181a20;
+			color: var(--text-primary);
 			text-align: center;
 			font-family: $font;
 			font-size: 13px;
 			font-style: normal;
 			font-weight: 400;
 			line-height: normal;
+			transition: color 0.3s ease;
 		}
 		.day {
-			color: #181a20;
+			color: var(--text-primary);
 			font-family: $font;
 			font-size: 20px;
 			font-style: normal;
 			font-weight: 600;
 			line-height: normal;
+			transition: color 0.3s ease;
 		}
 	}
 }

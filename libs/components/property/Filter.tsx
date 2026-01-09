@@ -320,8 +320,8 @@ const Filter = (props: FilterType) => {
 				<Stack className={'find-your-book'}>
 					<Typography variant={'h2'}>Search</Typography>
 					<Box className={'divider'}>
-						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
-						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
+						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
+						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
 					</Box>
 					<Stack className={'input-box'}>
 						<Input
@@ -368,7 +368,7 @@ const Filter = (props: FilterType) => {
 						sx={{
 							width: '30%',
 							padding: '10px',
-							backgroundColor: '#d16655'
+							backgroundColor: '#42a5f5' // Lighter blue
 						}}
 					>
 						Search
@@ -377,8 +377,8 @@ const Filter = (props: FilterType) => {
 				<Stack className={'find-your-book'}>
 					<Typography variant={'h2'}>Languages</Typography>
 					<Box className={'divider'}>
-						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
-						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
+						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
+						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
 					</Box>
 					<CssVarsProvider>
 						<Select
@@ -414,8 +414,8 @@ const Filter = (props: FilterType) => {
 				<Stack className={'find-your-book'}>
 					<Typography variant={'h2'}>Book Type</Typography>
 					<Box className={'divider'}>
-						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
-						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
+						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
+						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
 					</Box>
 					<CssVarsProvider>
 						<Select
@@ -451,8 +451,8 @@ const Filter = (props: FilterType) => {
 				<Stack className={'find-your-book'}>
 					<Typography variant={'h2'}>Filter By Price</Typography>
 					<Box className={'divider'}>
-						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
-						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
+						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
+						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
 					</Box>
 					<Slider
 						step={10}
@@ -471,7 +471,7 @@ const Filter = (props: FilterType) => {
 							sx={{
 								width: '30%',
 								padding: '10px',
-								backgroundColor: '#d16655'
+								backgroundColor: '#42a5f5' // Lighter blue
 							}}
 							onClick={() => {propertyPriceHandler(value1)}}
 						>
@@ -485,8 +485,8 @@ const Filter = (props: FilterType) => {
 				<Stack className={'find-your-book'}>
 					<Typography variant={'h2'}>Filter By Pages</Typography>
 					<Box className={'divider'}>
-						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
-						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
+						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
+						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
 					</Box>
 					<Slider
 						step={20}
@@ -502,7 +502,7 @@ const Filter = (props: FilterType) => {
 							sx={{
 								width: '30%',
 								padding: '10px',
-								backgroundColor: '#d16655'
+								backgroundColor: '#42a5f5' // Lighter blue
 							}}
 							onClick={() => {propertyPagesHandler(val)}}
 						>
@@ -516,8 +516,8 @@ const Filter = (props: FilterType) => {
 				<Stack className={'find-your-book categories-box'}>
 					<Typography variant={'h2'}>Categories</Typography>
 					<Box className={'divider'}>
-						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
-						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
+						<Divider variant={'string'} sx={{width: '80px', marginRight: '5px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
+						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#42a5f5', borderRadius: '5px'}} textAlign={'left'} /> {/* Lighter blue */}
 					</Box>
 					<Stack className={'category-name-box'}>
 						{propertyCategory.map((category: string) => {

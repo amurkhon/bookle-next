@@ -25,7 +25,7 @@
     flex-direction: row;
     justify-content: center;
     span {
-      color: #181a20;
+      color: var(--text-primary);
       font-family: $font;
       font-size: 34px;
       font-style: normal;
@@ -33,6 +33,7 @@
       line-height: 150%;
       letter-spacing: -0.646px;
       text-transform: capitalize;
+      transition: color 0.3s ease;
       &.white {
         color: #ffffff;
       }
@@ -104,13 +105,14 @@
                 flex-direction: column;
                 box-sizing: border-box;
                 border-radius: 0px 0px 12px 12px;
-                border: 1px solid rgba(196, 196, 196, 0.71);
+                border: 1px solid var(--border-color);
                 border-top: none;
-                background: #fff;
+                background: var(--surface);
+				transition: background-color 0.3s ease, border-color 0.3s ease;
                 box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
                 .title {
                   overflow: hidden;
-                  color: #181a20;
+                  color: var(--text-primary);
                   text-overflow: ellipsis;
                   white-space: nowrap;
                   font-family: $font;
@@ -120,11 +122,13 @@
                   line-height: normal;
                   text-transform: capitalize;
                   cursor: pointer;
+				  transition: color 0.3s ease;
                 }
                 .desc {
                   margin-top: 5px;
                   overflow: hidden;
-                  color: #717171;
+                  color: var(--text-secondary);
+				  transition: color 0.3s ease;
                   font-family: $font;
                   font-size: 13px;
                   font-style: normal;
@@ -147,12 +151,13 @@
                       height: 17px;
                     }
                     span {
-                      color: #181a20;
+                      color: var(--text-primary);
                       font-family: $font;
                       font-size: 13px;
                       font-style: normal;
                       font-weight: 400;
                       line-height: normal;
+					  transition: color 0.3s ease;
                     }
                   }
                 }
@@ -162,7 +167,8 @@
                   justify-content: space-between;
                   align-items: center;
                   p {
-                    color: #181a20;
+                    color: var(--text-primary);
+					transition: color 0.3s ease;
                     font-family: $font;
                     font-size: 13px;
                     font-style: normal;
@@ -182,13 +188,14 @@
                     gap: 7px;
                     align-items: center;
                     .view-cnt {
-                      color: #717171;
+                      color: var(--text-secondary);
                       font-family: $font;
                       font-size: 13px;
                       font-style: normal;
                       font-weight: 400;
                       line-height: normal;
                       text-overflow: ellipsis;
+					  transition: color 0.3s ease;
                     }
                   }
                 }
@@ -330,7 +337,8 @@
     height: auto;
     display: flex;
     flex-direction: row;
-    background: #f6f6f6;
+    background: var(--bg-secondary);
+	transition: background-color 0.3s ease;
     .container {
       width: 100%;
       flex-direction: column;
@@ -374,7 +382,7 @@
               display: flex;
               align-items: center;
               border-radius: 6px;
-              background: #eb6753;
+              background: #42a5f5; // Lighter blue
               img {
                 width: 14px;
                 height: 14px;
@@ -589,13 +597,14 @@
                 flex-direction: column;
                 box-sizing: border-box;
                 border-radius: 0px 0px 12px 12px;
-                border: 1px solid rgba(196, 196, 196, 0.71);
+                border: 1px solid var(--border-color);
                 border-top: none;
-                background: #fff;
+                background: var(--surface);
+				transition: background-color 0.3s ease, border-color 0.3s ease;
                 box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
                 .title {
                   overflow: hidden;
-                  color: #181a20;
+                  color: var(--text-primary);
                   text-overflow: ellipsis;
                   white-space: nowrap;
                   font-family: $font;
@@ -605,11 +614,13 @@
                   line-height: normal;
                   text-transform: capitalize;
                   cursor: pointer;
+				  transition: color 0.3s ease;
                 }
                 .desc {
                   margin-top: 5px;
                   overflow: hidden;
-                  color: #717171;
+                  color: var(--text-secondary);
+				  transition: color 0.3s ease;
                   font-family: $font;
                   font-size: 13px;
                   font-style: normal;
@@ -632,12 +643,13 @@
                       height: 17px;
                     }
                     span {
-                      color: #181a20;
+                      color: var(--text-primary);
                       font-family: $font;
                       font-size: 13px;
                       font-style: normal;
                       font-weight: 400;
                       line-height: normal;
+					  transition: color 0.3s ease;
                     }
                   }
                 }
@@ -647,7 +659,8 @@
                   justify-content: space-between;
                   align-items: center;
                   p {
-                    color: #181a20;
+                    color: var(--text-primary);
+					transition: color 0.3s ease;
                     font-family: $font;
                     font-size: 13px;
                     font-style: normal;
@@ -667,13 +680,14 @@
                     gap: 7px;
                     align-items: center;
                     .view-cnt {
-                      color: #717171;
+                      color: var(--text-secondary);
                       font-family: $font;
                       font-size: 13px;
                       font-style: normal;
                       font-weight: 400;
                       line-height: normal;
                       text-overflow: ellipsis;
+					  transition: color 0.3s ease;
                     }
                   }
                 }
@@ -693,7 +707,8 @@
     height: auto;
     display: flex;
     flex-direction: row;
-    background: #f6f6f6;
+    background: var(--bg-secondary);
+	transition: background-color 0.3s ease;
     .container {
       position: relative;
       width: 100%;
@@ -729,7 +744,7 @@
               }
               strong {
                 margin-top: 10px;
-                color: #181a20;
+                color: var(--text-primary);
                 text-align: center;
                 font-family: $font;
                 font-size: 24px;
@@ -738,9 +753,11 @@
                 line-height: normal;
                 text-transform: capitalize;
                 cursor: pointer;
+				transition: color 0.3s ease;
               }
               span {
-                color: #181a20;
+                color: var(--text-primary);
+				transition: color 0.3s ease;
                 text-align: center;
                 font-family: $font;
                 font-size: 15px;
@@ -762,7 +779,11 @@
     height: auto;
     display: flex;
     flex-direction: row;
-    background: #181a20;
+    background: #0a1929; // Always dark - light mode
+	transition: background-color 0.3s ease;
+	[data-theme='dark'] & {
+		background: #061220; // Different darker shade in dark mode to stand out
+	}
     .footer-container {
       padding: 0 10px;
       margin: 0 auto;
@@ -785,29 +806,35 @@
               cursor: pointer;
             }
             span {
-              color: #bebdbd;
+              color: rgba(255, 255, 255, 0.8); // White text for dark footer
               font-family: $font;
               font-size: 14px;
               font-style: normal;
               font-weight: 400;
               text-transform: capitalize;
+			  transition: color 0.3s ease;
             }
             p {
-              color: #fff;
+              color: #ffffff; // White text for dark footer
               font-family: $font;
               font-size: 15px;
               font-style: normal;
               font-weight: 600;
               line-height: normal;
               text-transform: capitalize;
+			  transition: color 0.3s ease;
             }
             .media-box {
               margin-top: 12px;
-              color: #929495;
+              color: rgba(255, 255, 255, 0.7); // White icons for dark footer
+			  transition: color 0.3s ease;
               svg {
                 font-size: 32px;
                 margin-right: 22px;
                 cursor: pointer;
+				&:hover {
+					color: #ffffff;
+				}
               }
             }
           }
@@ -825,22 +852,27 @@
               flex-direction: column;
               strong {
                 margin-bottom: 3px;
-                color: #fff;
+                color: #ffffff; // White text for dark footer
                 font-family: $font;
                 font-size: 15px;
                 font-style: normal;
                 font-weight: 600;
                 line-height: normal;
                 text-transform: capitalize;
+				transition: color 0.3s ease;
               }
               span {
                 margin-top: 25px;
-                color: #bebdbd;
+                color: rgba(255, 255, 255, 0.8); // White text for dark footer
                 font-family: $font;
                 font-size: 14px;
                 font-style: normal;
                 font-weight: 400;
                 cursor: pointer;
+				transition: color 0.3s ease;
+				&:hover {
+					color: #ffffff;
+				}
               }
             }
           }
@@ -849,13 +881,15 @@
       .second {
         margin-top: 60px;
         height: 45px;
-        border-top: 1px solid #212329;
+        border-top: 1px solid rgba(255, 255, 255, 0.1); // Light border for dark footer
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-end;
+		transition: border-color 0.3s ease;
         span {
-          color: #bebdbd;
+          color: rgba(255, 255, 255, 0.7); // White text for dark footer
+		  transition: color 0.3s ease;
           font-family: $font;
           font-size: 14px;
           font-style: normal;

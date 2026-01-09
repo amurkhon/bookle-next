@@ -4,6 +4,7 @@
     padding: 60px 0px 60px;
     width: 100%;
     height: auto;
+    background-color: var(--bg-secondary);
     .container {
       display: flex;
       flex-direction: column;
@@ -15,7 +16,7 @@
           flex-direction: column;
           align-items: center;
           span {
-            color: #000;
+            color: var(--text-primary);
             font-family: $font;
             font-size: 35px;
             font-style: normal;
@@ -24,7 +25,7 @@
             letter-spacing: 0.525px;
           }
           p {
-            color: #757575;
+            color: var(--text-secondary);
             font-family: $font;
             font-size: 16px;
             font-style: normal;
@@ -49,18 +50,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 1px solid #EEE;
+            border: 1px solid var(--border-color);
+            background-color: var(--surface);
             cursor: pointer;
-            color: #BDBDBD;
+            color: var(--text-secondary);
             font-family: $font;
             font-size: 14px;
             font-style: normal;
             font-weight: 700;
             line-height: normal;
             letter-spacing: 0.42px;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
             &.active {
-              border: 1px solid #725CE8;
-              background: #EB6753;
+              border: 1px solid #42a5f5;
+              background: #42a5f5; // Lighter blue
               color: #FFF;
             }
           }
@@ -72,7 +75,7 @@
         flex-direction: column;
         .title {
           margin-bottom: 25px;
-          color: #000;
+          color: var(--text-primary);
           font-family: $font;
           font-size: 27px;
           font-style: normal;
@@ -92,15 +95,18 @@
             flex-direction: column;
             .notice-box {
               margin-bottom: 15px;
-              background-color: #f5f7fa;
-              border: 0px;
+              background-color: var(--surface);
+              border: 1px solid var(--border-color);
               border-radius: 10px;
+              transition: background-color 0.3s ease, border-color 0.3s ease;
               .question {
-                background-color: #f5f7fa;
+                background-color: var(--surface);
                 border-radius: 10px;
+                color: var(--text-primary);
                 p{
                   font-size: 19px;
                   font-weight: 700;
+                  color: var(--text-primary);
                 }
               }
               .answer {
@@ -111,7 +117,28 @@
                   margin-bottom: 10px;
                   text-align: start;
                   opacity: 0.6;
+                  color: var(--text-secondary);
                 }
+              }
+              .MuiAccordionDetails-root {
+                color: var(--text-secondary);
+              }
+              .MuiAccordionSummary-root {
+                background-color: var(--surface) !important;
+                color: var(--text-primary) !important;
+              }
+              .MuiAccordionSummary-content {
+                color: var(--text-primary);
+              }
+              .MuiAccordionSummary-expandIconWrapper {
+                color: var(--text-primary);
+                svg {
+                  color: var(--text-primary);
+                }
+              }
+              span {
+                color: var(--text-secondary);
+                opacity: 0.7;
               }
             }
 
@@ -134,11 +161,18 @@
               width: 400px;
               padding: 30px;
               border-radius: 10px;
-              background-color: #f6e5de;
+              background-color: var(--surface);
+              border: 1px solid var(--border-color);
+              color: var(--text-primary);
+              transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
               &:hover {
-                background-color: #d16655;
+                background-color: #42a5f5; // Lighter blue
                 color: white;
-                box-shadow:0 8px 16px 0 rgba(0,0,0,0.6)
+                box-shadow:0 8px 16px 0 rgba(0,0,0,0.6);
+                .head p,
+                .content {
+                  color: white;
+                }
               }
 
               .head {
@@ -152,6 +186,8 @@
                   font-size: 30px;
                   font-weight: 600;
                   line-height: normal;
+                  color: var(--text-primary);
+                  transition: color 0.3s ease;
                 }
 
                 .icon {
@@ -161,13 +197,16 @@
                   justify-content: center;
                   align-items: center;
                   border-radius: 20px;
-                  border: 0.5px solid #d16655;
-                  background-color: #ffffff;
+                  border: 0.5px solid #42a5f5; // Lighter blue
+                  background-color: var(--surface);
+                  transition: background-color 0.3s ease;
                 }
               }
               .content {
                 margin-top: 20px;
                 font-size: 18px;
+                color: var(--text-secondary);
+                transition: color 0.3s ease;
               }
             }
           }
@@ -176,12 +215,15 @@
             margin-top: 100px;
             padding: 40px;
             border-radius: 10px;
-            background-color: #f6e5de;
+            background-color: var(--surface);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
 
             p {
               font-size: 35px;
               font-weight: 600;
               text-align: center;
+              color: var(--text-primary);
             }
 
             .inquiry-box {
@@ -190,17 +232,21 @@
               .content-input {
                 padding: 20px;
                 margin-top: 30px;
+                background-color: var(--bg-secondary);
+                border: 1px solid var(--border-color);
+                color: var(--text-primary);
               }
 
               .button {
                 width: 20%;
                 height: 40px;
                 margin-top: 20px;
-                background-color: #d16655;
+                background-color: #42a5f5; // Lighter blue
                 font-weight: bold;
                 color: white;
+                transition: background-color 0.3s ease, box-shadow 0.3s ease;
                 &:hover {
-                  background-color: #2e4a5b;
+                  background-color: #2196f3; // Lighter blue hover
                   box-shadow:0 8px 16px 0 rgba(0,0,0,0.6)
                 }
               }
@@ -213,15 +259,18 @@
           flex-direction: column;
           .notice-box {
             margin-bottom: 15px;
-            background-color: #f5f7fa;
-            border: 0px;
+            background-color: var(--surface);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
             .question {
-              background-color: #f5f7fa;
+              background-color: var(--surface);
               border-radius: 10px;
+              color: var(--text-primary);
               p{
                 font-size: 19px;
                 font-weight: 700;
+                color: var(--text-primary);
               }
             }
             .answer {
@@ -232,7 +281,24 @@
                 margin-left: 10px;
                 text-align: start;
                 opacity: 0.6;
+                color: var(--text-secondary);
               }
+            }
+            .MuiAccordionDetails-root {
+              color: var(--text-secondary);
+            }
+            .MuiAccordionSummary-root {
+              background-color: var(--surface) !important;
+              color: var(--text-primary) !important;
+              & .MuiAccordionSummary-expandIconWrapper {
+                color: var(--text-primary);
+                svg {
+                  color: var(--text-primary);
+                }
+              }
+            }
+            .MuiAccordionSummary-content {
+              color: var(--text-primary);
             }
           }
         }

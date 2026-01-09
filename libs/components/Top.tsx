@@ -34,6 +34,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useAppTheme } from '../contexts/ThemeContext';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -72,6 +75,7 @@ const Top = () => {
 	const cartItems = useReactiveVar(cartVar);
 	const { t, i18n } = useTranslation('common');
 	const router = useRouter();
+	const { mode, toggleTheme } = useAppTheme();
 	const [notifications, setNotifications] = useState<Notification[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
@@ -254,10 +258,23 @@ const Top = () => {
 		},
 	}));
 
-	if (typeof window !== 'undefined') {
-		window.addEventListener('scroll', changeNavbarColor);
-		window.addEventListener('scroll', changeNavbarSize);
-	}
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			// Initial check
+			changeNavbarColor();
+			changeNavbarSize();
+			
+			// Add scroll listeners
+			window.addEventListener('scroll', changeNavbarColor);
+			window.addEventListener('scroll', changeNavbarSize);
+			
+			// Cleanup
+			return () => {
+				window.removeEventListener('scroll', changeNavbarColor);
+				window.removeEventListener('scroll', changeNavbarSize);
+			};
+		}
+	}, [mode]); // Re-run when theme changes
 
 	if (device == 'mobile') {
 		return (
@@ -282,6 +299,22 @@ const Top = () => {
 							<Box className={'logo-box'}>
 								<img src="/img/logo/black-logo.svg" alt="" />
 							</Box>
+							{/* Theme Toggle Button for Mobile */}
+							<IconButton
+								onClick={toggleTheme}
+								sx={{
+									marginRight: '10px',
+									color: 'black',
+									'&:hover': {
+										color: '#667eea',
+										backgroundColor: 'rgba(102, 126, 234, 0.1)',
+									},
+								}}
+								title={mode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+							>
+								{mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+							</IconButton>
+
 							{/* Shopping Cart Icon for Mobile */}
 							<IconButton
 								onClick={() => router.push('/order/cart')}
@@ -459,7 +492,7 @@ const Top = () => {
 	} else {
 		return (
 			<Stack className={'navbar'}>
-				<Stack sx={{backgroundColor: color}} className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
+				<Stack className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
 					<Stack className={'container'}>
 						<Stack className={`main-info ${hidden ? 'hider-function' : ''} `}>
 							<Box className={'info-box'}>
@@ -540,6 +573,22 @@ const Top = () => {
 								)}
 							</Box>
 							<div className={'lan-box'}>
+								{/* Theme Toggle Button */}
+								<IconButton
+									onClick={toggleTheme}
+									sx={{
+										marginRight: '10px',
+										color: '#616161',
+										'&:hover': {
+											color: '#667eea',
+											backgroundColor: 'rgba(102, 126, 234, 0.1)',
+										},
+									}}
+									title={mode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+								>
+									{mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+								</IconButton>
+
 								{/* Shopping Cart Icon */}
 								<IconButton
 									onClick={() => router.push('/order/cart')}

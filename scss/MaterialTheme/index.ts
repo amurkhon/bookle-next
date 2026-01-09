@@ -2,16 +2,33 @@ import { common } from '@mui/material/colors';
 import shadow from './shadow';
 import typography from './typography';
 
+// Theme colors
+export const themeColors = {
+	light: {
+		background: '#ffffff',
+		surface: '#f5f5f5',
+		text: '#212121',
+		textSecondary: '#616161',
+		border: '#e0e0e0',
+	},
+	dark: {
+		background: '#0a1929', // dark-blue
+		surface: '#132f4c',
+		text: '#ffffff',
+		textSecondary: '#b0bec5',
+		border: '#1e4976',
+	},
+};
 
 /**
- * LIGHT THEME (DEFAULT)
+ * LIGHT THEME (DEFAULT) - White background
  */
 export const light = {
 	palette: {
-		type: 'light',
+		mode: 'light' as const,
 		background: {
-			default: '#f4f6f8',
-			paper: common.white,
+			default: '#ffffff',
+			paper: '#ffffff',
 		},
 		primary: {
 			contrastText: '#ffffff',
@@ -96,7 +113,12 @@ export const light = {
 		MuiCssBaseline: {
 			styleOverrides: {
 				html: { height: '100%' },
-				body: { background: '#fff', height: '100%', minHeight: '100%' },
+				body: { 
+					background: '#ffffff', 
+					height: '100%', 
+					minHeight: '100%',
+					transition: 'background-color 0.3s ease',
+				},
 				p: {
 					margin: '0',
 				},
@@ -298,6 +320,90 @@ export const light = {
 				root: {
 					border: '1px solid #ddd',
 					color: '#212121',
+				},
+			},
+		},
+	},
+	shadow,
+	typography,
+};
+
+/**
+ * DARK THEME - Dark blue background
+ */
+export const dark = {
+	palette: {
+		mode: 'dark' as const,
+		background: {
+			default: '#0a1929', // dark-blue
+			paper: '#132f4c',
+		},
+		primary: {
+			contrastText: '#ffffff',
+			main: '#E92C28',
+		},
+		secondary: {
+			main: '#1646C1',
+		},
+		text: {
+			primary: '#ffffff',
+			secondary: '#b0bec5',
+			dark: '#ffffff',
+		},
+	},
+	components: {
+		...light.components,
+		MuiCssBaseline: {
+			styleOverrides: {
+				html: { height: '100%' },
+				body: { 
+					background: '#0a1929',
+					height: '100%', 
+					minHeight: '100%',
+					transition: 'background-color 0.3s ease',
+				},
+				p: {
+					margin: '0',
+				},
+			},
+		},
+		MuiOutlinedInput: {
+			styleOverrides: {
+				root: {
+					height: '48px',
+					width: '100%',
+					backgroundColor: '#132f4c',
+					input: {},
+				},
+				notchedOutline: {
+					padding: '8px',
+					top: '-9px',
+					border: '1px solid #1e4976',
+				},
+			},
+		},
+		MuiDivider: {
+			styleOverrides: {
+				root: {
+					borderColor: '#1e4976',
+				},
+			},
+		},
+		MuiPaper: {
+			styleOverrides: {
+				root: {
+					backgroundColor: '#132f4c',
+					MuiMenu: {
+						boxShadow: 'rgb(145 158 171 / 24%) 0px 0px 2px 0px, rgb(145 158 171 / 24%) -20px 20px 40px -4px',
+					},
+				},
+			},
+		},
+		MuiChip: {
+			styleOverrides: {
+				root: {
+					border: '1px solid #1e4976',
+					color: '#ffffff',
 				},
 			},
 		},

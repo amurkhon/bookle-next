@@ -36,6 +36,7 @@
 
 @import '/scss/pc/subscription/payment.scss';
 @import '/scss/pc/order/order.scss';
+@import '/scss/pc/cards-dark-mode.scss';
 
 body {
 	-ms-overflow-style: none; /* for Internet Explorer, Edge */
@@ -85,16 +86,27 @@ body::-webkit-scrollbar {
 				z-index: 99;
 				align-items: center;
 				border-top: 1px solid rgba(255, 255, 255, 0.07);
+				background: transparent;
+				transition: background-color 0.3s ease;
 				&.transparent {
-					background-color: #cab7b7;
+					background-color: transparent;
+					transition-duration: 2s;
+					opacity: 0.8;
+					top: -50px;
+				}
+				&.transparent {
+					background-color: transparent;
 					transition-duration: 2s;
 					opacity: 0.8;
 					top: -50px;
 				}
 				.container {
 					flex-direction: column;
+					background: transparent;
+					transition: background-color 0.3s ease;
 					a {
-						color: #012e4a;
+						color: var(--text-primary);
+						transition: color 0.3s ease;
 					}
 					.hider-function {
 						visibility: hidden;
@@ -138,21 +150,22 @@ body::-webkit-scrollbar {
 							justify-content: space-between;
 							div {
 								position: relative;
-								color: #013f4a;
+								color: var(--text-primary);
 								font-family: $font;
 								font-size: 15px;
 								font-style: normal;
 								font-weight: 600;
 								line-height: normal;
 								cursor: pointer;
+								transition: color 0.3s ease;
 								.community_menu {
 									position: absolute;
 									left: -177%;
 									top: 30px;
 									width: 434px;
 									height: 33px;
-									background: white;
-									transition: all ease 2s;
+									background: var(--surface);
+									transition: all ease 2s, background-color 0.3s ease;
 									&:before {
 										content: '';
 										display: block;
@@ -161,9 +174,10 @@ body::-webkit-scrollbar {
 										right: 50%;
 										width: 10px;
 										height: 10px;
-										background: white;
+										background: var(--surface);
 										transform: translateY(-50%) rotate(45deg);
 										z-index: 0;
+										transition: background-color 0.3s ease;
 									}
 								}
 							}
@@ -181,11 +195,13 @@ body::-webkit-scrollbar {
 							align-items: center;
 							justify-content: center;
 							border-radius: 60px;
-							border: 1px solid #012e4a;
+							border: 1px solid var(--border-color);
 							cursor: pointer;
+							transition: border-color 0.3s ease, background-color 0.3s ease;
 							svg {
-								color: #012e4a;
+								color: var(--text-primary);
 								margin-right: 10px;
+								transition: color 0.3s ease;
 							}
 							span {
 								font-family: $font;
@@ -193,7 +209,8 @@ body::-webkit-scrollbar {
 								font-style: normal;
 								font-weight: 600;
 								line-height: normal;
-								color: #012e4a;
+								color: var(--text-primary);
+								transition: color 0.3s ease;
 							}
 						}
 						.login-user {
@@ -264,15 +281,15 @@ body::-webkit-scrollbar {
 		position: relative;
 		width: 100%;
 		height: 900px;
-		background-image: url('/img/hero/hero-bg2.jpg');
-		background-size: cover;
+		background: #ffffff; // White in light mode
 		translate: none;
 		rotate: none;
 		scale: none;
 		transform: translate(0px, 0px);
-		background-image: no-repeat;
-		background-size: cover;
-		background-position: bottom bottom;
+		transition: background 0.3s ease;
+		[data-theme='dark'] & {
+			background: #0a1929; // Dark color in dark mode
+		}
 
 		.shape1 {
 			animation: shape1 10s ease-in infinite alternate;
@@ -299,7 +316,7 @@ body::-webkit-scrollbar {
 				.unique {
 					font-size: large;
 					font-style: italic;
-					color: orange;
+					color: #42a5f5; // Lighter blue
 				}
 
 				.left-letter {
@@ -334,19 +351,23 @@ body::-webkit-scrollbar {
 	.header-basic {
 		position: relative;
 		width: 100%;
-		height: 580px;
+		height: 380px;
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
-		background: black;
+		background: #ffffff; // White in light mode
+		transition: background 0.3s ease;
 		&.auth {
 			height: 300px;
+		}
+		[data-theme='dark'] & {
+			background: #0a1929; // Dark color in dark mode
 		}
 		.container {
 			margin-top: 175px;
 			strong {
 				text-align: center;
-				color: #2e4a5b;
+				color: var(--text-primary);
 				font-family: $font;
 				font-size: 48px;
 				font-style: normal;
@@ -354,16 +375,20 @@ body::-webkit-scrollbar {
 				line-height: normal;
 				letter-spacing: 0.96px;
 				text-transform: capitalize;
+				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				transition: color 0.3s ease;
 			}
 			span {
 				text-align: center;
-				color: #2e4a5b;
+				color: var(--text-secondary);
 				font-family: $font;
 				font-size: 24px;
 				font-style: normal;
 				font-weight: 400;
 				line-height: 26px;
 				margin-bottom: 10px;
+				text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+				transition: color 0.3s ease;
 			}
 		}
 	}
@@ -873,7 +898,11 @@ body::-webkit-scrollbar {
 		height: auto;
 		display: flex;
 		flex-direction: row;
-		background-image: url("/img/banner/footer-bg.jpg");
+		background: #0a1929; // Always dark - light mode
+		transition: background-color 0.3s ease;
+		[data-theme='dark'] & {
+			background: #061220; // Different darker shade in dark mode to stand out
+		}
 		.footer-container {
 			width: 1300px;
 			height: auto;
@@ -896,21 +925,23 @@ body::-webkit-scrollbar {
 							cursor: pointer;
 						}
 						span {
-							color: #bebdbd;
+							color: rgba(255, 255, 255, 0.8); // White text for dark footer
 							font-family: $font;
 							font-size: 14px;
 							font-style: normal;
 							font-weight: 400;
 							text-transform: capitalize;
+							transition: color 0.3s ease;
 						}
 						p {
-							color: #fff;
+							color: #ffffff; // White text for dark footer
 							font-family: $font;
 							font-size: 15px;
 							font-style: normal;
 							font-weight: 600;
 							line-height: normal;
 							text-transform: capitalize;
+							transition: color 0.3s ease;
 						}
 						.media-box {
 							margin-top: 12px;
@@ -1011,18 +1042,19 @@ body::-webkit-scrollbar {
 			.second {
 				margin-top: 60px;
 				height: 45px;
-				border-top: 1px solid #212329;
+				border-top: 1px solid rgba(255, 255, 255, 0.1); // Light border for dark footer
 				display: flex;
 				flex-direction: row;
 				justify-content: space-between;
 				align-items: flex-end;
 				span {
-					color: #bebdbd;
+					color: rgba(255, 255, 255, 0.7); // White text for dark footer
 					font-family: $font;
 					font-size: 14px;
 					font-style: normal;
 					font-weight: 400;
 					line-height: normal;
+					transition: color 0.3s ease;
 				}
 			}
 		}

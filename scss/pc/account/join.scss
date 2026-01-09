@@ -94,11 +94,11 @@
               width: 400px;
               height: 40px;
               margin-top: 20px;
-              background-color: #d16655;
+              background-color: #42a5f5; // Lighter blue
               font-weight: bold;
               color: white;
               &:hover {
-                background-color: #2e4a5b;
+                background-color: #2196f3; // Lighter blue hover
                 box-shadow:0 8px 16px 0 rgba(0,0,0,0.6)
               }
             }
@@ -144,7 +144,7 @@
              width: 100%;
              height: 55px;
              border-radius: 12px;
-             background:  #EB6753;
+             background: #42a5f5; // Lighter blue
              font-family: $font;
              font-size: 15px;
              font-style: normal;

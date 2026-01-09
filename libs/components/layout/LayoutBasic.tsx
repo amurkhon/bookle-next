@@ -125,15 +125,9 @@ const withLayoutBasic = (Component: any) => {
 							<Top />
 						</Stack>
 
-						<Stack
-							className={`header-basic ${authHeader && 'auth'}`}
-							style={{
-								backgroundImage: `url(${memoizedValues.bgImage})`,
-								backgroundSize: 'cover',
-								backgroundPosition: 'start',
-
-							}}
-						>
+					<Stack
+						className={`header-basic ${authHeader && 'auth'}`}
+					>
 							<Stack className={'container'}>
 								<strong>{t(memoizedValues.title)}</strong>
 								<span>{t(memoizedValues.desc)}</span>

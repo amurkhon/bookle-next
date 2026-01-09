@@ -69,7 +69,7 @@ const FeedBackCard = (props: any) => {
 			</Stack>
 			<Stack className={'card-body'}>
 				<Stack className={'feedback-purpose'}>
-					<BlurOnIcon className={'icon'} sx={{ fontSize: 40, marginRight: '10px', color: '#e96d5a' }} />
+					<BlurOnIcon className={'icon'} sx={{ fontSize: 40, marginRight: '10px', color: '#42a5f5' }} /> {/* Lighter blue */}
 					<Typography>User About Platform</Typography>
 				</Stack>
 				<Typography>

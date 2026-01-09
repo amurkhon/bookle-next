@@ -1,0 +1,181 @@
+/* Dark Mode Card Styles */
+[data-theme='dark'] {
+	// Property Cards
+	.card-config,
+	.property-big-card-box {
+		background: var(--surface) !important;
+		border-color: var(--border-color);
+		box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.3) !important;
+		
+		&:hover {
+			box-shadow: 2px 5px 10px 2px rgba(0, 0, 0, 0.4) !important;
+		}
+		
+		.bottom {
+			background: var(--surface);
+			border-color: var(--border-color);
+			
+			.name-address {
+				.name {
+					p {
+						color: var(--text-primary);
+					}
+					span {
+						color: #64b5f6; // Lighter blue
+					}
+				}
+				.address {
+					p {
+						color: var(--text-secondary);
+					}
+				}
+			}
+			
+			.options {
+				.option {
+					p {
+						color: var(--text-primary);
+					}
+				}
+			}
+			
+			.type-buttons {
+				.type {
+					p {
+						color: var(--text-primary);
+					}
+					.disabled-type {
+						color: var(--text-secondary);
+					}
+				}
+			}
+		}
+	}
+	
+	// Homepage Cards
+	.trend-card-box,
+	.popular-card-box,
+	.top-card-box,
+	.card-box {
+		background: var(--surface);
+		border-color: var(--border-color);
+		
+		.info {
+			background: var(--surface);
+			border-color: var(--border-color);
+			
+			.title {
+				color: var(--text-primary);
+			}
+			
+			.desc {
+				color: var(--text-secondary);
+			}
+			
+			.options {
+				span {
+					color: var(--text-primary);
+				}
+			}
+			
+			.bott {
+				p {
+					color: var(--text-primary);
+				}
+				
+				.view-cnt {
+					color: var(--text-secondary);
+				}
+			}
+		}
+	}
+	
+	// Community Cards
+	.community-general-card-config {
+		background: var(--surface);
+		border-color: var(--border-color);
+		
+		.desc-box {
+			.title {
+				color: var(--text-secondary);
+			}
+			
+			.desc {
+				color: var(--text-primary);
+			}
+		}
+		
+		.date-box {
+			background: var(--surface);
+			box-shadow: 0px 6px 15px 0px rgba(0, 0, 0, 0.4);
+			
+			.month,
+			.day {
+				color: var(--text-primary);
+			}
+		}
+	}
+	
+	// Order Cards
+	.order-cart-item,
+	.order-order-card,
+	.order-detail-item,
+	.order-info-card,
+	.order-form-section,
+	.order-cart-summary,
+	.order-checkout-summary {
+		background: var(--surface) !important;
+		border-color: var(--border-color);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+		
+		&:hover {
+			box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4) !important;
+		}
+		
+		h1, h2, h3, h4, h5, h6 {
+			color: var(--text-primary);
+		}
+		
+		p, span, label, .order-item-author, .order-order-date {
+			color: var(--text-secondary);
+		}
+		
+		input, textarea, select {
+			background: var(--bg-secondary);
+			color: var(--text-primary);
+			border-color: var(--border-color);
+		}
+	}
+	
+	// Agent Cards
+	.agent-general-card {
+		.agent-desc {
+			.agent-info {
+				strong,
+				span {
+					color: var(--text-primary);
+				}
+			}
+		}
+	}
+	
+	// Top Agent Cards
+	.top-agent-card {
+		strong,
+		span {
+			color: var(--text-primary);
+		}
+	}
+	
+	// Filter Cards
+	.categories-box,
+	.find-your-book,
+	.category-name {
+		background-color: var(--surface) !important;
+		border-color: var(--border-color);
+		
+		&:hover {
+			background-color: var(--bg-secondary) !important;
+		}
+	}
+}

@@ -72,7 +72,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 						<Divider className={'devider'} textAlign={'left'} light={true} sx={{width: '100%',marginBottom: "10px",marginTop:"10px", height: "3px", backgroundColor: "#bd7579"}} />
 						<Button 
 							className={'button'} 
-							sx={{width: "50%",backgroundColor: "#d16655", color: 'white'}} 
+							sx={{width: "50%",backgroundColor: "#42a5f5", color: 'white'}} // Lighter blue 
 							size={'lg'} 
 							endDecorator={<KeyboardArrowRight />}
 							onClick={() => {pushDetailHandler(article?._id, article?.articleCategory)}}
