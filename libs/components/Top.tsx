@@ -260,19 +260,11 @@ const Top = () => {
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
-			// Initial check
-			changeNavbarColor();
-			changeNavbarSize();
 			
 			// Add scroll listeners
 			window.addEventListener('scroll', changeNavbarColor);
 			window.addEventListener('scroll', changeNavbarSize);
-			
-			// Cleanup
-			return () => {
-				window.removeEventListener('scroll', changeNavbarColor);
-				window.removeEventListener('scroll', changeNavbarSize);
-			};
+
 		}
 	}, [mode]); // Re-run when theme changes
 
@@ -492,7 +484,7 @@ const Top = () => {
 	} else {
 		return (
 			<Stack className={'navbar'}>
-				<Stack className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
+				<Stack sx={{backgroundColor: color}} className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
 					<Stack className={'container'}>
 						<Stack className={`main-info ${hidden ? 'hider-function' : ''} `}>
 							<Box className={'info-box'}>

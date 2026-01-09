@@ -105,8 +105,8 @@ const Footer = () => {
 						<Box component={'div'} className={'bottom'}>
 							<div>
 								<strong>Popular Search</strong>
-								<span>Property for Rent</span>
-								<span>Property Low to hide</span>
+								<span>Books In Romance</span>
+								<span>Books Low to hide</span>
 							</div>
 							<div>
 								<strong>Quick Links</strong>
@@ -128,7 +128,7 @@ const Footer = () => {
 					</Stack>
 				</Stack>
 				<Stack className={'second'}>
-					<span>© Nestar - All rights reserved. Nestar {moment().year()}</span>
+					<span>© Bookle - All rights reserved. Bookle {moment().year()}</span>
 					<span>Privacy · Terms · Sitemap</span>
 				</Stack>
 			</Stack>
