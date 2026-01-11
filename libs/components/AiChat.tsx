@@ -7,6 +7,7 @@ import { GET_INQUIRY_HISTORY } from "../../apollo/user/query";
 import { T } from "../types/common";
 import { InquiryHistoryDto } from "../types/openai/open-ai-answear";
 import { userVar } from "../../apollo/store";
+import { NEXT_PUBLIC_REACT_APP_API_URL } from "../config";
 
 type Message = {
   id: string;
@@ -27,28 +28,65 @@ export default function AiChat() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isTyping, setIsTyping] = useState(false);
-  const [chatHistory, setChatHistory] = useState<InquiryHistoryDto[] | []>();
+  const historyLoadedRef = useRef(false);
 
   const listRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
+  const imagePath = `${NEXT_PUBLIC_REACT_APP_API_URL}/${user}` ?
+    `${NEXT_PUBLIC_REACT_APP_API_URL}/${user?.memberImage}` : 
+    '/img/profile/defaultUser.svg';
 
   const [ aiChatBotRequest ] = useMutation(GET_CHATBOT_ANSWEAR);
 
-  if(user) {
-    const {
-      loading: getInquiryHistoryLoading,
-      data: getInquiryHistoryData,
-      error: getInquiryHistoryError,
-      refetch: getInquiryHistoryRefetch,		
-    } = useQuery(GET_INQUIRY_HISTORY, {
-      fetchPolicy: "network-only",
-      notifyOnNetworkStatusChange: true,
-      onCompleted: (data: T) => {
-        setChatHistory(data?.getInquiryHistory);
+  const {
+    loading: getInquiryHistoryLoading,
+    data: getInquiryHistoryData,
+    error: getInquiryHistoryError,
+  } = useQuery(GET_INQUIRY_HISTORY, {
+    skip: !user || !user._id, // Skip query if user doesn't exist
+    fetchPolicy: "network-only",
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      // Only load history once on initial mount
+      if (historyLoadedRef.current) return;
+      
+      const history: InquiryHistoryDto[] = data?.getInquiryHistory || [];
+      if (history && history.length > 0) {
+        // Convert history to messages format
+        const historyMessages: Message[] = history.flatMap((item) => [
+          {
+            id: `user-${item.createdAt}`,
+            role: "user" as const,
+            content: item.question,
+          },
+          {
+            id: `assistant-${item.createdAt}`,
+            role: "assistant" as const,
+            content: item.answer,
+          },
+        ]);
+        // Set messages with system message + history
+        setMessages([initialSystem, ...historyMessages]);
+      } else {
+        // No history, just keep system message
+        setMessages([initialSystem]);
       }
-    });
-  }
+      historyLoadedRef.current = true;
+    }
+  });
+
+  // Reset history loaded flag when user changes
+  useEffect(() => {
+    if (!user || !user._id) {
+      // User logged out, reset history loaded flag and clear messages
+      historyLoadedRef.current = false;
+      setMessages([initialSystem]);
+    } else {
+      // User logged in, reset history loaded flag to allow loading history
+      historyLoadedRef.current = false;
+    }
+  }, [user?._id]);
 
   /* auto-scroll */
   useEffect(() => {
@@ -178,7 +216,7 @@ export default function AiChat() {
                 className={`chat-row ${m.role === "user" ? "user" : "assistant"}`}
               >
                 <div className="avatar">
-                  {m.role === "user" ? "" : "🤖"}
+                  {m.role === "user" ? <><img style={{width:"35px", height: "35px", borderRadius: '100%'}} src={imagePath} alt="" /></> : "🤖"}
                 </div>
                 <div className="bubble">
                   {m.content ||
