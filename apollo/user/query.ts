@@ -904,6 +904,21 @@ export const DOWNLOAD_FILE = gql`
 `
 
 /**************************
+ *         OPENAI       *
+ *************************/
+
+export const GET_INQUIRY_HISTORY = gql`
+	query GetInquiryHistory {
+		getInquiryHistory {
+			memberId
+			question
+			answer
+			createdAt
+		}
+	}
+`;
+
+/**************************
  *         ORDER        *
  *************************/
 

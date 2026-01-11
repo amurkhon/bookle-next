@@ -1,10 +1,12 @@
 "use client";
 
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
 import React, { useEffect, useRef, useState } from "react";
 import { GET_CHATBOT_ANSWEAR } from "../../apollo/user/mutation";
+import { GET_INQUIRY_HISTORY } from "../../apollo/user/query";
 import { T } from "../types/common";
-import { OpenAIMessage } from "../types/openai/open-ai-answear";
+import { InquiryHistoryDto } from "../types/openai/open-ai-answear";
+import { userVar } from "../../apollo/store";
 
 type Message = {
   id: string;
@@ -19,17 +21,34 @@ const initialSystem: Message = {
 };
 
 export default function AiChat() {
+  const user = useReactiveVar(userVar);
   const [messages, setMessages] = useState<Message[]>([initialSystem]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isTyping, setIsTyping] = useState(false);
+  const [chatHistory, setChatHistory] = useState<InquiryHistoryDto[] | []>();
 
   const listRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
 
   const [ aiChatBotRequest ] = useMutation(GET_CHATBOT_ANSWEAR);
+
+  if(user) {
+    const {
+      loading: getInquiryHistoryLoading,
+      data: getInquiryHistoryData,
+      error: getInquiryHistoryError,
+      refetch: getInquiryHistoryRefetch,		
+    } = useQuery(GET_INQUIRY_HISTORY, {
+      fetchPolicy: "network-only",
+      notifyOnNetworkStatusChange: true,
+      onCompleted: (data: T) => {
+        setChatHistory(data?.getInquiryHistory);
+      }
+    });
+  }
 
   /* auto-scroll */
   useEffect(() => {
