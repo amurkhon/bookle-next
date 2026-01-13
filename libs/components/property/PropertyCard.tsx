@@ -69,7 +69,7 @@ const PropertyCard = (props: PropertyCardType) => {
 							<Typography className="view-cnt">{property?.propertyLikes}</Typography>
 							<IconButton 
 								color={'default'} 
-								onClick={(e) => {
+								onClick={(e: any) => {
 									e.preventDefault();
 									e.stopPropagation();
 									if (property) {

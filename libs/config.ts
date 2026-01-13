@@ -20,7 +20,7 @@ export const Messages = {
 	error5: 'Only images with jpeg, jpg, png format allowed!',
 };
 
-export const topPropertyRank = 2;
+export const topPropertyRank = 100;
 
 export default function extractTextOnly(html: any) {
   if (!html) return "";
