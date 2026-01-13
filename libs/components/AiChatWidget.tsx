@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 import AiChat from "./AiChat";
 
 export default function AiChatWidget() {
@@ -8,7 +9,7 @@ export default function AiChatWidget() {
     <>
       {/* Floating Assistant Button */}
       <button className="ai-chat-float-btn" onClick={() => setOpen(!open)}>
-        🤖
+        {open ? <CloseFullscreenIcon /> : '🤖'}
       </button>
 
       {/* Chat Box */}

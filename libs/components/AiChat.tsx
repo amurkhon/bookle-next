@@ -33,8 +33,8 @@ export default function AiChat() {
   const listRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const imagePath = `${NEXT_PUBLIC_REACT_APP_API_URL}/${user}` ?
-    `${NEXT_PUBLIC_REACT_APP_API_URL}/${user?.memberImage}` : 
+  const imagePath = user && user?.memberImage ?
+    `${NEXT_PUBLIC_REACT_APP_API_URL}/${user.memberImage}` : 
     '/img/profile/defaultUser.svg';
 
   const [ aiChatBotRequest ] = useMutation(GET_CHATBOT_ANSWEAR);
@@ -216,7 +216,7 @@ export default function AiChat() {
                 className={`chat-row ${m.role === "user" ? "user" : "assistant"}`}
               >
                 <div className="avatar">
-                  {m.role === "user" ? <><img style={{width:"35px", height: "35px", borderRadius: '100%'}} src={imagePath} alt="" /></> : "🤖"}
+                  {m.role === "user" ? <img style={{width:"35px", height: "35px", borderRadius: '100%'}} src={imagePath} alt="" /> : "🤖"}
                 </div>
                 <div className="bubble">
                   {m.content ||
