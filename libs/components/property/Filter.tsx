@@ -370,6 +370,12 @@ const Filter = (props: FilterType) => {
 							padding: '10px',
 							backgroundColor: '#42a5f5' // Lighter blue
 						}}
+						onClick={() => {
+							setSearchFilter({
+								...searchFilter,
+								search: { ...searchFilter.search, text: searchText },
+							});
+						}}
 					>
 						Search
 					</Button>

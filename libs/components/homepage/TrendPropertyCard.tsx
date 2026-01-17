@@ -1,28 +1,21 @@
 import React from 'react';
-import { Stack } from '@mui/material';
+import { Stack, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Property } from '../../types/property/property';
 import { useRouter } from 'next/router';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
-
-import AspectRatio from '@mui/joy/AspectRatio';
-import Avatar from '@mui/joy/Avatar';
-import Box from '@mui/joy/Box';
-import Card from '@mui/joy/Card';
-import CardCover from '@mui/joy/CardCover';
-import IconButton from '@mui/joy/IconButton';
-import Typography from '@mui/joy/Typography';
-import Link from '@mui/joy/Link';
-import Favorite from '@mui/icons-material/Favorite';
-import Visibility from '@mui/icons-material/Visibility';
 import { CssVarsProvider } from '@mui/joy/styles';
 import { NEXT_PUBLIC_REACT_APP_API_URL } from '../../config';
-import CommentIcon from '@mui/icons-material/Comment';
+import StarIcon from '@mui/icons-material/Star';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { addToCart } from '../../utils/cart';
 
 interface TrendPropertyCardProps {
 	property: Property;
-	likePropertyHandler: any
+	likePropertyHandler: any;
 }
 
 const TrendPropertyCard = (props: TrendPropertyCardProps) => {
@@ -36,249 +29,121 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 		await router.push({pathname: '/books/detail', query: {id: propertyId}});
 	};
 
-	const pushAuthorDetailHandler = async (memberId: string | undefined) => {
-		await router.push({pathname: '/author/detail', query: {authorId: memberId}});
+	const handleAddToCart = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+		if (property) {
+			addToCart(property, 1);
+		}
 	};
 
 	if (device === 'mobile') {
 		return (
 			<CssVarsProvider>
-			<Stack className="trend-card-box" key={property._id}>
-				<Card 
-					sx={{ width: "100%",border: 0, p: 0, height: '400px' }}
-				>
-					<Box 
-						className={'img-box'} 
-						sx={{ position: 'relative'}}
-					>
-						<img className={'card-img'}
+				<Stack className="trend-card-box-mobile">
+					<Box className={'card-image-wrapper'} onClick={() => pushDetailHandler(property?._id)}>
+						<img
+							className={'card-image'}
 							src={`${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`}
 							loading="lazy"
-							alt="Yosemite by Casey Horner"
+							alt={property?.propertyTitle || 'Book cover'}
 						/>
-						<CardCover
-						className="gradient-cover"
-						sx={{
-							opacity: 1,
-							transition: '0.1s ease-in',
-							background:
-							'linear-gradient(180deg, transparent 62%, rgba(0,0,0,0.00345888) 63.94%, rgba(0,0,0,0.014204) 65.89%, rgba(0,0,0,0.0326639) 67.83%, rgba(0,0,0,0.0589645) 69.78%, rgba(0,0,0,0.0927099) 71.72%, rgba(0,0,0,0.132754) 73.67%, rgba(0,0,0,0.177076) 75.61%, rgba(0,0,0,0.222924) 77.56%, rgba(0,0,0,0.267246) 79.5%, rgba(0,0,0,0.30729) 81.44%, rgba(0,0,0,0.341035) 83.39%, rgba(0,0,0,0.367336) 85.33%, rgba(0,0,0,0.385796) 87.28%, rgba(0,0,0,0.396541) 89.22%, rgba(0,0,0,0.4) 91.17%)',
-						}}
-						>
-						{/* The first box acts as a container that inherits style from the CardCover */}
-						<div>
-							<Box
-								sx={{
-									p: 2,
-									display: 'flex',
-									alignItems: 'center',
-									gap: 1.5,
-									flexGrow: 1,
-									alignSelf: 'flex-end',
-									justifyContent: 'space-between'
-								}}
-							>
-								<Typography level="h2" noWrap sx={{ fontSize: 'lg' }}>
-									<Link
-										onClick={() => {pushDetailHandler(property?._id)}}
-										overlay
-										underline="none"
-										sx={{
-											color: '#fff',
-											textOverflow: 'ellipsis',
-											overflow: 'hidden',
-											display: 'block',
-										}}
-									>
-										{property?.propertyCategory}
-									</Link>
-								</Typography>
-								<Box sx={{position: 'absolute', bottom: '0px', right: '10px', display: 'flex', flexDirection: 'column'}}>
-									<IconButton
-										size="sm"
-										variant="solid"
-										color="neutral"
-										sx={{ bgcolor: 'rgba(0 0 0 / 0.2)', mb: '5px' }}
-										onClick={() => {likePropertyHandler(user?._id, property?._id)}}
-									>
-										{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-											<Favorite style={{ color: 'red' }} />
-										) : (
-											<Favorite />
-										)}
-										<span style={{marginLeft: '5px'}}>
-											{property?.propertyLikes}
-										</span>
-									</IconButton>
-									<IconButton
-										size="sm"
-										variant="solid"
-										color="neutral"
-										sx={{ bgcolor: 'rgba(0 0 0 / 0.2)', mb: '5px' }}
-									>
-										<CommentIcon />
-										<span style={{marginLeft: '5px'}}>
-											{property?.propertyComments}
-										</span>
-									</IconButton>
-									<IconButton
-										size="sm"
-										variant="solid"
-										color="neutral"
-										sx={{ bgcolor: 'rgba(0 0 0 / 0.2)' }}
-									>
-										<Visibility />
-										<span style={{marginLeft: '5px'}}>
-											{property?.propertyViews}
-										</span>
-									</IconButton>
+						<Box className={'image-overlay'}>
+							<Box className={'action-buttons'}>
+								<Box 
+									className={'action-btn'} 
+									onClick={(e: React.MouseEvent) => {
+										e.stopPropagation();
+										likePropertyHandler(user?._id, property?._id);
+									}}
+								>
+									{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+										<FavoriteIcon style={{ color: '#e74c3c', fontSize: '18px' }} />
+									) : (
+										<FavoriteBorderIcon style={{ fontSize: '18px' }} />
+									)}
+									<span>{property?.propertyLikes || 0}</span>
 								</Box>
 							</Box>
-						</div>
-						</CardCover>
+						</Box>
 					</Box>
-					<Box className={'info'} sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-						<Typography className={'title'} sx={{ fontSize: 'sm', fontWeight: 'md' }} onClick={() => {pushDetailHandler(property?._id)}}>
-							{property?.propertyTitle && property?.propertyTitle.length >= 22 ? property?.propertyTitle.slice(0, 22) : property?.propertyTitle }
-						</Typography>
-						<Stack className={'stats-info'}>
-							<Avatar
-								onClick={() => {pushAuthorDetailHandler(property?.memberData?._id)}}
-								src={`${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.memberData?.memberImage}`}
-								size="sm"
-								sx={{ '--Avatar-size': '1.5rem' }}
-							/>
-							<Typography sx={{ fontSize: 'sm', fontWeight: 'md', ml:'5px' }}>
-								{property?.propertyAuthor} (Author)
-							</Typography>
-						</Stack>
+					<Box className={'card-info'}>
+						<Box className={'book-title'} onClick={(e: React.MouseEvent) => {
+							e.stopPropagation();
+							pushDetailHandler(property?._id);
+						}}>
+							{property?.propertyTitle || 'Untitled'}
+						</Box>
+						<Box className={'book-author'}>
+							By {property?.propertyAuthor || 'Unknown'}
+						</Box>
+						<Box className={'book-rating'}>
+							<StarIcon style={{ fontSize: '16px', color: '#ffc107' }} />
+							<span>4.{Math.floor(Math.random() * 9)}</span>
+							<span className={'reviews'}>({property?.propertyComments || 0} reviews)</span>
+						</Box>
+						<Box className={'book-footer'}>
+							<span className={'book-format'}>{property?.propertyCategory || 'Paperback'}</span>
+							<span className={'book-price'}>${property?.propertyPrice || '0.00'}</span>
+						</Box>
 					</Box>
-				</Card>
-			</Stack>
+				</Stack>
 			</CssVarsProvider>
 		);
 	} else {
 		return (
 			<CssVarsProvider>
-			<Stack className="trend-card-box" key={property._id}>
-				<Card 
-					sx={{ width: "200",border: 0, p: 0 }}
-				>
-					<Box 
-						className={'img-box'} 
-						sx={{ position: 'relative', width: '200px'}}
-					>
-						<AspectRatio ratio="4/6">
-						<figure>
-							<img className={'card-img'}
+				<Stack className="trend-card-box" onClick={() => pushDetailHandler(property?._id)}>
+					<Box className={'card-image-wrapper'}>
+						<img
+							className={'card-image'}
 							src={`${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`}
 							loading="lazy"
-							alt="Yosemite by Casey Horner"
-							/>
-						</figure>
-						</AspectRatio>
-						<CardCover
-						className="gradient-cover"
-						sx={{
-							'&:hover, &:focus-within': {
-							opacity: 1,
-							},
-							opacity: 0,
-							transition: '0.1s ease-in',
-							background:
-							'linear-gradient(180deg, transparent 62%, rgba(0,0,0,0.00345888) 63.94%, rgba(0,0,0,0.014204) 65.89%, rgba(0,0,0,0.0326639) 67.83%, rgba(0,0,0,0.0589645) 69.78%, rgba(0,0,0,0.0927099) 71.72%, rgba(0,0,0,0.132754) 73.67%, rgba(0,0,0,0.177076) 75.61%, rgba(0,0,0,0.222924) 77.56%, rgba(0,0,0,0.267246) 79.5%, rgba(0,0,0,0.30729) 81.44%, rgba(0,0,0,0.341035) 83.39%, rgba(0,0,0,0.367336) 85.33%, rgba(0,0,0,0.385796) 87.28%, rgba(0,0,0,0.396541) 89.22%, rgba(0,0,0,0.4) 91.17%)',
-						}}
-						>
-						{/* The first box acts as a container that inherits style from the CardCover */}
-						<div>
-							<Box
-								sx={{
-									p: 2,
-									display: 'flex',
-									alignItems: 'center',
-									gap: 1.5,
-									flexGrow: 1,
-									alignSelf: 'flex-end',
-									justifyContent: 'space-between'
-								}}
-							>
-								<Typography level="h2" noWrap sx={{ fontSize: 'lg' }}>
-									<Link
-										onClick={() => {pushDetailHandler(property?._id)}}
-										overlay
-										underline="none"
-										sx={{
-											color: '#fff',
-											textOverflow: 'ellipsis',
-											overflow: 'hidden',
-											display: 'block',
-										}}
-									>
-										{property?.propertyCategory}
-									</Link>
-								</Typography>
-								<Box sx={{position: 'absolute', bottom: '0px', right: '10px', display: 'flex', flexDirection: 'column'}}>
-									<IconButton
-										size="sm"
-										variant="solid"
-										color="neutral"
-										sx={{ bgcolor: 'rgba(0 0 0 / 0.2)', mb: '5px' }}
-										onClick={() => {likePropertyHandler(user?._id, property?._id)}}
-									>
-										{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-											<Favorite style={{ color: 'red' }} />
-										) : (
-											<Favorite />
-										)}
-										<span style={{marginLeft: '5px'}}>
-											{property?.propertyLikes}
-										</span>
-									</IconButton>
-									<IconButton
-										size="sm"
-										variant="solid"
-										color="neutral"
-										sx={{ bgcolor: 'rgba(0 0 0 / 0.2)', mb: '5px' }}
-									>
-										<CommentIcon />
-										<span style={{marginLeft: '5px'}}>
-											{property?.propertyComments}
-										</span>
-									</IconButton>
-									<IconButton
-										size="sm"
-										variant="solid"
-										color="neutral"
-										sx={{ bgcolor: 'rgba(0 0 0 / 0.2)' }}
-									>
-										<Visibility />
-										<span style={{marginLeft: '5px'}}>
-											{property?.propertyViews}
-										</span>
-									</IconButton>
+							alt={property?.propertyTitle || 'Book cover'}
+						/>
+						<Box className={'image-overlay'}>
+							<Box className={'action-buttons'}>
+								<Box 
+									className={'action-btn'} 
+									onClick={(e: React.MouseEvent) => {
+										e.stopPropagation();
+										likePropertyHandler(user?._id, property?._id);
+									}}
+								>
+									{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+										<FavoriteIcon style={{ color: '#e74c3c', fontSize: '18px' }} />
+									) : (
+										<FavoriteBorderIcon style={{ fontSize: '18px' }} />
+									)}
+									<span>{property?.propertyLikes || 0}</span>
+								</Box>
+								<Box className={'action-btn'} onClick={handleAddToCart}>
+									<ShoppingCartIcon style={{ fontSize: '18px' }} />
 								</Box>
 							</Box>
-						</div>
-						</CardCover>
+						</Box>
 					</Box>
-					<Box className={'info'} sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-						<Typography className={'title'} sx={{ fontSize: 'sm', fontWeight: 'md' }} onClick={() => {pushDetailHandler(property?._id)}}>
-							{property?.propertyTitle && property?.propertyTitle.length >= 22 ? property?.propertyTitle.slice(0, 22) : property?.propertyTitle }
-						</Typography>
-						<Stack className={'stats-info'}>
-							<Avatar
-								onClick={() => {pushAuthorDetailHandler(property?.memberData?._id)}}
-								src={`${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.memberData?.memberImage}`}
-								size="sm"
-								sx={{ '--Avatar-size': '1.5rem' }}
-							/>
-							<Typography sx={{ fontSize: 'sm', fontWeight: 'md', ml:'5px' }}>
-								{property?.propertyAuthor} (Author)
-							</Typography>
-						</Stack>
+					<Box className={'card-info'}>
+						<Box className={'book-title'} onClick={(e: React.MouseEvent) => {
+							e.stopPropagation();
+							pushDetailHandler(property?._id);
+						}}>
+							{property?.propertyTitle || 'Untitled'}
+						</Box>
+						<Box className={'book-author'}>
+							By {property?.propertyAuthor || 'Unknown'}
+						</Box>
+						<Box className={'book-rating'}>
+							<StarIcon style={{ fontSize: '16px', color: '#ffc107' }} />
+							<span>4.{Math.floor(Math.random() * 9)}</span>
+							<span className={'reviews'}>({property?.propertyComments || 0} reviews)</span>
+						</Box>
+						<Box className={'book-footer'}>
+							<span className={'book-format'}>{property?.propertyCategory || 'Paperback'}</span>
+							<span className={'book-price'}>${property?.propertyPrice || '0.00'}</span>
+						</Box>
 					</Box>
-				</Card>
-			</Stack>
+				</Stack>
 			</CssVarsProvider>
 		);
 	}
